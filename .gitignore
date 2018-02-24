@@ -1,5 +1,5 @@
 # Compiled
-*.elc
+#*.elc
 
 # Packaging
 .cask
@@ -9,3 +9,6 @@
 
 # Undo-tree save-files
 *.~undo-tree
+
+# git upload scripts
+git*.*
