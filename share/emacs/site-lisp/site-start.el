@@ -5,7 +5,7 @@
 ;; Author: Antonio Fasano
 ;; Version: 0.3
 ;; Keywords: exam, quiz, test, forms, widget
-;; Package-Requires: ((cl-lib "0.5") (emacs "25"))
+;; This program requires: cl-lib subr-x seq emacs "25"
 
 ;; This program is free software: you can redistribute it and/or modify it
 ;; under the terms of the GNU General Public License as published by the
@@ -29,9 +29,48 @@
 ;; The test shows a mode line with answered questions and a countdown in minutes.
 ;; At countdown expiration Emacs exits, saving answers.
 ;; At predefined times (10 seconds) the answers are saved locally and remotely.
-;;
 ;; Answers are stored locally in the parent of `exam-loc-server-ini' and remotely in `exam-net-course-pt'.  
 ;; To find the remote share, the file retrived from `exam-loc-server-ini' is used.
+;;
+;; ## Default Entries
+;; Before the question area, the computer screen reports some fields to collect student details. By default they are:
+;;  
+;;     Test num.: _______
+;;     Given Name(s): _______________________  Family Name: _____________________________
+;;     Student ID: ___________________
+;;  
+;; An equivalent answer file is produced locally and remotely (as set by the variables `exam-loc-ans-file-pt` and `exam-net-ans-file-pt`. The asnwer file will be similar to the follwing:
+;;  
+;;     exam-id:123
+;;     given-name:John
+;;     family-name:Doe
+;;     student-id:1234567
+;;     ans-string:"b" "b" nil nil "b" nil "a" "b" nil "a" nil nil nil nil nil
+;;  
+;; The values after the colon for `exam-id`, `given-name`, `family-name`, and `student-id` depend on the respective values typed by the student for Test num., Given Name(s), Family Name and Student ID. 
+;;  
+;; `ans-string` is clearly a list of the answer given `nil` being the answers not given.
+;;  							       
+;; ## Custom Entries
+;; You can customise the fields adding the file `~/custfld.txt`. Note that the Windows launcher redirects the home directory `~` to the subdirectory `data` found in Testmacs package. Each file line has a custom-field entry with the format `Name:Width:Text`. `Name` is the field name as reported in the answer files.
+;; `Witdh` is the width of the user typing area, but note that the initial width will dynamically expads as the user types. `Text` is the text describing the information to enter displayed on the screen to the left of the typing area.  However, if `Width` is 0, the field is only informative and there is no information to type. `Width` can be -1, in which case the nothingis displayed on screen, just the the combination `Name:Text` is reported in the answer files for further processing.
+;;
+;; Example:
+;;
+;;     project-date:10:Date when you delivered the class project: %v \\n
+;;     disp-seat-name:0:Computer name is %c
+;;     seat-name:-1:%c
+;;  
+;; \"project-date\" is an editable field and the text \"Date when you ...\" will be displayed replacing `%v' with an edititable area of 10-character width. Information entered is reported in the answer files as \"project-date:DATE\", where DATE is the value entered by the student. 
+;; \"disp-seat-name\" displays on the subsequent line the screen text \"Computer name is foo\", where \"foo\" is the name of the computer where Testmacs is running. 
+;; \"seat-name\" is similar to the preceding field, but it does not involve any screen display, only \"seat-name:foo\" is reported in the answer files.
+;; To add line-breaks to TEXT use `n' preceeded by a single slash.
+;;  
+;; Customs fields are displayed immediately after default fields area. If you include a default field in  `~/custfld.txt`, that field will be removed from default field area.
+;;
+;; Read the Elisp docstring of `exam-loc-cust-fld` for more information.
+;;
+;; ## Remote Commands
 ;; Emacs performs some actions if detects predefined command filenames in the
 ;;   remote directory `exam-net-data-pt`. See action for each command filename.
 ;; Command filename "exit007": Emacs will exit in 10 seconds.
@@ -48,7 +87,8 @@
 (require 'cl-lib)
 (require 'widget)
 (require 'wid-edit)
-
+(require 'subr-x)
+(require 'seq)
 
 ;;; ==================== ;;;
 ;;; === Customise Me === ;;;
@@ -64,6 +104,40 @@ Note that the \"~\" is redirected by the Testemacs launcher to a subdirectory of
 (defconst exam-net-init "INITFILE*.txt"
   "File name in the remoted share with values for `exam-max-time', and `quest-count' and `exam-course'.
 If the variable has wildcards, the first path found is used.")
+
+(defconst exam-default-fields
+  '(("exam-id"       4   "Test num.: %v ")
+    ("seat-disp"     0   " Seat: %c\n\n")
+    ("seat"          -1  "%c")
+    ("given-name"    30  "Given Name(s): %v ")
+    ("family-name"   25  "Family Name(s): %v \n\n")
+    ("student-id"    20  "Student ID: %v \n")
+    ("saved-at"      -1  "%t")    
+    )
+
+  "List of default fields (and related text) inserted on the screen answer sheet before the answer widgets. 
+The list can be overridden by `exam-custom-fields'.
+
+Each element of `exam-default-fields' represents a text only widget, an editable field widget, or a hidden fields. Text only fields appear only on screen and they are not reported in the student's answer files. Editable field widgets collect student input to be reported in the answer files. Hidden fields report (computed) information in the answer files, but do not show on screen. 
+
+Elements of `exam-default-fields' are lists consisting of the following elements: NAME, WIDTH, and TEXT. NAME is a string denoting the field name. TEXT is the text string presented on screen and a `%v' inside TEXT is replaced by the field's editable area of width WIDTH. For text only widgets, WIDTH is zero. For hidden fields, WIDTH is -1.
+
+For each editable or hidden field, an equivalent line is added to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file with the format NAME:VALUE. For editable field widgets, VALUE is the text entered by the student in the editable area; for hidden fields, VALUE is TEXT. 
+In TEXT, beyond `%v', a `%c' is replaced by the client computer name, a `%t' is replaced by time in ISO format (but without time zone) and `%%' must be used to show a literal `%'. Warning: When you use `%v' always preceded it with some other text. Also In an editable-field widget, the editable field must not be adjacent to another widget—that won't work. TODO You must put some text in between. Either make this text part of the editable-field widget itself, or insert it with XXXXwidget-insert.")
+  
+(defconst exam-loc-cust-fld "~/custfld.txt"
+  "Local file with custom fields. If the file exists, it defines custom fields displayed immediately after the, overriding default fields in `default-fields' with the same name. 
+Each line of the file `exam-loc-cust-fld' has a custom-field entry with the format NAME:WIDTH:TEXT and an equivalent line is added to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file with the format NAME:VALUE. Parsed fields are added to the list `exam-custom-fields', therefore NAME, WIDTH, and TEXT are like the fields' elements of `exam-custom-fields'. 
+Example:
+
+project-date:10:Date when you delivered the class project: %v \\n
+disp-seat-name:0:Computer name is %c
+seat-name:-1:%c
+
+\"project-date\" is an editable field and the text \"Date when you ...\" will be displayed replacing `%v' with an edititable area of 10-character width. Information entered is reported in the answer files as \"project-date:DATE\", where DATE is the value entered by the student. 
+\"disp-seat-name\" displays on the subsequent line the screen text \"Computer name is foo\", where \"foo\" is the name of the computer where Testmacs is running. 
+\"seat-name\" is similar to the preceding field, but it does not involve any screen display, only \"seat-name:foo\" is reported in the answer files.
+To add line-breaks to TEXT use `n' preceeded by a single slash.")
 
 (defconst exam-buffer-name "*Test*"
   "Name of the test buffer.")
@@ -83,10 +157,31 @@ If the variable has wildcards, the first path found is used.")
 
 ;;; We want global vars to work even if the buffer is not local
 (defvar exam-net-ans-file-pt  nil
-  "Path of remote answer file.")
+  "Path of remote answer file. The file is identical to the local answer file, whose format is described by the variable `exam-loc-ans-file-pt'.")
 
 (defvar exam-loc-ans-file-pt  nil
-  "Path of client local answer file.")
+  "Path of client local answer file.
+Each line of the answer file (entry) has the format NAME:VALUE. The entries are the following:
+
+DEFAULT ENTRIES
+CUSTOM ENTRIES
+ans-string:VALUE VALUE ...
+
+DEFAULT ENTRIES contain student details entered by the student during the test or produced by the system.
+They are set and documented by the variable `default-fields'. 
+CUSTOM ENTRIES are optional and are defined in the file `exam-loc-cust-fld'.
+\"ans-string\" contains answers entered. Each VALUE can be \"a\", \"b\" etc. (including quotes)  or `nil' (without quotes).")
+
+(defvar exam-custom-fields nil
+  "List of custom fields to insert on the screen answer sheet, with the same format as `exam-default-fields'.
+If an `exam-custom-fields' field has the same name of an `exam-default-fields' field, the latter field is not showed on screen nor is added to the answer files. Definitions of fields are set in the file `exam-loc-cust-fld' and copied by the function `get-custom-fields' to `exam-custom-fields' list. 
+Fields in `exam-custom-fields' cannot have duplicate names. See the function `parse-cust-field', for more information on acceptable field definitions.")
+
+(defvar exam-custom-field-names nil
+  "List of custom fields names, build with cars of element of `exam-custom-fields'.")
+
+(defvar exam-field-vars nil
+  "Alist to store field names and values as strings. Field names and values depends on the list structures `exam-default-fields' and `exam-custom-fields'. Each field pair NAME:VALUE is saved to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file every `exam-update-freq' seconds.")
 
 (defvar exam-net-data-pt nil
   "Path of the remote share containing program data (answers, init and command files etc.). 
@@ -111,7 +206,7 @@ The path is read from a local server file identified by `exam-loc-server-ini'. I
   "Path of client cookie with random `exam-running-id'. Used to detect multiple local app instances.")
 
 (defvar exam-scheduler nil
-  "Timer object to run scheduled tasks in `exam-schedule-hook' every `exam-update-freq'.
+  "Timer object to run scheduled tasks in `exam-schedule-hook' every `exam-update-freq' seconds.
 To be used in case one needs to cancel timer.")
 
 (defvar exam-scheduler-wait nil
@@ -139,23 +234,23 @@ To be used in case one needs to cancel timer.")
 (defvar-local answers-given nil
   "Answer vector given by the students.")
 
-(defvar-local given-name nil
-  "Student contact.")
-
-(defvar-local family-name nil
-  "Student contact.")
-
-(defvar-local student-id nil
-  "Student contact.")
-
-;(defvar-local student-birth nil
-;  "Student contact.")
-
-(defvar-local exam-date nil
-  "Examination day.")
-
-(defvar-local exam-id  nil
-  "Test ID to be used to match student answers.")
+;;(defvar-local given-name nil
+;;  "Student contact.")
+;; 
+;;(defvar-local family-name nil
+;;  "Student contact.")
+;; 
+;;(defvar-local student-id nil
+;;  "Student contact.")
+;; 
+;;(defvar-local student-birth nil
+;;  "Student contact.")
+;; 
+;;(defvar-local exam-date nil
+;;  "Examination day.")
+;; 
+;;(defvar-local exam-id  nil
+;;  "Test ID to be used to match student answers.")
 
 
 ;;; === end of Global Vars
@@ -285,7 +380,7 @@ Select an option:
 1 Exit this instance and remove cookie
 2 Continue overwriting the cookie.
 3 Exit this instance and do NOT remove cookie.\n
-Note: To restart the app remove the answer file on the server.\n
+Note: To restart the app remove the remote answer file from the server.\n
 Please type your option below ↓"))
 
       ;; Manage selection
@@ -324,9 +419,10 @@ Please type your option below ↓"))
 ;;; === Widget Functions === ;;;
 ;;; ======================== ;;;
 
-(defun exam-process-contacts (widget contact-var)
-  "On updated contact field hook."
-  (set contact-var (widget-value widget))
+(defun exam-process-head (widget var-name)
+  "On updated head fields hook."
+;  (set var-name (widget-value widget))
+  (setcdr (assoc var-name exam-field-vars) (widget-value widget))
   (exam-make-answer-string))
 
 (defun exam-process-answer (widget ith-quest)
@@ -500,8 +596,8 @@ The key bindings for `exam-mode' are:
   ;; Init countdown
   (setq exam-remaining-secs  (* max-time 60))
 
-  ;; Update countdown every exam-update-freq seconds
-  (setq exam-scheduler (run-with-timer 0 exam-update-freq 'exam-schedule-hook)))
+  ; (setq exam-scheduler (run-with-timer 0 exam-update-freq 'exam-schedule-hook))
+  )
 
 (defun read-inits ()
   "Obtain remte data-dir from the local file `exam-loc-server-ini' and read there init values from `exam-net-init' file. Wildcards are expanded, if any,  and the first (valid) path is used."
@@ -543,15 +639,17 @@ The key bindings for `exam-mode' are:
 	  exam-loc-ans-file-pt (make-path (file-name-directory exam-loc-server-ini) ans-file-name))))
 
 (defun exam-make-answer-string ()
-  "When a field is updaded this syncs `exam-ans-string' with contacts and  answers."
+  "When a field is updaded this syncs `exam-ans-string' with header field values and answers."
   (let ((ans-string
 	 (format "ans-string:%s" (replace-regexp-in-string  "[][]" "" (prin1-to-string answers-given))))
-	 (contacts
-	  (apply 'concat (mapcar  ;; removed student-birth
-			  (lambda (elt) (format "%s:%s\n" (symbol-name elt) (symbol-value elt)))
-			  '(given-name family-name student-id  exam-date exam-id)))))    
-    (setq exam-ans-string
-	  (concat contacts ans-string "\nsaved-at:" (format-time-string "%Y-%m-%d %H:%M:%S")))))
+	(head-fields
+	 (mapconcat (lambda (elt) (format "%s:%s\n" (car elt) (cdr elt)))  exam-field-vars "")
+	 ;;(apply 'concat (mapcar (lambda (elt) (format "%s:%s\n" (symbol-name elt) (symbol-value elt)))
+	 ;; 			'(given-name family-name student-birth student-id  exam-date exam-id)))
+	 ))
+    (setq exam-ans-string (concat head-fields ans-string
+					;"\nsaved-at:" (format-time-string "%Y-%m-%d %H:%M:%S")
+		  ))))
 
 
 (defun exam-make-dirs ()
@@ -597,49 +695,131 @@ The key bindings for `exam-mode' are:
   (with-temp-file exam-loc-ans-file-pt  (insert "Test write")))
 
 
-(defun exam-insert-contacts ()
+(defun exam-insert-header ()
   "Insert test header and ask student contact details."
+  
+  (let* ((def-field-names (mapcar 'car exam-default-fields))
+	 (def-names-str (mapconcat 'identity def-field-names " "))
+	 unique-fields common-fld-names  pos)
 
-  ;; (widget-insert "Please, read and fill the paper test too.\n\n")
-  (widget-insert "\n")
+    ;; Check for duplication errors in setting `exam-default-fields' 
+    (when (dups-p def-field-names)
+      (exam-err
+       "The constant `exam-default-fields', set by the main program module, has duplicate field names:\n%s"
+       def-names-str)
+      (throw 'test t))
 
-   (widget-create 'editable-field
-         :size 4
-         :format "Test num.: %v "
-	 :notify (lambda (widget &rest _) (exam-process-contacts widget 'exam-id))
-         "")
-   (widget-insert (format " Seat: %s\n\n" (downcase (getenv "COMPUTERNAME"))))
+    ;; Build custom field list
+    (get-custom-fields) ;-> exam-custom-fields, exam-custom-field-names
 
-   (widget-create 'editable-field
-         :size 30
-         :format "Given Name(s): %v "
-	 :notify (lambda (widget &rest _) (exam-process-contacts widget 'given-name))
-         "")
-   (widget-create 'editable-field
-         :size 25
-         :format "Family Name: %v " ; Text after the field!
-	 :notify (lambda (widget &rest _) (exam-process-contacts widget 'family-name))
-         "")
-   (widget-insert "\n\n")
+    (setq common-fld-names (seq-intersection  exam-custom-field-names def-field-names))
 
-   (widget-create 'editable-field
-         :size 20
-         :format "Matricola or date of birth (d/m/y): %v "
-	 :notify (lambda (widget &rest _) (exam-process-contacts widget 'student-id))
-         "")
-   (widget-insert "\n")
+    ;; Build unique list with default fields possibly overridden by custom fields 
+;    (mapcar (lambda (elt)
+; 	      (if (member (car elt)  common-fld-names)	       
+; 		  (add-to-list 'unique-fields (assoc (car elt) exam-custom-fields) t)
+; 		(add-to-list 'unique-fields elt t)))
+; 	    exam-default-fields)
+
+    (setq unique-fields
+	  (append unique-fields
+		  (seq-filter (lambda (elt) (not (member (car elt) common-fld-names)))
+			      exam-default-fields)
+		  exam-custom-fields))
+
+    
+    ;; Append remaining (non common) custom fields to unique field list 
+    ;(setq unique-fields
+    ; 	  (append unique-fields
+    ; 		  (seq-filter (lambda (elt) (not (member (car elt) common-fld-names)))
+    ; 				  exam-custom-fields)))
+
+    (setq exam-field-vars nil)
+    (mapcar (lambda (elt) (add-to-list 'exam-field-vars (list (car elt)) t))
+	    unique-fields)
+
+    ;; For each element of unique-fields add an edit field 
+    (widget-insert "\n")    
+    (let* (w
+	   (wds unique-fields)
+	   (comp-name (downcase (getenv "COMPUTERNAME")))
+	   (time  (format-time-string "%FT%T"))
+
+	   name width text
+	   
+	   ;; Replace %c with compname and escape %%
+	   (rep (lambda (s)  
+		  (thread-last 
+		      (replace-regexp-in-string "%\\{1\\}c" comp-name s  nil 'literal)
+		      (replace-regexp-in-string "%\\{1\\}t" time)
+		    (replace-regexp-in-string "%%" "%" )))))
+
+      ;; :notify lambda is evaluated on each notification. To give `name' its value now, we use a macro
+      (defmacro add-edit-field ()
+	`(widget-create 'editable-field
+			:size width
+			:format text
+			:notify (lambda (widget &rest _) (exam-process-head widget ,name))
+			""))
+    
+      (while (setq w (pop wds))
+	(setq name  (nth 0 w)
+	      width (nth 1 w)
+	      text  (funcall rep (nth 2 w)))
+
+	(cond 
+	 ;; Add text only
+	 ((eq width 0)
+	  (assq-delete-all name exam-field-vars) ; name points to value, so works with assq
+	  (widget-insert text))
+	 	 
+	 ;; Add store hidden fields
+	 ((eq width -1)
+	    (setcdr (assoc name exam-field-vars) text))
+
+	 ;; Add editable field widget
+	 ((> width 0) (add-edit-field)))))))
+    
+;  (widget-insert "\n")
+;   (widget-create 'editable-field
+;         :size 4
+;         :format "Test num.: %v "
+; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'exam-id))
+;         "")
+;   (widget-insert (format " Seat: %s\n\n" (downcase (getenv "COMPUTERNAME"))))
+; 
+;   (widget-create 'editable-field
+;         :size 30
+;         :format "Given Name(s): %v "
+; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'given-name))
+;         "")
+;   (widget-create 'editable-field
+;         :size 25
+;         :format "Family Name: %v " ; Text after the field!
+; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'family-name))
+;         "")
+;   (widget-insert "\n\n")
+; 
 ;   (widget-create 'editable-field
 ;         :size 10
-;         :format "If you don't remember your ID, date of birth: %v "
+;         :format "Birth Date (day/month/year): %v "
 ; 	 :notify (lambda (widget &rest _) (setq student-birth (widget-value widget)))
 ;         "")
-   (widget-insert "\n")
-   (widget-create 'editable-field
-         :size 10
-         :format "Today is (day/month/year):          %v "
-	 :notify (lambda (widget &rest _) (exam-process-contacts widget 'exam-date))
-         "")
-   (widget-insert "\n\n"))
+;;   (widget-insert "\n")
+; 
+;   (widget-create 'editable-field
+;         :size 20
+;         :format "  Student ID (Matricola). This is optional: %v "
+; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'student-id))
+;         "")
+;   (widget-insert "\n")
+; 
+;   (widget-create 'editable-field
+;         :size 10
+;         :format "Today is (day/month/year): %v "
+; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'exam-date))
+;         "")
+;   (widget-insert "\n\n"))
 
 (defun exam-insert-question (ith-quest)
   "Insert ITH-QUEST question."
@@ -742,6 +922,91 @@ The key bindings for `exam-mode' are:
 ;;; === end of Remote Commands
 ;;; ==========================
 
+;;; ========================== ;;;
+;;; === Get Custom Fields  === ;;;
+;;; ========================== ;;;
+
+
+(defun unique-p  (list)
+  "NOT USED Return nil if LIST has duplicates or LIST."
+  (let (ret (lst list))
+    (while (and lst (setq ret (not (member (pop lst) lst)))))
+    (if ret list)))
+
+(defun dups-p (lst)
+  "Return t if LIST has duplicates"
+  (let (ret)
+    (while (and lst (setq ret (not (member (pop lst) lst)))))
+    (not ret)))
+
+(defun get-custom-fields ()
+    "Read custom field file `exam-loc-cust-fld'  and create a list of custom fields. 
+Each file line has the format NAME:WIDTH:TEXT, whose meaning is that of the elements of `exam-custom-fields'.
+Blank lines, if any, are skipped. If no errors are detected, `exam-custom-fields' and `exam-custom-field-names' are filled. Errors include duplicate field names. See `parse-cust-field' acceptable field definitions."
+
+    (setq exam-custom-fields nil
+	  exam-custom-field-names nil)
+    (when (file-exists-p exam-loc-cust-fld)
+      (let ((cust-flds-buf (split-string
+			    (with-temp-buffer (insert-file-contents exam-loc-cust-fld) (buffer-string))
+			    "\n"))
+	    custflds entry (lineno 0))
+
+	(defun parse-err-ln (msg &rest ags)
+	  "Exit safe in case of errors in parsing custom fields, which include remove cookies. 
+See `exam-err' for more safe belts."
+	  (let ((errmess "Error in custom field file `%s', line %d\n"))    
+	    (apply 'exam-err (concat errmess msg) (append (list exam-loc-cust-fld lineno) ags)))
+	  (throw 'test t))
+	
+	(defun parse-err (msg &rest ags)
+	  "A version of `parse-err-ln' not printing the number of the line parsed."
+	  (let ((errmess "Error in custom field file `%s'\n"))    
+	    (apply 'exam-err (concat errmess msg) (append (list exam-loc-cust-fld) ags)))
+	  (throw 'test t))
+
+	;; Fill custom field list
+	(while (setq entry (pop cust-flds-buf))
+	  (setq lineno (1+ lineno))
+	  (if (setq entry (parse-cust-field entry))	 
+	      (push entry custflds)))
+	(setq exam-custom-fields (reverse custflds)))
+
+      ;; Test duplicates
+      (setq exam-custom-field-names (mapcar 'car exam-custom-fields))
+      (if (dups-p exam-custom-field-names)
+	  (parse-err "Duplicate custom fields:\n%s" (mapconcat 'identity exam-custom-field-names " ")))))
+
+
+(defun parse-cust-field (line)
+  "Parse a line from the custom field file `exam-loc-cust-fld' and return a list (NAME WIDTH TEXT). 
+The function `get-custom-fields' uses the returned list to fill the list `exam-custom-fields' and the car, NAME, to fill `exam-custom-field-names'. 
+NAME can only have alphanumeric characters or the four literals `-_.'.  WIDTH should be non-negative and not more than 100. 
+See the variable `exam-custom-fields' for the meaning of the returned list elements." 
+
+  (let* ((ss (split-string line ":"  nil split-string-default-separators))
+	 (name (nth 0 ss))
+	 (width (nth 1 ss))
+	 (text (replace-regexp-in-string (regexp-quote "\\n") "\n" line))
+	 (text (mapconcat 'identity (cddr (split-string text ":")) ":")))
+    
+    (if (eq 0 (length (car ss))) nil 
+      ;; Check syntax
+      (if (< (length ss) 3)
+	  (parse-err-ln "Not enough elements in:\n%s" line))
+      (unless (string-match-p "^[[:alnum:]-_.]+$" name)
+	(parse-err-ln "Not only `alphanum-_.' in `%s' in:\n%s" name line))
+      (unless (string-match-p "^-?[[:digit:]]+$" width)
+	(parse-err-ln "Width `%s' is not a non-negative integer in:\n%s" width line))
+      (if (< 100 (setq width (string-to-number width)))
+	(parse-err-ln "Excessive field width in:\n%s" line))
+
+      (list name width text))))
+
+;;; === end of Get Custom Fields
+;;; ============================
+
+
 ;;; ============= ;;;
 ;;; === Main  === ;;;
 ;;; ============= ;;;
@@ -759,19 +1024,23 @@ The key bindings for `exam-mode' are:
       (read-inits)
       (setq exam-answered-ones 0)
       (setq answers-given (make-vector quest-count nil))
-      (exam-make-answer-string)
+;      (exam-make-answer-string)
       (exam-make-dirs)
       
       ;; Set header-line (will start timed functions)
       (exam-mode-header exam-max-time)
 
       ;;Make form 
-      (exam-insert-contacts)
+      (exam-insert-header)
       (cl-loop for i from 1 to quest-count
 	       do (exam-insert-question i))
       (exam-insert-finish) ;)
       (widget-setup) ;  adds a read-only mode outside widgets
-      (widget-forward 1))
+      (widget-forward 1)
+
+      ;; Update countdown and save answers every exam-update-freq seconds
+      (exam-make-answer-string)
+      (setq exam-scheduler (run-with-timer 0 exam-update-freq 'exam-schedule-hook)))
 
     (switch-to-buffer buffer))
 
@@ -823,6 +1092,7 @@ For debug scenarios or after raising exceptions."
 ;;; ===============
 
 
+
 ;;; ======================== ;;;
 ;;; === Debug Functions  === ;;;
 ;;; ======================== ;;;
@@ -863,7 +1133,7 @@ For debug scenarios or after raising exceptions."
 
 ;;; Main, Main Form Setup Functions;
 ;;; Customise Me, Global Vars, Style
-;;; FS Helpers, Widget Functions, Stop Hooks, Remote Commands, Debug Functions
+;;; FS Helpers, Widget Functions, Stop Hooks, Remote Commands, Get Custom Fields, Debug Functions
 
 
 ;;; FIRE!
@@ -871,3 +1141,4 @@ For debug scenarios or after raising exceptions."
 
 
  
+

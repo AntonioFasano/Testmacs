@@ -1,8 +1,7 @@
 # Compiled
 #*.elc
+data/*
 
-# Packaging
-.cask
 
 # Backup files
 *~
