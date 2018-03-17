@@ -3,7 +3,7 @@
 ;; ----->  Copy this in share\emacs\site-lisp\site-start.el
 
 ;; Author: Antonio Fasano
-;; Version: 0.3
+;; Version: 0.4
 ;; Keywords: exam, quiz, test, forms, widget
 ;; This program requires: cl-lib subr-x seq emacs "25"
 
@@ -75,8 +75,9 @@
 ;;   remote directory `exam-net-data-pt`. See action for each command filename.
 ;; Command filename "exit007": Emacs will exit in 10 seconds.
 ;; Command filename "update007": Emacs updates `site-start.el' with the file `new-site-start.txt'
-;; in the remote directory `exam-net-data-pt`. If this file is not found or there is a copy error
-;; a non-critical error is displayed until the action succeeds or the command filename is removed.
+;; in the remote directory `exam-net-data-pt' and possibly the `custfld.txt' with remote `new-custfld.txt'.
+;; If `new-site-start.txt' is not found or there is a copy error a non-critical error is displayed
+;; until the action succeeds or the command filename is removed.
 
 ;; Inspirations
 ;; https://github.com/syohex/emacs-mode-line-timer
@@ -319,7 +320,7 @@ The first line of the conf file contains the Windows UNC path of the remote data
   (setq exam-running-cookie-pt
 	(make-path (file-name-directory exam-loc-server-ini) "RUNNING"))	
   (let (id)  
-    (dotimes (x 3 id)
+    (dotimes (_ 3 id)
       (setq id (cons (random 999999) id)))
     (setq exam-running-id (mapconcat 'number-to-string id "-"))))
 
@@ -500,9 +501,10 @@ Note that variables used here shoul not be buffer local."
 (defun exam-save-test ()
   "Save answer string. Note that variables used here are not buffer local.
 Note that variables used here are not buffer local."
-  
+
   (with-temp-file exam-loc-ans-file-pt  (insert exam-ans-string))
-  (with-temp-file exam-net-ans-file-pt  (insert exam-ans-string)))
+  (with-temp-file exam-net-ans-file-pt  (insert exam-ans-string))
+  (exam-remote-cmds))
 
 (defun exam-remote-cmds ()
   "Execute remote commands."
@@ -695,12 +697,21 @@ The key bindings for `exam-mode' are:
   (with-temp-file exam-loc-ans-file-pt  (insert "Test write")))
 
 
+;; :notify lambda is evaluated on each notification. To give `name' its value now, we use a macro
+(defmacro add-edit-field (name)
+  `(widget-create 'editable-field
+		  :size width
+		  :format text
+		  :notify (lambda (widget &rest _) (exam-process-head widget ,name))
+		  ""))
+
+		     
 (defun exam-insert-header ()
-  "Insert test header and ask student contact details."
+  "Insert test header used to collect student details or display information."
   
   (let* ((def-field-names (mapcar 'car exam-default-fields))
 	 (def-names-str (mapconcat 'identity def-field-names " "))
-	 unique-fields common-fld-names  pos)
+	 unique-fields common-fld-names)
 
     ;; Check for duplication errors in setting `exam-default-fields' 
     (when (dups-p def-field-names)
@@ -710,32 +721,31 @@ The key bindings for `exam-mode' are:
       (throw 'test t))
 
     ;; Build custom field list
-    (get-custom-fields) ;-> exam-custom-fields, exam-custom-field-names
+    (get-custom-fields) ; fills exam-custom-fields, exam-custom-field-names
 
     (setq common-fld-names (seq-intersection  exam-custom-field-names def-field-names))
 
-    ;; Build unique list with default fields possibly overridden by custom fields 
-;    (mapcar (lambda (elt)
+
+;    (mapcar (lambda (elt) ; Build unique list with default fields possibly overridden by custom fields 
 ; 	      (if (member (car elt)  common-fld-names)	       
 ; 		  (add-to-list 'unique-fields (assoc (car elt) exam-custom-fields) t)
 ; 		(add-to-list 'unique-fields elt t)))
 ; 	    exam-default-fields)
 
+    ;; Create unique list with default fields not redefined as custom + custom fields
     (setq unique-fields
 	  (append unique-fields
 		  (seq-filter (lambda (elt) (not (member (car elt) common-fld-names)))
 			      exam-default-fields)
 		  exam-custom-fields))
-
     
-    ;; Append remaining (non common) custom fields to unique field list 
-    ;(setq unique-fields
+    ;(setq unique-fields   ; Append remaining (non common) custom fields to unique field list 
     ; 	  (append unique-fields
     ; 		  (seq-filter (lambda (elt) (not (member (car elt) common-fld-names)))
     ; 				  exam-custom-fields)))
 
     (setq exam-field-vars nil)
-    (mapcar (lambda (elt) (add-to-list 'exam-field-vars (list (car elt)) t))
+    (mapc (lambda (elt) (add-to-list 'exam-field-vars (list (car elt)) t))
 	    unique-fields)
 
     ;; For each element of unique-fields add an edit field 
@@ -754,13 +764,6 @@ The key bindings for `exam-mode' are:
 		      (replace-regexp-in-string "%\\{1\\}t" time)
 		    (replace-regexp-in-string "%%" "%" )))))
 
-      ;; :notify lambda is evaluated on each notification. To give `name' its value now, we use a macro
-      (defmacro add-edit-field ()
-	`(widget-create 'editable-field
-			:size width
-			:format text
-			:notify (lambda (widget &rest _) (exam-process-head widget ,name))
-			""))
     
       (while (setq w (pop wds))
 	(setq name  (nth 0 w)
@@ -778,8 +781,9 @@ The key bindings for `exam-mode' are:
 	    (setcdr (assoc name exam-field-vars) text))
 
 	 ;; Add editable field widget
-	 ((> width 0) (add-edit-field)))))))
+	 ((> width 0) (add-edit-field name)))))))
     
+
 ;  (widget-insert "\n")
 ;   (widget-create 'editable-field
 ;         :size 4
@@ -857,7 +861,9 @@ The key bindings for `exam-mode' are:
 ;;; ======================= ;;;
 
 (defun remote-update ()
-  "Update local \"site-start.el\" with remote file \"update-performed/new-site-start.txt\" in `exam-net-data-pt'."
+  "Update local \"site-start.el\" and possibly the local custom-field file with equivalent remote files  \"new-site-start.txt\" and \"new-custfld.txt\" in `exam-net-data-pt'. 
+Update results are written in the folder  \"update-performed\" in `exam-net-data-pt'.
+The name of local custom file is set in `exam-loc-cust-fld' the remote name is obtained adding the \"new-\" prefix."
 
   (catch 'update 
     ;; Update already done
@@ -874,9 +880,14 @@ The key bindings for `exam-mode' are:
 	   (update-dir-pt (make-path exam-net-data-pt "update-performed"))
 	   (remote-result-file  (concat "updated-" (downcase (getenv "COMPUTERNAME")) ".txt"))
 	   (remote-result-file-pt (make-path update-dir-pt remote-result-file))	     	     
-	   new-content old-content res-content)
+	   new-content old-content res-content
 
-      ;; Make a local copy of remote site-start or signal non critical error
+	   ;; Custom fileds
+	   (new-custom-flds (concat "new-" (file-name-nondirectory exam-loc-cust-fld)))
+	   (remote-new-custom-flds (make-path exam-net-data-pt new-custom-flds))
+	   (local-new-custom-flds (make-path (file-name-directory exam-loc-cust-fld) new-custom-flds)))
+
+      ;; Test remote site-start and possibly  signal non critical error
       (when (not (file-exists-p remote-new-site-start))
 	(message "Error: Update file `%s' not found" remote-new-site-start)
 	(throw 'update t))
@@ -887,7 +898,7 @@ The key bindings for `exam-mode' are:
 	(message "Error: Copying `%s' to `%s' (trying later)"
 		 remote-new-site-start local-new-site-start)
 	(throw 'update t))
-
+         
       ;; Overwrite original file with local copy
       (copy-file local-new-site-start original-site-start t)
       (setq new-content
@@ -898,7 +909,35 @@ The key bindings for `exam-mode' are:
 	(message "Error: Copying `%s' to `%s' (trying later)"
 		 local-new-site-start original-site-start)
 	(throw 'update t))
+
+      ;; Get version for result file
+      (string-match "^;; *[Vv]ersion: +.+" new-content)      
+      (setq res-content	(match-string-no-properties 0 new-content)      
+	    res-content     
+	    (concat res-content "\nUpdated at: " (format-time-string "%Y-%m-%d %H:%M:%S"))) 
       
+      ;; Copy custom-field file only if it exists
+      (when (file-exists-p remote-new-custom-flds)
+	(message "Main file updated. Now updating custom field file.")
+
+	;; Copy remote file without overwrite
+	(copy-file remote-new-custom-flds local-new-custom-flds t)
+	(when (not (file-exists-p local-new-custom-flds))
+	  (message "Error: Copying `%s' to `%s' (trying later)"
+		 remote-new-custom-flds local-new-custom-flds)
+	  (throw 'update t))
+	(copy-file local-new-custom-flds exam-loc-cust-fld t)
+
+	;; Overwrite original file with local copy
+	(setq new-content
+	      (with-temp-buffer (insert-file-contents local-new-custom-flds) (buffer-string)))
+	(setq old-content
+	      (with-temp-buffer (insert-file-contents exam-loc-cust-fld) (buffer-string))) 
+	(when (not (string= new-content old-content))
+	  (message "Error: Copying `%s' to `%s' (trying later)"
+		   remote-new-custom-flds local-new-custom-flds)
+	  (throw 'update t)))
+
       ;; Make update dir 
       (make-directory update-dir-pt t)
       (when (not (file-accessible-directory-p update-dir-pt))
@@ -910,12 +949,9 @@ The key bindings for `exam-mode' are:
 	(message "Unable to write to remote file `%s.'" remote-result-file-pt)
 	(throw 'update t))
 
-      (string-match "^;; *[Vv]ersion: +.+" new-content)      
-      (setq res-content	(match-string-no-properties 0 new-content)      
-	    res-content     
-	    (concat res-content "\nUpdated at: " (format-time-string "%Y-%m-%d %H:%M:%S")))      
       (with-temp-file remote-result-file-pt (insert res-content))
 
+      (message "Updating successful.") 
       (setq exam-cmd-update-performed t))))
 
 
@@ -939,69 +975,86 @@ The key bindings for `exam-mode' are:
     (while (and lst (setq ret (not (member (pop lst) lst)))))
     (not ret)))
 
-(defun get-custom-fields ()
-    "Read custom field file `exam-loc-cust-fld'  and create a list of custom fields. 
+(defalias 'custom-field-cursor 
+  (let ((lineno 0))
+    (lambda (&optional action)
+      (setq lineno (pcase action 
+	('init 0)
+	('inc (1+  lineno))
+	(_ lineno)))))
+  "When reading `exam-loc-cust-fld', return statically sets and return the current line number. 
+An optional ACTION argument is accepted. Before returning line number, if ACTION is 'init, the value is set to zero; if ACTION is 'inc, the value is incremented by one.")
+
+
+;; "Possibly fill `exam-custom-fields' and `exam-custom-field-names' with data from `exam-loc-cust-fld'."
+
+(defun get-custom-fields () 
+      "Read custom field file `exam-loc-cust-fld'  and create a list of custom fields. 
 Each file line has the format NAME:WIDTH:TEXT, whose meaning is that of the elements of `exam-custom-fields'.
 Blank lines, if any, are skipped. If no errors are detected, `exam-custom-fields' and `exam-custom-field-names' are filled. Errors include duplicate field names. See `parse-cust-field' acceptable field definitions."
 
-    (setq exam-custom-fields nil
-	  exam-custom-field-names nil)
-    (when (file-exists-p exam-loc-cust-fld)
-      (let ((cust-flds-buf (split-string
-			    (with-temp-buffer (insert-file-contents exam-loc-cust-fld) (buffer-string))
-			    "\n"))
-	    custflds entry (lineno 0))
+      (setq exam-custom-fields nil
+	    exam-custom-field-names nil)
+      (when (file-exists-p exam-loc-cust-fld)
+	(let ((cust-flds-buf (split-string
+			      (with-temp-buffer (insert-file-contents exam-loc-cust-fld) (buffer-string))
+			      "\n"))
+	      custflds entry)
 
-	(defun parse-err-ln (msg &rest ags)
-	  "Exit safe in case of errors in parsing custom fields, which include remove cookies. 
-See `exam-err' for more safe belts."
-	  (let ((errmess "Error in custom field file `%s', line %d\n"))    
-	    (apply 'exam-err (concat errmess msg) (append (list exam-loc-cust-fld lineno) ags)))
-	  (throw 'test t))
-	
-	(defun parse-err (msg &rest ags)
-	  "A version of `parse-err-ln' not printing the number of the line parsed."
-	  (let ((errmess "Error in custom field file `%s'\n"))    
-	    (apply 'exam-err (concat errmess msg) (append (list exam-loc-cust-fld) ags)))
-	  (throw 'test t))
+	  ;; Init cursor 
+	  (custom-field-cursor 'init)
 
-	;; Fill custom field list
-	(while (setq entry (pop cust-flds-buf))
-	  (setq lineno (1+ lineno))
-	  (if (setq entry (parse-cust-field entry))	 
-	      (push entry custflds)))
-	(setq exam-custom-fields (reverse custflds)))
+	  ;; Fill custom field list
+	  (while (setq entry (pop cust-flds-buf))
+	    (custom-field-cursor 'inc)
+	    (if (setq entry (parse-cust-field entry))	 
+		(push entry custflds)))
+	  (setq exam-custom-fields (reverse custflds)))
 
-      ;; Test duplicates
-      (setq exam-custom-field-names (mapcar 'car exam-custom-fields))
-      (if (dups-p exam-custom-field-names)
-	  (parse-err "Duplicate custom fields:\n%s" (mapconcat 'identity exam-custom-field-names " ")))))
-
+	;; Test duplicates
+	(setq exam-custom-field-names (mapcar 'car exam-custom-fields))
+	(if (dups-p exam-custom-field-names)
+	    (parse-err "Duplicate custom fields:\n%s" (mapconcat 'identity exam-custom-field-names " ")))))
 
 (defun parse-cust-field (line)
-  "Parse a line from the custom field file `exam-loc-cust-fld' and return a list (NAME WIDTH TEXT). 
+      "Parse a line from the custom field file `exam-loc-cust-fld' and return a list (NAME WIDTH TEXT). 
 The function `get-custom-fields' uses the returned list to fill the list `exam-custom-fields' and the car, NAME, to fill `exam-custom-field-names'. 
 NAME can only have alphanumeric characters or the four literals `-_.'.  WIDTH should be non-negative and not more than 100. 
 See the variable `exam-custom-fields' for the meaning of the returned list elements." 
 
-  (let* ((ss (split-string line ":"  nil split-string-default-separators))
-	 (name (nth 0 ss))
-	 (width (nth 1 ss))
-	 (text (replace-regexp-in-string (regexp-quote "\\n") "\n" line))
-	 (text (mapconcat 'identity (cddr (split-string text ":")) ":")))
-    
-    (if (eq 0 (length (car ss))) nil 
-      ;; Check syntax
-      (if (< (length ss) 3)
-	  (parse-err-ln "Not enough elements in:\n%s" line))
-      (unless (string-match-p "^[[:alnum:]-_.]+$" name)
-	(parse-err-ln "Not only `alphanum-_.' in `%s' in:\n%s" name line))
-      (unless (string-match-p "^-?[[:digit:]]+$" width)
-	(parse-err-ln "Width `%s' is not a non-negative integer in:\n%s" width line))
-      (if (< 100 (setq width (string-to-number width)))
-	(parse-err-ln "Excessive field width in:\n%s" line))
+      (let* ((ss (split-string line ":"  nil split-string-default-separators))
+	     (name (nth 0 ss))
+	     (width (nth 1 ss))
+	     (text (replace-regexp-in-string (regexp-quote "\\n") "\n" line))
+	     (text (mapconcat 'identity (cddr (split-string text ":")) ":")))
+	
+	(if (eq 0 (length (car ss))) nil 
+	  ;; Check syntax
+	  (if (< (length ss) 3)
+	      (parse-err-ln "Not enough elements in:\n%s" line))
+	  (unless (string-match-p "^[[:alnum:]-_.]+$" name)
+	    (parse-err-ln "Not only `alphanum-_.' in `%s' in:\n%s" name line))
+	  (unless (string-match-p "^-?[[:digit:]]+$" width)
+	    (parse-err-ln "Width `%s' is not a non-negative integer in:\n%s" width line))
+	  (if (< 100 (setq width (string-to-number width)))
+	      (parse-err-ln "Excessive field width in:\n%s" line))
 
-      (list name width text))))
+	  (list name width text))))
+
+
+(defun parse-err-ln (msg &rest ags)
+  "Exit safe in case of errors in parsing custom fields, which includes removing cookies. 
+See `exam-err' for more safe belts."
+  (let ((errmess "Error in custom field file `%s', line %d\n")
+	(cursor  (list exam-loc-cust-fld (custom-field-cursor))))
+    (apply 'exam-err (concat errmess msg) (append cursor ags)))
+  (throw 'test t))
+
+(defun parse-err (msg &rest ags)
+  "A version of `parse-err-ln ' not printing the number of the line parsed."
+  (let ((errmess "Error in custom field file `%s'\n"))    
+    (apply 'exam-err (concat errmess msg) (append (list exam-loc-cust-fld) ags)))
+  (throw 'test t))
 
 ;;; === end of Get Custom Fields
 ;;; ============================
