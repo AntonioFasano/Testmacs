@@ -1,3 +1,20 @@
+<style>
+body {
+    background-color: linen;
+}
+
+h1 {
+    color: maroon;
+    margin-left: 40px;
+}
+
+img { width: 100%;
+	 
+     border:1px solid #021a40;
+}
+
+</style>
+
 # Testmacs
 Administer classroom tests over a LAN 
 
@@ -18,6 +35,8 @@ Questions are without question-text, e.g.:
 The test shows a mode line with answered questions and a countdown in minutes.
 At countdown expiration Testmacs exits, saving answers.
 At predefined times (10 seconds) the answers are saved locally and remotely.
+
+![](screen.png)
 
 Answers are stored locally in the parent of `exam-loc-server-ini` and remotely in `exam-net-course-pt`.
 To find the remote share, the file retrived from `exam-loc-server-ini` is used.   

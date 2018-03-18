@@ -1117,11 +1117,13 @@ For debug scenarios or after raising exceptions."
   "Generate the multiple choice test based on `exam-net-init'."
   (interactive)
 
+  (setq frame-title-format  "Testmacs")
+ 
   ;; Convenient encoding to save answer compatible with LaTeX
   (prefer-coding-system 'utf-8-dos)
  
-  (cleanup)
-  
+  (cleanup) 
+ 
   ;; Managed exceptions use the "blank" buffer and/or  minibuffer
   (let ((blk "blank"))
     (if (get-buffer blk) (kill-buffer blk))
