@@ -57,14 +57,14 @@
 ;;
 ;; Example:
 ;;
-;;     project-date:10:Date when you delivered the class project: %v \\n
-;;     disp-seat-name:0:Computer name is %c
+;;     project-date:10:Date when you delivered the class project: %v \n
+;;     disp-seat-name:0:Computer name is %c\n
 ;;     seat-name:-1:%c
 ;;  
 ;; \"project-date\" is an editable field and the text \"Date when you ...\" will be displayed replacing `%v' with an edititable area of 10-character width. Information entered is reported in the answer files as \"project-date:DATE\", where DATE is the value entered by the student. 
 ;; \"disp-seat-name\" displays on the subsequent line the screen text \"Computer name is foo\", where \"foo\" is the name of the computer where Testmacs is running. 
 ;; \"seat-name\" is similar to the preceding field, but it does not involve any screen display, only \"seat-name:foo\" is reported in the answer files.
-;; To add line-breaks to TEXT use `n' preceeded by a single slash.
+;; To add line-breaks to TEXT use `\n` preceeded by a single slash.
 ;;  
 ;; Customs fields are displayed immediately after default fields area. If you include a default field in  `~/custfld.txt`, that field will be removed from default field area.
 ;;
@@ -781,10 +781,12 @@ The key bindings for `exam-mode' are:
 	    (setcdr (assoc name exam-field-vars) text))
 
 	 ;; Add editable field widget
-	 ((> width 0) (add-edit-field name)))))))
+	 ((> width 0) (add-edit-field name))))
+      
+      (widget-insert "\n"))))
     
 
-;  (widget-insert "\n")
+
 ;   (widget-create 'editable-field
 ;         :size 4
 ;         :format "Test num.: %v "
@@ -813,7 +815,7 @@ The key bindings for `exam-mode' are:
 ; 
 ;   (widget-create 'editable-field
 ;         :size 20
-;         :format "  Student ID (Matricola). This is optional: %v "
+;         :format "  Student ID. This is optional: %v "
 ; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'student-id))
 ;         "")
 ;   (widget-insert "\n")

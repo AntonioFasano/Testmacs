@@ -3,11 +3,20 @@ Administer classroom tests over a LAN
 
 
 Testmacs implements a simple multiple-choice test.
-The test header lines ask for test ID and student details.
-Questions are without question-text like: Question N; a), b) c) ... I do not know.
-The student is given a separate paper-sheet with a test ID and the question text.
+
+The student is given a paper-sheet with a test ID and the questions' text.   
+On screen, Testmacs asks for test ID plus some  personal student details.
+Questions are without question-text, e.g.: 
+
+    Question N:
+    [] a
+    [] b 
+    [] c 
+    ... 
+    [] I do not know.
+
 The test shows a mode line with answered questions and a countdown in minutes.
-At countdown expiration Emacs exits, saving answers.
+At countdown expiration Testmacs exits, saving answers.
 At predefined times (10 seconds) the answers are saved locally and remotely.
 
 Answers are stored locally in the parent of `exam-loc-server-ini` and remotely in `exam-net-course-pt`.
@@ -41,8 +50,8 @@ You can customise the fields adding the file `~/custfld.txt`. Note that the Wind
 
 Example:
 
-    project-date:10:Date when you delivered the class project: %v \\n
-    disp-seat-name:0:Computer name is %c
+    project-date:10:Date when you delivered the class project: %v \n
+    disp-seat-name:0:Computer name is %c\n
     seat-name:-1:%c
  
 `project-date` is an editable field and the text `Date when you ...` will be displayed replacing `%v` with an edititable area of 10-character width. Information entered is reported in the answer files as `project-date:DATE`, where DATE is the value typed by the student. 
@@ -59,7 +68,7 @@ Testmacs performs some actions if detects predefined command filenames in the
   remote directory `exam-net-data-pt`. See action for each command filename.
 Command filename "exit007": Emacs will exit in 10 seconds.   
 Command filename "update007": Emacs updates `site-start.el` with the file `new-site-start.txt`
-in the remote directory `exam-net-data-pt` and possibly the `custfld.txt` with remote `new-custfld.txt`.
+in the remote directory `exam-net-data-pt` and possibly the file `custfld.txt` with remote `new-custfld.txt`.
 If `new-site-start.txt` is not found or there is a copy error a non-critical error is displayed
 until the action succeeds or the command filename is removed. Read the docstring of `remote-update` function for more information. 
 
