@@ -48,7 +48,7 @@ At predefined times (10 seconds) the answers are saved locally and remotely.
 
 Answers are stored locally in the parent of `exam-loc-server-ini` and remotely in `exam-net-course-pt`.
 To find the remote share, the file retrived from `exam-loc-server-ini` is used.   
-Answer collected on the remote as text files can be easily parsed with any program to assign grades.
+Answers collected on the remote folder as text files can be easily parsed with any program to assign grades.
 
 ## Default Entries
 Before the question area, the computer screen reports some fields to collect student details. By default they are:
