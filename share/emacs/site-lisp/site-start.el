@@ -696,13 +696,18 @@ The key bindings for `exam-mode' are:
     (throw 'test t))
   (with-temp-file exam-loc-ans-file-pt  (insert "Test write")))
 
+(defun make-head-notify (field-varname)
+  "Make the notify property to be added to the edit fields in the header area of the test form.
+The property triggers the function `exam-process-head' each time a key is pressed in the edit area.
+The property is a lambda whose body contains the name of the field riceived by FIELD-VARNAME."
+  (list 'lambda `(widget &rest _) (list 'exam-process-head `widget field-varname)))
 
-;; :notify lambda is evaluated on each notification. To give `name' its value now, we use a macro
-(defmacro add-edit-field (name)
-  `(widget-create 'editable-field
+(defun add-edit-field (name width text)
+  "Add the edit field with name NAME, width WIDTH and text TEXT."
+  (widget-create 'editable-field
 		  :size width
 		  :format text
-		  :notify (lambda (widget &rest _) (exam-process-head widget ,name))
+		  :notify (make-head-notify name)
 		  ""))
 
 		     
@@ -781,7 +786,7 @@ The key bindings for `exam-mode' are:
 	    (setcdr (assoc name exam-field-vars) text))
 
 	 ;; Add editable field widget
-	 ((> width 0) (add-edit-field name))))
+	 ((> width 0) (add-edit-field name width text))))
       
       (widget-insert "\n"))))
     
