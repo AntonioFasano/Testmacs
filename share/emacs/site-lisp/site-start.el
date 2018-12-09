@@ -1,4 +1,4 @@
-;;; Testmacs --- Administer classroom tests over a LAN -*- lexical-binding: t -*-
+﻿;;; Testmacs --- Administer classroom tests over a LAN -*- lexical-binding: t -*-
 
 ;; ----->  Copy this in share\emacs\site-lisp\site-start.el
 
@@ -849,7 +849,7 @@ The property is a lambda whose body contains the name of the field riceived by F
 		 :value nil
 		 :notify (lambda  (widget &rest _)
 			   (exam-process-answer widget ith-quest))
-		 '(item "a") '(item "b") '(item "c") (list 'item :tag exam-no-answer-string :value nil)
+		 '(item "a") '(item "b") '(item "c") '(item "d") (list 'item :tag exam-no-answer-string :value nil)
 		 )
   (insert "\n"))
 
