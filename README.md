@@ -54,7 +54,7 @@ The paper test may look like follows (click for equivalent PDF):
 
 [![Sample test image](figs/test.png)](testmk/R/finance101-template/finance101.pdf)
 
-After test, a result PDF can be automatically produced (click for equivalent PDF):
+After the test, a result PDF can be automatically produced (click for equivalent PDF):
 
 [![Resulting PDF image](figs/result.png)](figs/results/result.pdf)
 
