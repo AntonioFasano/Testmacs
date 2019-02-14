@@ -50,7 +50,7 @@ At predefined times (10 seconds) the answers are saved locally and remotely.
 
 ![Program screenshot](figs/screen.png)
 
-The paper test may be like follows:
+The paper test may look like follows (click for equivalent PDF):
 
 [![Sample test image](figs/test.png)](testmk/R/finance101-template/finance101.pdf)
 
