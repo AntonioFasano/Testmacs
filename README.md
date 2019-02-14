@@ -48,15 +48,16 @@ The test shows a mode line with answered questions and a countdown in minutes.
 At countdown expiration Testmacs exits, saving answers.
 At predefined times (10 seconds) the answers are saved locally and remotely.
 
-![](figs/screen.png)
+![Program screenshot](figs/screen.png)
 
 The paper test may be like follows:
 
-![](figs/test.png)
+[![Sample test image](figs/test.png)](testmk/R/finance101-template/finance101.pdf)
 
-At the end of test a result PDF can be automatically produced:
+After test, a result PDF can be automatically produced (click for equivalent PDF):
 
-![](figs/result.png)
+[![Resulting PDF image](figs/result.png)](figs/results/result.pdf)
+
 
 
 ## Other Features and Customisations
