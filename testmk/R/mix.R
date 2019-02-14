@@ -7,13 +7,13 @@
 ## Put \begin{document}  on a single line
 
 ## Customise
-TIME=35            # Max time in minutes
+TIME=25            # Max time in minutes
 NQ=15              # Questions to randomly extract from LaTeX template 
 WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc.
 NOTPLWEIGHT=TRUE   # In LaTeX template set any \question[n] to \question, which means 1 point  
 MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights are missing/removed
 OUTDIR="!tmpout"   # Output dir
-PERLBDIR="c:\\strawberry\\perl\\bin"  # Perl bin dir
+PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, unless already in path
 
 
 ## Requitements:
@@ -35,18 +35,48 @@ makeOutDir=function(){ # Create output dir
     if(!dir.exists(OUTDIR)) stop("Unable to create directory ", OUTDIR)
 }
 
+## not used 
+filename.as.directory <- function(file){ # Adds the slash/backslash to filename as needed (like in elisp)
+    sep <- .Platform$file.sep
+    lchar <-  substring(file, nchar(file))
+    if(lchar == sep) file else paste0(file, sep) 
+}
+
+## not used 
+make.path <- function (...) { # Concat args with platform path separator and interpret 1st arg as a directory
+### You can write make.path("dir", "sub1", "sub2") 
+###           or  make.path("dir/", "sub1", "sub2")
+###          not  make.path("dir", "sub1/", "sub2"  
+    
+    dir <- list(...)[1]
+    rels <- list(...)[-1]
+    sep <- .Platform$file.sep
+    lchar <-  substring(dir, nchar(dir))
+    if(lchar == sep) dir  <- sub(".$", "", dir)
+    path <- paste(c(dir, rels))
+    paste(path, collapse=sep) 
+
+}
+
+
+
 makeTemplate=function(){ # Create course dir and copy latexexapnd template
 
     dir.create(COURSEDIR)    
 
     ## Copy expanded as non-commented and without dependencies template
-    src <- paste0(COURSE, "-template", "\\", COURSE, ".tex")
-    exp <- paste0(COURSEDIR, "\\", COURSE, "-expd.tex")
-    ags <- paste0("--empty-comments ", src, " --output ", exp)
-               
-    if(!grepl("strawberry", Sys.getenv("PATH"))) Sys.setenv(PATH=paste0(PERLBDIR, ";", Sys.getenv("PATH")))
+    src <- paste0(COURSE, "-template", "/", COURSE, ".tex")
+    exp <- paste0(COURSEDIR, "/", COURSE, "-expd.tex")
+    ags <- paste0("--empty-comments ", plat(src), " --output ", plat(exp))
+
+    if(.Platform$OS.type != "unix" && !nzchar(Sys.which("perl"))){
+        if(!grepl(PERLBDIR, Sys.getenv("PATH"), fixed=TRUE)) Sys.setenv(PATH=paste0(PERLBDIR, ";", Sys.getenv("PATH")))
+        if(!nzchar(Sys.which("perl"))) stop ("Unable to find perl executable.\nCheck the value of `PERLBDIR'")
+    }
+ 
+    #if(!grepl("strawberry", Sys.getenv("PATH"))) Sys.setenv(PATH=paste0(PERLBDIR, ";", Sys.getenv("PATH")))
     ret=system2("latexpand", ags, stdout=TRUE, stderr=TRUE)
-    if(!is.null(attr(ret, "status"))) stop("pdflatex gave: ", paste(ret, collapse="\n"))   
+    if(!is.null(attr(ret, "status"))) stop("latexpand gave: ", paste(ret, collapse="\n"))   
 
     ## Get template tex file
     readLines(paste0(COURSEDIR, "/", COURSE, "-expd.tex"))
@@ -63,11 +93,11 @@ getQuestions=function(# Extract from TeX template 1,3 point questions and pre-qu
     hlines=tex[1:(rx[1]-1)]
 
     ## Extract questions as lines between two \question commands (including 1st \question cmd) 
-    quests=mapply(function(i,j) tex[i:j], rx[-length(rx)], (rx-1)[-1])
+    quests=mapply(function(i,j) tex[i:j], rx[-length(rx)], (rx-1)[-1], SIMPLIFY=FALSE)
 
     ## Remove weights
     if(NOTPLWEIGHT) {
-        ## "\question[n]" becomes only "\question[n]"
+        ## "\question[n]" becomes only "\question"
         quests <- lapply(quests, function(q)
             sub("\\\\question *\\[ *[[:digit:]]+ *\\]", "\\\\question", q))
     }
@@ -121,8 +151,7 @@ findSol=function(# Given the question list, find and return the correct choice l
     })}
     
 
-
-makeRandExam=function(# Extract rnadom questions distributed according to WDIST 
+makeRandExam=function(# Extract random questions distributed according to WDIST 
                      testid,      # Random testid
                      preamble,    #including being document
                      hlines,      # Pre-questions header lines
@@ -131,7 +160,7 @@ makeRandExam=function(# Extract rnadom questions distributed according to WDIST
                      ){
     
     ## Add Test ID after begin document
-    x=sprintf("\n\n\\textbf{Test num. %02d}\\medskip", testid)
+    x=sprintf("\n\n\\textbf{Test num. %d}\\medskip", testid)
     hlines <- c(x, hlines)
     
     ## Set closing 
@@ -170,13 +199,14 @@ makeRandExam=function(# Extract rnadom questions distributed according to WDIST
       
 
 buildPdf=function(# Build PDF
-                  preamble,#including being document
+                  preamble,# including \begin{document}
                   lines,   # Tex body content 
                   testid,  # Random testid
-                  nosol,   # add the NOSOL to file name
+                  nosol,   # add the NOSOL to file name and comment \printanswers
                   combo    # build the combo?
                   ){
 
+    
     ## Make PDF out dir 
     out=paste0(COURSEDIR, "/", COURSE)
     if(nosol) out=paste0(out, "-nosol")
@@ -185,6 +215,12 @@ buildPdf=function(# Build PDF
         lib <- paste0(COURSE, "-template", "/lib")
         file.copy(lib, COURSEDIR, recursive=TRUE)
     }
+
+    ## If nosol comment \printanswers
+    pat="^[ \t%]*\\\\printanswers"
+    rep <- ifelse(nosol, "%\\\\printanswers", "\\\\printanswers") 
+    x <- which(grepl(pat, preamble))
+    preamble[x] <- sub(pat, rep, preamble[x]) 
     
     ## Create the stem path without combo or version postifix
     fprfx=ifelse(nosol, "NOSOL-", "")    
@@ -193,8 +229,8 @@ buildPdf=function(# Build PDF
     if(combo) {
         
         ## Build the combo
-        ftex  =sprintf("%s\\!%scombo.tex", COURSEDIR, ftex.stem)
-        ftex.c=sprintf("%s\\!%scombo-body.tex", COURSEDIR, ftex.stem)
+        ftex  =sprintf("%s/!%scombo.tex", COURSEDIR, ftex.stem)
+        ftex.c=sprintf("%s/!%scombo-body.tex", COURSEDIR, ftex.stem)
         cat("\n\n\\end{document}", file=ftex.c, sep="\n", append=TRUE)
         writeLines(preamble, ftex)
         file.append(ftex, ftex.c)        
@@ -203,23 +239,25 @@ buildPdf=function(# Build PDF
 
         ## Save tex file with random questions
         fprfx=ifelse(nosol, "NOSOL-", "")
-        ftex=sprintf("%s\\%sv%02d.tex", COURSEDIR, ftex.stem, testid)
+        ftex=sprintf("%s/%sv%02d.tex", COURSEDIR, ftex.stem, testid)
         writeLines(c(preamble, lines, "\\end{document}"), ftex)
 
         ## Append to combo tex file
-        ftex.c=sprintf("%s\\!%scombo-body.tex", COURSEDIR, ftex.stem)
-        cat(c(lines, "\\newpage"), file=ftex.c, sep="\n", append=TRUE)
+        ftex.c=sprintf("%s/!%scombo-body.tex", COURSEDIR, ftex.stem)
+        cat(c(lines, "\\newpage\\cleardoublepage"), file=ftex.c, sep="\n", append=TRUE) # next test will start on a new odd page
     }
 
     ## Build PDF
-    libs <- paste0("--include-directory=", COURSE, "-template")
+    libs <- env <- character()
+    if(.Platform$OS.type=="windows") libs <- paste0("--include-directory=", COURSE, "-template")
+    if(.Platform$OS.type=="unix") env  <- paste0("TEXINPUTS=", COURSE, "-template:") 
     out <- plat(out)
     ftex <- plat(ftex) 
     ags =paste0(libs, " -halt-on-error -output-directory=", out, " ", ftex)
-    ret=system2("pdflatex", ags, stdout=TRUE, stderr=TRUE)
+    ret=system2("pdflatex", ags, stdout=TRUE, stderr=TRUE, env=env, timeout=15) 
     if(!is.null(attr(ret, "status"))) stop("pdflatex gave: ", paste(ret, collapse="\n"))
     ## Second build
-    ret=system2("pdflatex", ags, stdout=TRUE, stderr=TRUE)
+    ret=system2("pdflatex", ags, stdout=TRUE, stderr=TRUE, env=env, timeout=15)
     if(!is.null(attr(ret, "status"))) stop("pdflatex gave: ", paste(ret, collapse="\n"))
 
     ## Warn if more than 2 pages
@@ -263,24 +301,30 @@ makeRndPdf=function( # Make random PDF with sol
     
     rndtex=makeRandExam(testid, preamble, hlines, quests, quests.sol)
     
-    ## Build without sols => Comment \printanswers
-    pat="^[ \t%]*\\\\printanswers"
-    x <- which(grepl(pat, rndtex$preamble))
-    rndtex$preamble[x]=sub(pat, "%\\\\printanswers", rndtex$preamble[x])
+#    ## Build without sols => Comment \printanswers
+#    pat="^[ \t%]*\\\\printanswers"
+#    x <- which(grepl(pat, rndtex$preamble))
+#    rndtex$preamble[x]=sub(pat, "%\\\\printanswers", rndtex$preamble[x])
     buildPdf(rndtex$preamble, rndtex$lines, testid, nosol=TRUE, combo=FALSE)
     
-    ## Build with sols => Remove comment from \\printanswers
-    pat="^[ \t%]*\\\\printanswers"
-    x <- which(grepl(pat, rndtex$preamble))
-    rndtex$preamble[x]=sub(pat, "\\\\printanswers", rndtex$preamble[x])
+#    ## Build with sols => Remove comment from \\printanswers
+#    pat="^[ \t%]*\\\\printanswers"
+#    x <- which(grepl(pat, rndtex$preamble))
+#    rndtex$preamble[x]=sub(pat, "\\\\printanswers", rndtex$preamble[x])
     buildPdf(rndtex$preamble, rndtex$lines, testid, nosol=FALSE, combo=FALSE)
 
     ## Return question and solution lists
     with(rndtex,list(quests=quests, quests.sol=quests.sol))
 }
 
-plat <- function( # Path with proper slash for shell commands
-                 pt){if(.Platform$OS.type=="windows") gsub("/", "\\\\", pt) else pt}
+plat <- function( # Path with proper slashes for shell commands
+                 pt){
+    if(.Platform$OS.type=="windows") {
+        gsub("/", "\\\\", pt)
+    } else {
+        gsub("\\\\", "/", pt)
+    }
+}
 
 split_path <- function(x) # https://stackoverflow.com/a/29232017/1851270
     if (dirname(x)==x) x else c(basename(x),split_path(dirname(x)))
@@ -330,6 +374,7 @@ main=function(){
         write.table(x, paste0(COURSEDIR, "/INITFILE-", COURSE, ".txt"), row.names=FALSE, quote=FALSE)
 
         ## Clean pdf and pdf-nosol subdir
+###browser() # browse to keep tex files       
         x <- paste0(COURSEDIR, "/", COURSE)
         unlink(Sys.glob(paste0(x, "*/*.log")))
         unlink(Sys.glob(paste0(x, "*/*.aux")))
@@ -347,10 +392,10 @@ main=function(){
     }) -> x # print(x)
 
     ## Copy grade file and make readme
-    message("Grade script and readme added to out dir.")
+    message("Questions, grade script and readme added to:\n  ", plat(normalizePath(OUTDIR)))
     file.copy("grade-tpl.txt", paste0(OUTDIR, "/grade.R")) -> x
     cat("Copy Emacs '*-answers' dirs here.\nRun grade.R\nLook for '*-results' dirs.",
         file=paste0(OUTDIR, "/ReadMe.txt"))
-    message(last4())
+    #message(last4())
 }
 

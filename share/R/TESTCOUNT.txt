@@ -1,4 +1,0 @@
-course = ntest
-fin111 =    3
-fin222 =    4
-

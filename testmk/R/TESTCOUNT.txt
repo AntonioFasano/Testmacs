@@ -1,0 +1,4 @@
+course = ntest
+finance101 =    7
+finance102 =    8
+

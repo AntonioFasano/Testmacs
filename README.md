@@ -1,3 +1,8 @@
+<!--
+
+pandoc README.md -o README.html
+
+//-->
 
 
 
@@ -43,14 +48,24 @@ The test shows a mode line with answered questions and a countdown in minutes.
 At countdown expiration Testmacs exits, saving answers.
 At predefined times (10 seconds) the answers are saved locally and remotely.
 
-![](screen.png)
+![](figs/screen.png)
 
+The paper test may be like follows:
+
+![](figs/test.png)
+
+At the end of test a result PDF can be automatically produced:
+
+![](figs/result.png)
+
+
+## Other Features and Customisations
 
 Answers are stored locally in the parent of `exam-loc-server-ini` and remotely in `exam-net-course-pt`.
 To find the remote share, the file retrived from `exam-loc-server-ini` is used.   
 Answers collected on the remote folder as text files can be easily parsed with any program to assign grades.
 
-## Default Entries
+### Default Entries
 Before the question area, the computer screen reports some fields to collect student details. By default they are:
  
     Test num.: _______
@@ -69,7 +84,7 @@ The values after the colon for `exam-id`, `given-name`, `family-name`, and `stud
  
 `ans-string` is clearly a list of the answer given `nil` being the answers not given.
  							       
-## Custom Entries
+### Custom Entries
 You can customise the fields adding the file `~/custfld.txt`. Note that the Windows launcher redirects the home directory `~` to the subdirectory `data` found in Testmacs package. Each line in this file has a custom-field entry with the format `Name:Width:Text`.    
 `Name` is the field name as reported in the answer files.   
 `Witdh` is the width of the user typing area, but note that the initial width will dynamically expads as the user types.    
@@ -90,7 +105,7 @@ Customs fields are displayed immediately after default fields area. If you inclu
 
 Read the Elisp docstring of `exam-loc-cust-fld` for more information.
 
-## Remote Commands
+### Remote Commands
 Testmacs performs some actions if detects predefined command filenames in the
   remote directory `exam-net-data-pt`. See action for each command filename.
 Command filename "exit007": Emacs will exit in 10 seconds.   
@@ -99,5 +114,8 @@ in the remote directory `exam-net-data-pt` and possibly the file `custfld.txt` w
 If `new-site-start.txt` is not found or there is a copy error a non-critical error is displayed
 until the action succeeds or the command filename is removed. Read the docstring of `remote-update` function for more information. 
 
-*This is still a beta*
+
+## Intallation notes
+
+To be done
 

@@ -1,0 +1,152 @@
+% This is the scratch of a template to be use by mix.R for random question generation
+% Put many questions here so that mix.R can randomly extract only n of them 
+% \CorrectChoice and \choice should always start on a new line
+% mix.r wants \printanswers command, do not remove/comment it.
+% All questions need to have the same number of answers
+% NOTE: The grade.R will replace the content of the first \fbox{...}, with:
+% student details found in answer files and grades
+% grades are obtained matching answer files with solution RData file.
+
+
+\documentclass{exam}
+\usepackage[utf8]{inputenc}
+
+\input{lib/mymacros}
+
+\printanswers
+
+
+
+\usepackage[
+ reset,
+ a4paper,
+ landscape, twocolumn,
+ left=1cm, right=1cm,
+ top=2cm, bottom=1.5cm
+ ]{geometry}
+
+\pagestyle{headandfoot}
+\runningheadrule
+\firstpageheader{\textbf{Finance102}}{}{Page \thepage\ of \numpages}
+\runningheader{\textbf{Finance102}}{}{Page \thepage\ of \numpages}
+
+\firstpagefooter{}{}{}
+\runningfooter{}{}{}
+
+\begin{document}
+
+% The content of the fbox below will be replaced in the result file with contact and grade data
+\noindent
+\fbox{\parbox{0.5\textwidth}
+{Full name and signature:\enspace\hrulefill\quad\hrulefill
+
+Date of birth (day/month/year): \hrulefill\
+Today is (day/month/year): \hrulefill 
+
+Official email address:  \enspace\fillin\fillin  
+}}
+
+
+\bigskip\noindent 
+Grading Policy: Good=$+2$, Wrong=$-1$, Missing=$0$
+
+\begin{questions}
+
+\question
+Given the  risk premium $\pi$ and the random payoff $X$, assume we approximate the utility $u$, with the two  Taylor expansions:
+\begin{align*}
+u(\ex X - \pi(X)) &\approx  u(\ex X) - u'(\ex X) \pi(X) \\
+u(X) &\approx u(\ex X) + u'(\ex X) (X-\ex X) + \frac{1}{2} u''(\ex X)(X-\ex X)^2
+\end{align*}
+  
+What is wrong with the approximations above? The calculation/application of:
+\begin{choices}
+\CorrectChoice  The utility function.
+\choice  The expected value.
+\choice  The expansion itself.
+\end{choices}
+
+\question
+Let  $\bar{r}$ be the vector of portfolio expected returns and  $\ss$ its covariance matrix. Set:
+\begin{align*}
+a&= \bar{r}'\ss^{-1} \bar{r}\\
+b&= \bar{r}'\ss^{-1} \one \\
+c&= \one'\ss^{-1} \one\\
+d&= ac-b^2
+\end{align*}
+
+Which of the following is correct:
+\begin{choices}
+  \choice $
+a( - b^2 +ac)\geq0
+$
+\CorrectChoice
+$
+a( - b^2 +ac) >0
+$
+\choice
+$
+a( - b^2 +ac) <0
+$
+
+\end{choices}
+
+\question
+Prudential regulation:
+\begin{choices}
+\choice        Imposes maximum levels of risk and  minimal levels of capital buffer.
+\CorrectChoice Imposes minimal levels of capital buffer, adequate to risks taken.
+\choice        Imposes minimal levels of capital buffer, given the riskiness of credit exposures.
+\end{choices}
+
+\question
+The monetary base:
+\begin{choices}
+\choice Is formed  by the central bank's assets.
+\CorrectChoice Consists of the currency in circulation and bank reserves.
+\choice Is given by vault cash and central bank reserves.
+\end{choices}
+
+\question
+Shadow banking refers to:
+\begin{choices}
+\CorrectChoice Non-bank intermediaries providing services similar to traditional commercial banks.
+\choice Non-bank intermediaries financing retail products manufactured by their parent companies.
+\choice Non-bank intermediaries targeting borrowers not creditworthy for banks, at higher rates.
+\end{choices}
+
+\question
+In regard to Common Equity Tier 1 (CET 1), which of the following is wrong:
+\begin{choices}
+\choice CET 1 instruments have no maturity date, no right to be redeemed, and no specified coupon.
+\CorrectChoice CET 1 instruments represents the less subordinated (most senior) claims.
+\choice CET 1 instruments distributions (e.g. dividends) are wholly discretionary.
+\end{choices}
+
+\question
+The Liquidity Coverage ratio:
+\begin{choices}
+\choice Ensures that Tier 1 capital is sufficient to survive a serious one-month stress.
+\CorrectChoice Is based on the ratio of high-quality liquid assets to projected net outflows.
+\choice Is based on the ratio of high-quality liquid assets to projected net funding.
+\end{choices}
+
+\question
+In regard to Capital Conservation Buffer, which of the following is wrong:
+\begin{choices}
+\choice Institutions not meeting buffer requirements are limited in their distributions.
+\CorrectChoice The buffer consists of CET 1 and Additional Tier 1 instruments.
+\choice The buffer consists only of CET 1 instruments.
+\end{choices}
+
+\question
+Level 1 assets (used to calculate the Liquidity Coverage ratio) \emph{do not} include:
+\begin{choices}
+\choice Cash.
+\choice Central bank reserves that can be drawn down in times of stress.
+\CorrectChoice Corporate bonds.
+\end{choices}
+  
+\end{questions}
+
+\end{document}
