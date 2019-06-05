@@ -465,10 +465,20 @@ In case of confirmation save form and exit."
   (save-buffers-kill-terminal))
 
 (defun exam-exit-hook ()
-  "Hook called whenerever users asks to exit"
+  "Hook called whenerever users asks to exit."
   (exam-save-test)
-  (let ((yes (y-or-n-p "Are you **absolutely sure** you want to finish your test now?")))
-    (if yes (delete-cookie))
+  (let (yes msg)
+    (setq msg
+	  (replace-regexp-in-string "\"" ""
+				    (progn
+				      (string-match "\\(ans-string:\\)\\(.+\\)" exam-ans-string)
+				      (substring exam-ans-string  (match-end 1) (match-end 2)))))
+    (setq msg
+	  (concat  "Your current answers are:\n" msg
+		   "\n\nAre you **absolutely sure** you want to finish your test now?"))       
+    (setq yes (y-or-n-p msg))
+    (if yes (delete-cookie)
+      (message "Exit canceled!"))
     yes))
 
 (defun exam-exit-forced ()
