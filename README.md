@@ -28,10 +28,15 @@ img { width: 100%;
 //-->
 
 # Testmacs
+
+<!-- Not supported in GitHub
 Administer classroom tests over a LAN 
+//-->
+
+Testmacs is intended as an e-learnig support tool, in particular for finance students. 
 
 
-Testmacs implements a simple multiple-choice test.
+The application can implement  classroom  tests and is incorporating R extensions. 
 
 The student is given a paper-sheet with a test ID and the questions' text.   
 On screen, Testmacs asks for test ID plus some  personal student details.
