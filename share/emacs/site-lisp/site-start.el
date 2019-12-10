@@ -188,7 +188,7 @@ Fields in `exam-custom-fields' cannot have duplicate names. See the function `pa
 (defvar exam-header-fields nil
   "Alist to store header field names and values as strings. Header fields are those associated to the non-question area. Field names and values depends on the list structures `exam-default-fields' and `exam-custom-fields'. Each field pair NAME:VALUE is saved to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file every `exam-update-freq' seconds.")
 
-(defvar exam-edit-field-names nil
+(defvar exam-header-edit-names nil
   "Subset of keys in `exam-header-fields' alist including only field names associated to edit-fields. The names are used to set `exam-header-filled'.")
 
 (defvar exam-header-filled nil
@@ -492,7 +492,8 @@ In case of confirmation save form and exit."
     (setq msg
 	  (concat  "Your current answers are:\n" msg
 		   "\n\nAre you **absolutely sure** you want to finish your test now?"))       
-    (setq yes (y-or-n-p msg))
+    ;; Works only for Linux GUI (setq yes (y-or-n-p-with-timeout msg exam-remaining-secs nil))
+    (setq yes (y-or-n-p msg)) 
     (if yes (delete-cookie)
       (message "Exit canceled!"))
     yes))
