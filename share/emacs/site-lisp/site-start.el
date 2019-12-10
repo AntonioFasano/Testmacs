@@ -3,7 +3,7 @@
 ;; ----->  Copy this in share\emacs\site-lisp\site-start.el
 
 ;; Author: Antonio Fasano
-;; Version: 0.4
+;; Version: 0.5
 ;; Keywords: exam, quiz, test, forms, widget
 ;; This program requires: cl-lib subr-x seq emacs "25"
 
@@ -95,7 +95,7 @@
 ;;; === Customise Me === ;;;
 ;;; ==================== ;;;
 
-(defconst exam-version  "0.3"
+(defconst exam-version  "0.5"
   "Current app version.")
 
 (defconst exam-loc-server-ini  "~/server*.txt"
@@ -116,18 +116,22 @@ If the variable has wildcards, the first path found is used.")
     ("saved-at"      -1  "%t")    
     )
 
-  "List of default fields (and related text) inserted on the screen answer sheet before the answer widgets. 
-The list can be overridden by `exam-custom-fields'.
+  "List used to represent the screen header area preceding the answer area, intended to collect and display non-question information (such as the student name) usually saved in the students' answer files.
+The list can be overridden by `exam-custom-fields', which is obtained by the server-side file `exam-loc-cust-fld'. 
 
-Each element of `exam-default-fields' represents a text only widget, an editable field widget, or a hidden fields. Text only fields appear only on screen and they are not reported in the student's answer files. Editable field widgets collect student input to be reported in the answer files. Hidden fields report (computed) information in the answer files, but do not show on screen. 
+Each element of `exam-default-fields' is named a \"field\". There are three types of fields: edit-fields, text-fields, hidden-fields. Edit-fields are rendered by means of Emacs widgets which can collect user input (e.g. student's family name). Text-fields just display read-only text (e.g. \"Do not cheat\"). Hidden-fields contain information to be saved in the answer files, but not shown on screen (e.g. \"Finance 432\").
 
-Elements of `exam-default-fields' are lists consisting of the following elements: NAME, WIDTH, and TEXT. NAME is a string denoting the field name. TEXT is the text string presented on screen and a `%v' inside TEXT is replaced by the field's editable area of width WIDTH. For text only widgets, WIDTH is zero. For hidden fields, WIDTH is -1.
+Each field is a list whose elements consist of the elements: NAME, WIDTH, and TEXT. NAME is a string denoting the field name. WIDTH is respectively positive, zero, -1 for edit, text, and hidden fields. For text and hidden fields, TEXT is respectively the string to be displayed on screen or saved to the answer file. For edit-fields, TEXT is a string containing `%v', presented on screen as a text where `%v' is replaced by a blank data enter area of width WIDTH (e.g \"Enrol date: %v. Use dd/mm/yy format\"). 
 
-For each editable or hidden field, an equivalent line is added to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file with the format NAME:VALUE. For editable field widgets, VALUE is the text entered by the student in the editable area; for hidden fields, VALUE is TEXT. 
-In TEXT, beyond `%v', a `%c' is replaced by the client computer name, a `%t' is replaced by time in ISO format (but without time zone) and `%%' must be used to show a literal `%'. Warning: When you use `%v' always preceded it with some other text. Also In an editable-field widget, the editable field must not be adjacent to another widget—that won't work. TODO You must put some text in between. Either make this text part of the editable-field widget itself, or insert it with XXXXwidget-insert.")
+In TEXT, you can use special substrings replaced by computed values. The computed TEXT variable is the actual string displayed or saved. The special substrings are: `%c', replaced by the client computer name obtained from Windows environment variable \"COMPUTERNAME\"; `%t', replaced by time in ISO format (but without time zone); `%%' replaced by a literal `%'.
+
+For each editable or hidden field, an equivalent line is added to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file using the format NAME:VALUE. For edit fields, VALUE is the text entered by the student in the editable area; for hidden fields, VALUE is the computed TEXT. 
+
+Edit and text fields are drawn on screen in the order they appear in `exam-default-fields' (possibly overridden by `exam-custom-fields'). You can use spaces or newlines in each TEXT variable.
+WARNING: Due to a bug in the Emacs Widget Library, do not draw adjacent edit areas, without any character in the middle, e.g. consecutive fields whose TEXT is resp. \"text %v\" and \"%v text\".")
   
 (defconst exam-loc-cust-fld "~/custfld.txt"
-  "Local file with custom fields. If the file exists, it defines custom fields displayed immediately after the, overriding default fields in `default-fields' with the same name. 
+  "Local file with custom fields. If the file exists, it defines custom fields displayed immediately after the default fields, overriding default fields in `default-fields' with the same name. 
 Each line of the file `exam-loc-cust-fld' has a custom-field entry with the format NAME:WIDTH:TEXT and an equivalent line is added to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file with the format NAME:VALUE. Parsed fields are added to the list `exam-custom-fields', therefore NAME, WIDTH, and TEXT are like the fields' elements of `exam-custom-fields'. 
 Example:
 
@@ -181,8 +185,14 @@ Fields in `exam-custom-fields' cannot have duplicate names. See the function `pa
 (defvar exam-custom-field-names nil
   "List of custom fields names, build with cars of element of `exam-custom-fields'.")
 
-(defvar exam-field-vars nil
-  "Alist to store field names and values as strings. Field names and values depends on the list structures `exam-default-fields' and `exam-custom-fields'. Each field pair NAME:VALUE is saved to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file every `exam-update-freq' seconds.")
+(defvar exam-header-fields nil
+  "Alist to store header field names and values as strings. Header fields are those associated to the non-question area. Field names and values depends on the list structures `exam-default-fields' and `exam-custom-fields'. Each field pair NAME:VALUE is saved to the local (`exam-loc-ans-file-pt') and the remote (`exam-net-ans-file-pt') answer file every `exam-update-freq' seconds.")
+
+(defvar exam-edit-field-names nil
+  "Subset of keys in `exam-header-fields' alist including only field names associated to edit-fields. The names are used to set `exam-header-filled'.")
+
+(defvar exam-header-filled nil
+  "Non-nil if in `exam-header-fields' alist all the variables listed in `exam-header-edit-names' are set. This variable is updated every time the cursor leaves the edit widgets in the header areas by the hook function `exam-process-head'.")
 
 (defvar exam-net-data-pt nil
   "Path of the remote share containing program data (answers, init and command files etc.). 
@@ -235,23 +245,8 @@ To be used in case one needs to cancel timer.")
 (defvar-local answers-given nil
   "Answer vector given by the students.")
 
-;;(defvar-local given-name nil
-;;  "Student contact.")
-;; 
-;;(defvar-local family-name nil
-;;  "Student contact.")
-;; 
-;;(defvar-local student-id nil
-;;  "Student contact.")
-;; 
-;;(defvar-local student-birth nil
-;;  "Student contact.")
-;; 
-;;(defvar-local exam-date nil
-;;  "Examination day.")
-;; 
-;;(defvar-local exam-id  nil
-;;  "Test ID to be used to match student answers.")
+(defvar-local question-widgets nil
+  "List of queestion widgets.")
 
 
 ;;; === end of Global Vars
@@ -422,9 +417,30 @@ Please type your option below ↓"))
 
 (defun exam-process-head (widget var-name)
   "On updated head fields hook."
-;  (set var-name (widget-value widget))
-  (setcdr (assoc var-name exam-field-vars) (widget-value widget))
-  (exam-make-answer-string))
+  (setcdr (assoc var-name exam-header-fields) (widget-value widget))
+  (exam-make-answer-string)
+  (exam-header-filled-set)
+  (if exam-header-filled
+      (exam-question-activation :activate)
+    (exam-question-activation :deactivate)))
+
+(defun exam-header-filled-set ()
+  "Check whether edit-fields in the header area were filled and update `exam-header-filled' accordingly."
+  (setq exam-header-filled
+	(seq-every-p #'(lambda (elt) (< 0 (length (cdr (assoc elt exam-header-fields)))))
+			     exam-header-edit-names)))
+
+; 	(not (seq-filter 'null
+; 			 (mapcar #'(lambda (elt) (> (length (cdr (assoc elt exam-header-fields))) 0))
+; 				 exam-header-edit-names)))))
+
+(defun exam-question-activation (status)
+  "If STATUS is `:activate' or `:deactivate', activate or deactivate question widgets."
+  (mapc #'(lambda (widget) 
+	    (while widget
+	      (widget-apply widget status)
+	      (setq widget (widget-get widget :parent))))
+	question-widgets))
 
 (defun exam-process-answer (widget ith-quest)
   "On click answer hook."
@@ -655,7 +671,7 @@ The key bindings for `exam-mode' are:
   (let ((ans-string
 	 (format "ans-string:%s" (replace-regexp-in-string  "[][]" "" (prin1-to-string answers-given))))
 	(head-fields
-	 (mapconcat (lambda (elt) (format "%s:%s\n" (car elt) (cdr elt)))  exam-field-vars "")
+	 (mapconcat (lambda (elt) (format "%s:%s\n" (car elt) (cdr elt)))  exam-header-fields "")
 	 ;;(apply 'concat (mapcar (lambda (elt) (format "%s:%s\n" (symbol-name elt) (symbol-value elt)))
 	 ;; 			'(given-name family-name student-birth student-id  exam-date exam-id)))
 	 ))
@@ -719,7 +735,12 @@ The property is a lambda whose body contains the name of the field riceived by F
 		  :format text
 		  :notify (make-head-notify name)
 		  ""))
-
+;; Add-edit-field generalizes
+;; (widget-create 'editable-field
+;;  	       :size 10
+;;  	       :format "Some text: %v "
+;;  	       :notify (lambda (widget &rest _) (exam-process-head widget 'varname))
+;;  	       "")
 		     
 (defun exam-insert-header ()
   "Insert test header used to collect student details or display information."
@@ -759,9 +780,11 @@ The property is a lambda whose body contains the name of the field riceived by F
     ; 		  (seq-filter (lambda (elt) (not (member (car elt) common-fld-names)))
     ; 				  exam-custom-fields)))
 
-    (setq exam-field-vars nil)
-    (mapc (lambda (elt) (add-to-list 'exam-field-vars (list (car elt)) t))
-	    unique-fields)
+    ;; Create alist with field names
+    (setq exam-header-fields nil
+	  exam-header-edit-names nil)
+    (mapc (lambda (elt) (add-to-list 'exam-header-fields (list (car elt)) t))
+	  unique-fields)
 
     ;; For each element of unique-fields add an edit field 
     (widget-insert "\n")    
@@ -788,60 +811,20 @@ The property is a lambda whose body contains the name of the field riceived by F
 	(cond 
 	 ;; Add text only
 	 ((eq width 0)
-	  (assq-delete-all name exam-field-vars) ; name points to value, so works with assq
+	  (assq-delete-all name exam-header-fields) ; name points to value, so works with assq
 	  (widget-insert text))
 	 	 
 	 ;; Add store hidden fields
 	 ((eq width -1)
-	    (setcdr (assoc name exam-field-vars) text))
+	    (setcdr (assoc name exam-header-fields) text))
 
 	 ;; Add editable field widget
-	 ((> width 0) (add-edit-field name width text))))
+	 ((> width 0)
+	  (add-to-list 'exam-header-edit-names name 'append); Store edit field names 
+	  (add-edit-field name width text))))
       
       (widget-insert "\n"))))
     
-
-
-;   (widget-create 'editable-field
-;         :size 4
-;         :format "Test num.: %v "
-; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'exam-id))
-;         "")
-;   (widget-insert (format " Seat: %s\n\n" (downcase (getenv "COMPUTERNAME"))))
-; 
-;   (widget-create 'editable-field
-;         :size 30
-;         :format "Given Name(s): %v "
-; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'given-name))
-;         "")
-;   (widget-create 'editable-field
-;         :size 25
-;         :format "Family Name: %v " ; Text after the field!
-; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'family-name))
-;         "")
-;   (widget-insert "\n\n")
-; 
-;   (widget-create 'editable-field
-;         :size 10
-;         :format "Birth Date (day/month/year): %v "
-; 	 :notify (lambda (widget &rest _) (setq student-birth (widget-value widget)))
-;         "")
-;;   (widget-insert "\n")
-; 
-;   (widget-create 'editable-field
-;         :size 20
-;         :format "  Student ID. This is optional: %v "
-; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'student-id))
-;         "")
-;   (widget-insert "\n")
-; 
-;   (widget-create 'editable-field
-;         :size 10
-;         :format "Today is (day/month/year): %v "
-; 	 :notify (lambda (widget &rest _) (exam-process-head widget 'exam-date))
-;         "")
-;   (widget-insert "\n\n"))
-
 (defun exam-insert-question (ith-quest)
   "Insert ITH-QUEST question."
 
@@ -855,12 +838,14 @@ The property is a lambda whose body contains the name of the field riceived by F
   (insert (propertize "Select your choice."
 		      'font-lock-face '(:weight bold)))
   (insert "\n")
-  (widget-create 'radio-button-choice
-		 :value nil
-		 :notify (lambda  (widget &rest _)
-			   (exam-process-answer widget ith-quest))
-		 '(item "a") '(item "b") '(item "c") '(item "d") '(item "e") (list 'item :tag exam-no-answer-string :value nil)
-		 )
+  (add-to-list 'question-widgets  
+	       (widget-create 'radio-button-choice
+			      :value nil
+			      :notify (lambda  (widget &rest _)
+					(exam-process-answer widget ith-quest))
+			      '(item "a") '(item "b") '(item "c") '(item "d") '(item "e")
+			      (list 'item :tag exam-no-answer-string :value nil))
+	     'append)
   (insert "\n"))
 
 (defun exam-insert-finish ()
@@ -1106,6 +1091,7 @@ See `exam-err' for more safe belts."
 	       do (exam-insert-question i))
       (exam-insert-finish) ;)
       (widget-setup) ;  adds a read-only mode outside widgets
+      (exam-question-activation :deactivate)
       (widget-forward 1)
 
       ;; Update countdown and save answers every exam-update-freq seconds
