@@ -1101,7 +1101,7 @@ See `exam-err' for more safe belts."
 
     (switch-to-buffer buffer))
 
-  (run-at-time "1 sec" nil (lambda () (message "Good luck with the your test!")))
+  (run-at-time "1 sec" nil (lambda () (message "Good luck with your test!")))
 
   ;; Better as last item, so we can easily close Emacs in case of failures
   (add-hook 'kill-emacs-query-functions 'exam-exit-hook))
