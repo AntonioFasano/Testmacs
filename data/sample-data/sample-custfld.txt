@@ -1,0 +1,3 @@
+project-date:10:Date when you delivered the class project: %v \n
+disp-seat-name:0:Computer name is %c\n
+seat-name:-1:%c

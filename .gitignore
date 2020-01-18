@@ -1,7 +1,5 @@
 # Compiled
 #*.elc
-data/*
-data.bak/*
 README.html
 
 # Backup files
@@ -12,3 +10,7 @@ README.html
 
 # git upload scripts
 git*.*
+
+# Local data is ignored, except sample-data dir
+data/*
+!data/sample-data
