@@ -1,8 +1,8 @@
-This is url.info, produced by makeinfo version 6.3 from url.texi.
+This is url.info, produced by makeinfo version 6.6 from url.texi.
 
 This is the manual for the ‘url’ Emacs Lisp library.
 
-   Copyright © 1993–1999, 2002, 2004–2017 Free Software Foundation, Inc.
+   Copyright © 1993–1999, 2002, 2004–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -27,7 +27,7 @@ URL
 
 This is the manual for the ‘url’ Emacs Lisp library.
 
-   Copyright © 1993–1999, 2002, 2004–2017 Free Software Foundation, Inc.
+   Copyright © 1993–1999, 2002, 2004–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -94,9 +94,9 @@ File: url.info,  Node: URI Parsing,  Next: Retrieving URLs,  Prev: Introduction,
 A URI consists of several “components”, each having a different meaning.
 For example, the URI
 
-     http://www.gnu.org/software/emacs/
+     https://www.gnu.org/software/emacs/
 
-specifies the scheme component ‘http’, the hostname component
+specifies the scheme component ‘https’, the hostname component
 ‘www.gnu.org’, and the path component ‘/software/emacs/’.
 
    The format of URIs is specified by RFC 3986.  The ‘url’ library
@@ -249,7 +249,8 @@ or a parsed URL structure.  If it is a string, that string is passed
 through ‘url-encode-url’ before using it, to ensure that it is properly
 URI-encoded (*note URI Encoding::).
 
- -- Function: url-retrieve-synchronously url silent no-cookies
+ -- Function: url-retrieve-synchronously url &optional silent no-cookies
+          timeout
      This function synchronously retrieves the data specified by URL,
      and returns a buffer containing the data.  The return value is
      ‘nil’ if there is no data associated with the URL (as is the case
@@ -257,7 +258,9 @@ URI-encoded (*note URI Encoding::).
 
      If the optional argument SILENT is non-‘nil’, progress messages are
      suppressed.  If the optional argument NO-COOKIES is non-‘nil’,
-     cookies are not stored or sent.
+     cookies are not stored or sent.  If the optional argument TIMEOUT
+     is non-‘nil’, it should be a number that says (in seconds) how long
+     to wait for a response before giving up.
 
  -- Function: url-retrieve url callback &optional cbargs silent
           no-cookies
@@ -355,9 +358,9 @@ in general::.
  -- User Option: url-honor-refresh-requests
      If this option is non-‘nil’ (the default), the ‘url’ library honors
      the HTTP ‘Refresh’ header, which is used by servers to direct
-     clients to reload documents from the same URL or a or different
-     one.  If the value is ‘nil’, the ‘Refresh’ header is ignored; any
-     other value means to ask the user on each request.
+     clients to reload documents from the same URL or a different one.
+     If the value is ‘nil’, the ‘Refresh’ header is ignored; any other
+     value means to ask the user on each request.
 
 * Menu:
 
@@ -376,6 +379,11 @@ File: url.info,  Node: Cookies,  Next: HTTP language/coding,  Up: http/https
      This command creates a ‘*url cookies*’ buffer listing the current
      cookies, if there are any.  You can remove a cookie using the ‘C-k’
      (‘url-cookie-delete’) command.
+
+ -- Function: url-cookie-delete-cookies &optional regexp
+     This function takes a regular expression as its parameters and
+     deletes all cookies from that domain.  If REGEXP is ‘nil’, delete
+     all cookies.
 
  -- User Option: url-cookie-file
      The file in which cookies are stored, defaulting to ‘cookies’ in
@@ -1014,13 +1022,7 @@ File: url.info,  Node: Customization,  Next: GNU Free Documentation License,  Pr
 6 Customization
 ***************
 
-The following environment variables affect the ‘url’ library’s operation
-at startup.
-
-‘TMPDIR’
-     If this is defined, URL-TEMPORARY-DIRECTORY is initialized from it.
-
-   The following user options affect the general operation of ‘url’
+The following user options affect the general operation of ‘url’
 library.
 
  -- User Option: url-configuration-directory
@@ -1070,10 +1072,15 @@ library.
 
  -- User Option: url-user-agent
      The User Agent string used for sending HTTP/HTTPS requests.  The
-     value should be a string or a function of no arguments that returns
-     a string.  The default value is
-     ‘User-Agent: PACKAGE-NAME URL/Emacs’, where PACKAGE-NAME is the
-     value of ‘url-package-name’ and its version, if they are non-‘nil’.
+     value should be ‘nil’, which means that no ‘User-Agent’ header is
+     generated, ‘default’, which means that a string is generated based
+     on the setting of ‘url-privacy-level’, a string or a function of no
+     arguments that returns a string.
+
+     The default is ‘default’, which means that the
+     ‘User-Agent: PACKAGE-NAME URL/Emacs’ string will be generated,
+     where PACKAGE-NAME is the value of ‘url-package-name’ and its
+     version, if they are non-‘nil’.
 
 
 File: url.info,  Node: GNU Free Documentation License,  Next: Function Index,  Prev: Customization,  Up: Top
@@ -1084,7 +1091,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1481,7 +1488,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1575,6 +1582,7 @@ Command and Function Index
 * url-cache-expired:                     Disk Caching.         (line 42)
 * url-completion-function:               History.              (line 42)
 * url-cookie-delete:                     Cookies.              (line  6)
+* url-cookie-delete-cookies:             Cookies.              (line 11)
 * url-cookie-list:                       Cookies.              (line  6)
 * url-do-setup:                          History.              (line  6)
 * url-encode-url:                        URI Encoding.         (line 21)
@@ -1592,9 +1600,9 @@ Command and Function Index
 * url-open-stream:                       Gateways in general.  (line 13)
 * url-password:                          Parsed URIs.          (line 49)
 * url-port:                              Parsed URIs.          (line 49)
-* url-queue-retrieve:                    Retrieving URLs.      (line 58)
+* url-queue-retrieve:                    Retrieving URLs.      (line 61)
 * url-recreate-url:                      URI Parsing.          (line 22)
-* url-retrieve:                          Retrieving URLs.      (line 27)
+* url-retrieve:                          Retrieving URLs.      (line 30)
 * url-retrieve-synchronously:            Retrieving URLs.      (line 17)
 * url-target:                            Parsed URIs.          (line 49)
 * url-type:                              Parsed URIs.          (line 49)
@@ -1619,25 +1627,24 @@ Variable Index
 * socks-server:                          Gateways in general.  (line 77)
 * socks-timeout:                         Gateways in general.  (line 88)
 * socks-username:                        Gateways in general.  (line 85)
-* TMPDIR:                                Customization.        (line 10)
 * url-automatic-caching:                 Disk Caching.         (line 13)
-* url-bad-port-list:                     Customization.        (line 36)
+* url-bad-port-list:                     Customization.        (line 30)
 * url-cache-creation-function:           Disk Caching.         (line 21)
 * url-cache-directory:                   Disk Caching.         (line 17)
 * url-cache-expire-time:                 Disk Caching.         (line 47)
-* url-configuration-directory:           Customization.        (line 15)
-* url-confirmation-func:                 Customization.        (line 40)
-* url-cookie-confirmation:               Cookies.              (line 15)
-* url-cookie-file:                       Cookies.              (line 11)
-* url-cookie-multiple-line:              Cookies.              (line 18)
-* url-cookie-save-interval:              Cookies.              (line 31)
-* url-cookie-trusted-urls:               Cookies.              (line 23)
-* url-cookie-untrusted-urls:             Cookies.              (line 27)
-* url-debug:                             Customization.        (line 26)
+* url-configuration-directory:           Customization.        (line  9)
+* url-confirmation-func:                 Customization.        (line 34)
+* url-cookie-confirmation:               Cookies.              (line 20)
+* url-cookie-file:                       Cookies.              (line 16)
+* url-cookie-multiple-line:              Cookies.              (line 23)
+* url-cookie-save-interval:              Cookies.              (line 36)
+* url-cookie-trusted-urls:               Cookies.              (line 28)
+* url-cookie-untrusted-urls:             Cookies.              (line 32)
+* url-debug:                             Customization.        (line 20)
 * url-directory-index-file:              file/ftp.             (line 22)
 * url-gateway-local-host-regexp:         Gateways in general.  (line 18)
 * url-gateway-method:                    Gateways in general.  (line 23)
-* url-gateway-method <1>:                Customization.        (line 45)
+* url-gateway-method <1>:                Customization.        (line 39)
 * url-gateway-prompt-pattern:            Gateways in general.  (line 65)
 * url-gateway-prompt-pattern <1>:        Gateways in general.  (line 74)
 * url-gateway-rlogin-host:               Gateways in general.  (line 68)
@@ -1658,27 +1665,26 @@ Variable Index
 * url-honor-refresh-requests:            http/https.           (line 16)
 * url-irc-function:                      irc.                  (line 15)
 * url-mail-command:                      mailto.               (line 22)
-* url-max-password-attempts:             Customization.        (line 37)
+* url-max-password-attempts:             Customization.        (line 31)
 * url-mime-charset-string:               HTTP language/coding. (line 17)
 * url-mime-language-string:              HTTP language/coding. (line 28)
 * url-news-server:                       news/nntp/snews.      (line 32)
 * url-nfs-automounter-directory-spec:    nfs.                  (line 12)
-* url-passwd-entry-func:                 Customization.        (line 34)
-* url-personal-mail-address:             Customization.        (line 31)
-* url-privacy-level:                     Customization.        (line 32)
+* url-passwd-entry-func:                 Customization.        (line 28)
+* url-personal-mail-address:             Customization.        (line 25)
+* url-privacy-level:                     Customization.        (line 26)
 * url-proxy-services:                    Proxies.              (line 32)
-* url-queue-parallel-processes:          Retrieving URLs.      (line 68)
-* url-queue-parallel-processes <1>:      Retrieving URLs.      (line 68)
-* url-queue-timeout:                     Retrieving URLs.      (line 74)
-* url-queue-timeout <1>:                 Retrieving URLs.      (line 74)
-* url-show-status:                       Customization.        (line 39)
-* url-standalone-mode:                   Customization.        (line 35)
-* url-temporary-directory:               Customization.        (line 10)
-* url-temporary-directory <1>:           Customization.        (line 38)
+* url-queue-parallel-processes:          Retrieving URLs.      (line 71)
+* url-queue-parallel-processes <1>:      Retrieving URLs.      (line 71)
+* url-queue-timeout:                     Retrieving URLs.      (line 77)
+* url-queue-timeout <1>:                 Retrieving URLs.      (line 77)
+* url-show-status:                       Customization.        (line 33)
+* url-standalone-mode:                   Customization.        (line 29)
+* url-temporary-directory:               Customization.        (line 32)
 * url-tramp-protocols:                   Tramp.                (line  6)
-* url-uncompressor-alist:                Customization.        (line 33)
+* url-uncompressor-alist:                Customization.        (line 27)
 * url-unreserved-chars:                  URI Encoding.         (line 39)
-* url-user-agent:                        Customization.        (line 60)
+* url-user-agent:                        Customization.        (line 54)
 
 
 File: url.info,  Node: Concept Index,  Prev: Variable Index,  Up: Top
@@ -1699,17 +1705,16 @@ Concept Index
 * Clearing the cache:                    Disk Caching.         (line 10)
 * coding systems:                        HTTP language/coding. (line 18)
 * compressed files:                      file/ftp.             (line  6)
-* configuration files:                   Customization.        (line 16)
+* configuration files:                   Customization.        (line 10)
 * DASL:                                  HTTP URL Options.     (line 22)
 * data URLs:                             data.                 (line  6)
 * DAV:                                   HTTP URL Options.     (line 18)
-* debugging:                             Customization.        (line 27)
+* debugging:                             Customization.        (line 21)
 * dired:                                 file/ftp.             (line  6)
 * Disk Cache:                            Disk Caching.         (line  6)
 * email:                                 mailto.               (line  6)
 * environment variable:                  news/nntp/snews.      (line 32)
 * environment variables:                 Proxies.              (line  6)
-* environment variables <1>:             Customization.        (line  6)
 * ERC:                                   irc.                  (line  6)
 * File Transfer Protocol:                file/ftp.             (line  6)
 * files:                                 file/ftp.             (line  6)
@@ -1775,38 +1780,38 @@ Tag Table:
 Node: Top907
 Node: Introduction2297
 Node: URI Parsing3585
-Node: Parsed URIs4945
-Node: URI Encoding7080
-Node: Retrieving URLs9490
-Node: Supported URL Types13122
-Node: http/https14043
-Node: Cookies15169
-Node: HTTP language/coding16392
-Node: HTTP URL Options18052
-Node: Dealing with HTTP documents19020
-Node: file/ftp19391
-Node: info20572
-Node: mailto20908
-Node: news/nntp/snews22291
-Node: rlogin/telnet/tn327023917
-Node: irc24612
-Node: data25557
-Node: nfs26066
-Node: ldap26874
-Node: man27017
-Node: Tramp27287
-Node: General Facilities27985
-Node: Disk Caching28208
-Node: Proxies30768
-Node: Gateways in general32883
-Ref: Gateways in general-Footnote-137001
-Node: Suppressing network connections37076
-Node: History37744
-Node: Customization39639
-Node: GNU Free Documentation License42327
-Node: Function Index67684
-Node: Variable Index70356
-Node: Concept Index75543
+Node: Parsed URIs4947
+Node: URI Encoding7082
+Node: Retrieving URLs9492
+Node: Supported URL Types13309
+Node: http/https14230
+Node: Cookies15352
+Node: HTTP language/coding16794
+Node: HTTP URL Options18454
+Node: Dealing with HTTP documents19422
+Node: file/ftp19793
+Node: info20974
+Node: mailto21310
+Node: news/nntp/snews22693
+Node: rlogin/telnet/tn327024319
+Node: irc25014
+Node: data25959
+Node: nfs26468
+Node: ldap27276
+Node: man27419
+Node: Tramp27689
+Node: General Facilities28387
+Node: Disk Caching28610
+Node: Proxies31170
+Node: Gateways in general33285
+Ref: Gateways in general-Footnote-137403
+Node: Suppressing network connections37478
+Node: History38146
+Node: Customization40041
+Node: GNU Free Documentation License42794
+Node: Function Index68153
+Node: Variable Index70898
+Node: Concept Index75939
 
 End Tag Table
 

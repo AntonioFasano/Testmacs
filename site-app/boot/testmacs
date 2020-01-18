@@ -1,0 +1,100 @@
+## TODO
+## Separate environments for assignment variables and management functions  
+## Try source this from init with local(source(...)) and then add items in testamacs.var or testamacs.man env
+## Everything not explicitely set in testmacs* env is disposed after sourcing
+## Add test of local and remote write and stop with errors on fail
+
+current_course_name <- local({
+
+    ## Compare values with site-start.el
+    `exam-loc-server-ini`  <-     "~/server*.txt"
+    `exam-net-init`        <-     "INITFILE*.txt"
+
+    ## First working local init
+    local.init <- Sys.glob(`exam-loc-server-ini`)[1]
+
+    ## Remote data dir from local file
+    data.dir <- Sys.glob(readLines (local.init)[1], dirmark=TRUE)
+
+    ## First working remote init file 
+    remote.init <- Sys.glob(paste0(data.dir, "INITFILE*.txt"))[1]
+
+    ## Course name and data file
+    remote.lines  <-  readLines(remote.init, 2)
+    course.pos <- grep("course", strsplit(remote.lines[1], " +")[[1]], fixed=TRUE)
+    course.name <-  strsplit(remote.lines[2], " +")[[1]][course.pos]
+    course.data <- paste0(data.dir, "rdata/", course.name, "-nosol.RData")
+
+    ## Create a local and remote dummy wait-for-send RDS
+    rds.loc <- path.expand(paste0("~/", course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
+    if(file.exists(rds.loc)) file.remove(rds.loc)
+    saveRDS("wait-for-send", rds.loc)
+    rds.net  <- paste0(dirname(remote.init), "/",
+                       course.name, "-answers/",
+                       course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds")
+    file.copy(rds.loc, rds.net)
+
+    
+    load(course.data, envir=testmacs)
+    course.name
+})
+
+send  <- function(...){
+
+    ## Single arg without name
+    if(is.null(names(list(...)))) stop("Please, provide argument names.")
+
+    ## more args and some without name
+    x <- which(!nzchar(names(list(...))))
+    if(any(x)) stop("\nArgument(s) in position ", as.character(x),  " missing name(s).")
+
+    ## Some value are functions
+    x <- sapply(seq_along(list(...)), function(i) if(is.function(list(...)[[i]])) TRUE else FALSE)
+    # Show first of which giving the problem
+    if(any(x)) stop("\nThe value of ", names(list(...))[[which(x)[1] ]], " is a function not a value.")
+
+    rds <- path.expand(paste0("~/",current_course_name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
+    L <- list(...)
+    if(file.exists(rds)) file.remove(rds)
+    saveRDS(L, rds)
+    message("Data has been sent. Thank you.")
+    readline("Hit any key to exit.")
+    quit("no")
+}
+
+info <- function(){
+
+    txt <- paste0("\n", .assignment$text, "\n")
+
+    ## Add mandatory vars
+    nms <- names(.assignment$classes)
+    vals <- .assignment$classes
+    cls <- sapply(seq_along(nms), function(i)  paste0("class(", nms[i], ")\t==\t\"", vals[i], "\""  ) )
+    cls <- paste(cls, collapse="\n")
+    txt <- rbind(txt, "\nClasses:\n", cls, "\n")
+
+    
+    ## Add optional vars
+    nms <- names(.assignment$classes.opt)
+    vals <- .assignment$classes.opt
+    cls <- sapply(seq_along(nms), function(i)  paste0("class(", nms[i], ")\t==\t\"", vals[i], "\""  ) )
+    cls <- paste(cls, collapse="\n")
+    txt <- rbind(txt, "\nOptional variables:\n", cls, "\n")
+
+
+    ## Add optional vars
+    txt <- rbind(txt, "\nSee also info.send()", "\n")
+ 
+    message(txt)
+    
+}
+
+info.send <- function(){
+
+    txt <- "\nTo send data use: \nsend(VARIABLE=VALUE, ...)\n"
+    txt <- rbind(txt, "\nFor example, to send the variables 'a' and 'b' use:\n")
+    txt <- rbind(txt, "send(a=a, b=b)\n")
+    txt <- rbind(txt, "\nDo not forget to check classes before send.\n")
+    message(txt)
+
+}

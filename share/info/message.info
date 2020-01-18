@@ -1,9 +1,9 @@
-This is message.info, produced by makeinfo version 6.3 from
+This is message.info, produced by makeinfo version 6.6 from
 message.texi.
 
 This file documents Message, the Emacs message composition mode.
 
-   Copyright © 1996–2017 Free Software Foundation, Inc.
+   Copyright © 1996–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -29,7 +29,7 @@ Message
 
 This file documents Message, the Emacs message composition mode.
 
-   Copyright © 1996–2017 Free Software Foundation, Inc.
+   Copyright © 1996–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -50,7 +50,6 @@ Message mode buffers.
 * Interface::         Setting up message buffers.
 * Commands::          Commands you can execute in message mode buffers.
 * Variables::         Customizing the message buffers.
-* Compatibility::     Making Message backwards compatible.
 * Appendices::        More technical things.
 * GNU Free Documentation License:: The license for this documentation.
 * Index::             Variable, function and concept index.
@@ -86,8 +85,8 @@ filled out, and the user can edit the message before sending it.
 * Mailing Lists::        Send mail to mailing lists.
 
    You can customize the Message Mode tool bar, see ‘M-x
-customize-apropos RET message-tool-bar’.  This feature is only available
-in Emacs.
+customize-apropos <RET> message-tool-bar’.  This feature is only
+available in Emacs.
 
 
 File: message.info,  Node: New Mail Message,  Next: New News Message,  Up: Interface
@@ -166,8 +165,9 @@ with the ‘message-wide-reply-to-function’.  It is used in the same way
 as ‘message-reply-to-function’ (*note Reply::).
 
    Addresses that match the ‘message-dont-reply-to-names’ regular
-expression (or list of regular expressions) will be removed from the
-‘Cc’ header.  A value of ‘nil’ means exclude your name only.
+expression (or list of regular expressions or a predicate function) will
+be removed from the ‘Cc’ header.  A value of ‘nil’ means to exclude only
+your email address.
 
    ‘message-prune-recipient-rules’ is used to prune the addresses used
 when doing a wide reply.  It’s meant to be used to remove duplicate
@@ -739,11 +739,11 @@ symbol ‘ask’ the user will be queried, and if set to ‘t’ (which is the
 default if IDNA is fully available) IDNA encoding happens automatically.
 
    If you want to experiment with the IDNA encoding, you can invoke ‘M-x
-message-idna-to-ascii-rhs RET’ in the message buffer to have the
+message-idna-to-ascii-rhs <RET>’ in the message buffer to have the
 non-ASCII domain names encoded while you edit the message.
 
    Note that you must have GNU Libidn
-(http://www.gnu.org/software/libidn/) installed in order to use this
+(https://www.gnu.org/software/libidn/) installed in order to use this
 functionality.
 
 
@@ -872,7 +872,7 @@ part tag will be used.  This way, message mode will do the Right Thing
 information is sent, you may want to have some way to ensure that your
 mail is actually signed or encrypted.  After invoking the above
 sign/encrypt commands, it is possible to preview the raw article by
-using ‘C-u C-c RET P’ (‘mml-preview’).  Then you can verify that your
+using ‘C-u C-c <RET> P’ (‘mml-preview’).  Then you can verify that your
 long rant about what your ex-significant other or whomever actually did
 with that funny looking person at that strange party the other night,
 actually will be sent encrypted.
@@ -960,7 +960,7 @@ without some kind of configuration.  Especially, you need to tell it
 where your private key and your certificate is stored.  MML uses an
 Emacs interface to OpenSSL, aptly named ‘smime.el’, and it contain a
 ‘custom’ group used for this configuration.  So, try ‘M-x
-customize-group RET smime RET’ and look around.
+customize-group <RET> smime <RET>’ and look around.
 
    Currently there is no support for talking to a CA (or RA) to create
 your own certificate.  None is planned either.  You need to do this
@@ -1139,14 +1139,14 @@ File: message.info,  Node: Various Commands,  Next: Sending,  Prev: Security,  U
      Delete all text in the body of the message that is outside the
      region (‘message-delete-not-region’).
 
-‘M-RET’
+‘M-<RET>’
      Insert four newlines, and then reformat if inside quoted text.
 
      Here’s an example:
 
           > This is some quoted text.  And here's more quoted text.
 
-     If point is before ‘And’ and you press ‘M-RET’, you’ll get:
+     If point is before ‘And’ and you press ‘M-<RET>’, you’ll get:
 
           > This is some quoted text.
 
@@ -1160,9 +1160,9 @@ File: message.info,  Node: Various Commands,  Next: Sending,  Prev: Security,  U
      Rename the buffer (‘message-rename-buffer’).  If given a prefix,
      prompt for a new buffer name.
 
-‘TAB’
+‘<TAB>’
      If ‘message-tab-body-function’ is non-‘nil’, execute the function
-     it specifies.  Otherwise use the function bound to ‘TAB’ in
+     it specifies.  Otherwise use the function bound to <TAB> in
      ‘text-mode-map’ or ‘global-map’.
 
 
@@ -1254,7 +1254,7 @@ file:
    ‘flyspell’ depends on having the external ‘ispell’ command installed.
 
 
-File: message.info,  Node: Variables,  Next: Compatibility,  Prev: Commands,  Up: Top
+File: message.info,  Node: Variables,  Next: Appendices,  Prev: Commands,  Up: Top
 
 3 Variables
 ***********
@@ -1382,10 +1382,10 @@ look sufficiently similar.
      ‘message-subject-trailing-was-regexp’ is used.
 
 ‘message-alternative-emails’
-     Regexp matching alternative email addresses.  The first address in
-     the To, Cc or From headers of the original article matching this
-     variable is used as the From field of outgoing messages, replacing
-     the default From value.
+     Regexp or predicate function matching alternative email addresses.
+     The first address in the To, Cc or From headers of the original
+     article matching this variable is used as the From field of
+     outgoing messages, replacing the default From value.
 
      For example, if you have two secondary email addresses
      john@home.net and john.doe@work.com and want to use them in the
@@ -2123,24 +2123,9 @@ is a function and the CDR is the list of arguments, or a form to be
 ‘eval’ed.
 
 
-File: message.info,  Node: Compatibility,  Next: Appendices,  Prev: Variables,  Up: Top
+File: message.info,  Node: Appendices,  Next: GNU Free Documentation License,  Prev: Variables,  Up: Top
 
-4 Compatibility
-***************
-
-Message uses virtually only its own variables—older ‘mail-’ variables
-aren’t consulted.  To force Message to take those variables into
-account, you can put the following in your ‘.emacs’ file:
-
-     (require 'messcompat)
-
-   This will initialize many Message variables from the values in the
-corresponding mail variables.
-
-
-File: message.info,  Node: Appendices,  Next: GNU Free Documentation License,  Prev: Compatibility,  Up: Top
-
-5 Appendices
+4 Appendices
 ************
 
 * Menu:
@@ -2150,7 +2135,7 @@ File: message.info,  Node: Appendices,  Next: GNU Free Documentation License,  P
 
 File: message.info,  Node: Responses,  Up: Appendices
 
-5.1 Responses
+4.1 Responses
 =============
 
 To determine where a message is to go, the following algorithm is used
@@ -2199,13 +2184,13 @@ by default.
 
 File: message.info,  Node: GNU Free Documentation License,  Next: Index,  Prev: Appendices,  Up: Top
 
-6 GNU Free Documentation License
+5 GNU Free Documentation License
 ********************************
 
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -2602,7 +2587,7 @@ File: message.info,  Node: GNU Free Documentation License,  Next: Index,  Prev: 
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -2681,7 +2666,7 @@ their use in free software.
 
 File: message.info,  Node: Index,  Next: Key Index,  Prev: GNU Free Documentation License,  Up: Top
 
-7 Index
+6 Index
 *******
 
  [index ]
@@ -2699,7 +2684,6 @@ File: message.info,  Node: Index,  Next: Key Index,  Prev: GNU Free Documentatio
 * charset:                               Various Message Variables.
                                                               (line   7)
 * cited:                                 Insertion Variables. (line  57)
-* compatibility:                         Compatibility.       (line   6)
 * completion:                            Mail Aliases.        (line   6)
 * cross-post:                            Header Commands.     (line 114)
 * describe-mode:                         Header Commands.     (line  13)
@@ -2863,7 +2847,7 @@ File: message.info,  Node: Index,  Next: Key Index,  Prev: GNU Free Documentatio
                                                               (line 108)
 * message-post-method:                   News Variables.      (line  11)
 * message-postpone-actions:              Message Actions.     (line  11)
-* message-prune-recipient-rules:         Wide Reply.          (line  20)
+* message-prune-recipient-rules:         Wide Reply.          (line  21)
 * message-qmail-inject-args:             Mail Variables.      (line  63)
 * message-qmail-inject-program:          Mail Variables.      (line  60)
 * message-reduce-to-to-cc:               Header Commands.     (line 124)
@@ -2938,7 +2922,7 @@ File: message.info,  Node: Index,  Next: Key Index,  Prev: GNU Free Documentatio
 * message-user-path:                     News Headers.        (line  62)
 * message-wash-forwarded-subjects:       Forwarding.          (line  32)
 * message-wide-reply:                    Wide Reply.          (line   6)
-* message-wide-reply-confirm-recipients: Wide Reply.          (line  46)
+* message-wide-reply-confirm-recipients: Wide Reply.          (line  47)
 * message-wide-reply-to-function:        Wide Reply.          (line  11)
 * message-yank-buffer:                   Insertion.           (line  11)
 * message-yank-cited-prefix:             Insertion Variables. (line  57)
@@ -3009,7 +2993,7 @@ File: message.info,  Node: Index,  Next: Key Index,  Prev: GNU Free Documentatio
 
 File: message.info,  Node: Key Index,  Prev: Index,  Up: Top
 
-8 Key Index
+7 Key Index
 ***********
 
  [index ]
@@ -3079,62 +3063,59 @@ File: message.info,  Node: Key Index,  Prev: Index,  Up: Top
 * C-c M-r:                               Various Commands.    (line  51)
 * C-_:                                   Buffer Entry.        (line   6)
 * M-RET:                                 Various Commands.    (line  34)
-* M-x message-insert-importance-high:    Header Commands.     (line 100)
-* M-x message-insert-importance-low:     Header Commands.     (line 104)
 * TAB:                                   Various Commands.    (line  55)
 
 
 
 Tag Table:
 Node: Top971
-Node: Interface2421
-Node: New Mail Message3631
-Node: New News Message4014
-Node: Reply4428
-Node: Wide Reply5839
-Node: Followup7953
-Node: Canceling News8777
-Node: Superseding9996
-Node: Forwarding10667
-Node: Resending12453
-Node: Bouncing12821
-Node: Mailing Lists13419
-Node: Commands18720
-Node: Buffer Entry19463
-Node: Header Commands20148
-Node: Movement25413
-Node: Insertion26005
-Node: MIME27426
-Node: IDNA28695
-Node: Security30061
-Node: Signing and encryption33806
-Node: Using S/MIME36686
-Node: Using OpenPGP41420
-Node: Passphrase caching42227
-Node: PGP Compatibility43960
-Node: Encrypt-to-self45518
-Node: Bcc Warning46384
-Node: Various Commands47052
-Node: Sending48936
-Node: Mail Aliases49382
-Node: Spelling50791
-Node: Variables52158
-Node: Message Headers52882
-Node: Mail Headers59410
-Node: Mail Variables60400
-Node: News Headers64457
-Node: News Variables71675
-Node: Insertion Variables72100
-Node: Various Message Variables77600
-Node: Sending Variables83366
-Node: Message Buffers84733
-Node: Message Actions86948
-Node: Compatibility88471
-Node: Appendices88930
-Node: Responses89153
-Node: GNU Free Documentation License90611
-Node: Index115942
-Node: Key Index139094
+Node: Interface2362
+Node: New Mail Message3574
+Node: New News Message3957
+Node: Reply4371
+Node: Wide Reply5782
+Node: Followup7932
+Node: Canceling News8756
+Node: Superseding9975
+Node: Forwarding10646
+Node: Resending12432
+Node: Bouncing12800
+Node: Mailing Lists13398
+Node: Commands18699
+Node: Buffer Entry19442
+Node: Header Commands20127
+Node: Movement25392
+Node: Insertion25984
+Node: MIME27405
+Node: IDNA28674
+Node: Security30043
+Node: Signing and encryption33788
+Node: Using S/MIME36670
+Node: Using OpenPGP41408
+Node: Passphrase caching42215
+Node: PGP Compatibility43948
+Node: Encrypt-to-self45506
+Node: Bcc Warning46372
+Node: Various Commands47040
+Node: Sending48926
+Node: Mail Aliases49372
+Node: Spelling50781
+Node: Variables52148
+Node: Message Headers52869
+Node: Mail Headers59418
+Node: Mail Variables60408
+Node: News Headers64465
+Node: News Variables71683
+Node: Insertion Variables72108
+Node: Various Message Variables77608
+Node: Sending Variables83374
+Node: Message Buffers84741
+Node: Message Actions86956
+Node: Appendices88479
+Node: Responses88698
+Node: GNU Free Documentation License90156
+Node: Index115489
+Node: Key Index138568
 
 End Tag Table
 

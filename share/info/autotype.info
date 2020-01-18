@@ -1,7 +1,7 @@
-This is autotype.info, produced by makeinfo version 6.3 from
+This is autotype.info, produced by makeinfo version 6.6 from
 autotype.texi.
 
-Copyright © 1994–1995, 1999, 2001–2017 Free Software Foundation, Inc.
+Copyright © 1994–1995, 1999, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -51,7 +51,7 @@ can be defined for inserting and navigating between text more generally.
 A sort of meta-expansion facility can be used to try a set of
 alternative completions and expansions of text at point.
 
-   Copyright © 1994–1995, 1999, 2001–2017 Free Software Foundation, Inc.
+   Copyright © 1994–1995, 1999, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -195,7 +195,7 @@ File: autotype.info,  Node: Skeleton Language,  Next: Inserting Pairs,  Prev: Sk
 4 Skeleton Language
 *******************
 
-Skeletons are an shorthand extension to the Lisp language, where various
+Skeletons are a shorthand extension to the Lisp language, where various
 atoms directly perform either actions on the current buffer or
 rudimentary flow control mechanisms.  Skeletons are interpreted by the
 function ‘skeleton-insert’.
@@ -222,7 +222,7 @@ the following table:
      where nothing is wrapped.
 ‘>’
      Indent line according to major mode.  When following element is
-     ‘_’, and there is a interregion that will be wrapped here, indent
+     ‘_’, and there is an interregion that will be wrapped here, indent
      that interregion.
 ‘&’
      Logical and.  If preceding element moved point, i.e., usually
@@ -519,7 +519,7 @@ variable ‘quickurl-url-file’ as a list of either cons cells of the form
 that ‘M-x quickurl’ should insert URL if the word KEY is at point, for
 example:
 
-     (("FSF"      "http://www.fsf.org/" "The Free Software Foundation")
+     (("FSF"      "https://www.fsf.org/" "The Free Software Foundation")
       ("emacs"  . "http://www.emacs.org/")
       ("hagbard"  "http://www.hagbard.demon.co.uk" "Hagbard's World"))
 
@@ -589,7 +589,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -986,7 +986,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1164,12 +1164,12 @@ Node: Copyrights19560
 Node: Executables21502
 Node: Timestamps23036
 Node: QuickURL24499
-Node: Tempo25398
-Node: Hippie Expand26602
-Node: GNU Free Documentation License27679
-Node: Concept Index53040
-Node: Command Index54156
-Node: Variable Index55621
+Node: Tempo25399
+Node: Hippie Expand26603
+Node: GNU Free Documentation License27680
+Node: Concept Index53043
+Node: Command Index54159
+Node: Variable Index55624
 
 End Tag Table
 

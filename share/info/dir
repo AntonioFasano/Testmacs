@@ -62,6 +62,8 @@ Emacs network features
 * Sieve: (sieve).               Managing Sieve scripts in Emacs.
 * TRAMP: (tramp).               Transparent Remote Access, Multiple Protocol 
                                   Emacs remote file access via ssh and scp.
+* tramp: (tramp).               Transparent Remote Access, Multiple Protocol
+                                  Emacs remote file access via ssh and scp.
 
 Emacs misc features
 * Autotype: (autotype).         Convenient features for text that you enter 

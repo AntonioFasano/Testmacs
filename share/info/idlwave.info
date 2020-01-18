@@ -1,4 +1,4 @@
-This is idlwave.info, produced by makeinfo version 6.3 from
+This is idlwave.info, produced by makeinfo version 6.6 from
 idlwave.texi.
 
 This file documents IDLWAVE, a major mode for editing IDL files with
@@ -6,7 +6,7 @@ Emacs, and interacting with an IDL shell run as a subprocess.
 
    This is edition 6.1 of the IDLWAVE User Manual for IDLWAVE 6.1.
 
-   Copyright © 1999–2017 Free Software Foundation, Inc.
+   Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -37,7 +37,7 @@ Emacs, and interacting with an IDL shell run as a subprocess.
 
    This is edition 6.1 of the IDLWAVE User Manual for IDLWAVE 6.1.
 
-   Copyright © 1999–2017 Free Software Foundation, Inc.
+   Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -607,11 +607,11 @@ completion (‘M-<TAB>’) on any routine or partial routine name you know
 to be located in the library.  E.g., if you have scanned the IDL-Astro
 library:
 
-         a=readf<M-<TAB>>
+         a=readfM-<TAB>
 
    expands to “readfits(”.  Then try
 
-         a=readfits(<C-c ?>
+         a=readfits(C-c ?
 
    and you get:
 
@@ -2078,9 +2078,9 @@ just like in an X terminal(1).  The history is preserved between emacs
 and IDL sessions.  Here is a list of commonly used commands:
 
 <UP>,     Cycle backwards in input history
-<M-p>
+‘M-p’
 <DOWN>,   Cycle forwards in input history
-<M-n>
+‘M-n’
 ‘M-r’     Previous input matching a regexp
 ‘M-s’     Next input matching a regexp
 ‘return’  Send input or copy line to current prompt
@@ -2610,7 +2610,7 @@ variable, number, or function you see can be examined.
    If the variable ‘idlwave-shell-separate-examine-output’ is non-‘nil’
 (the default), all examine output will be sent to a special ‘*Examine*’
 buffer, rather than the shell.  The output of prior examine commands is
-saved in this buffer.  In this buffer <c> clears the contents, and <q>
+saved in this buffer.  In this buffer ‘c’ clears the contents, and ‘q’
 hides the buffer.
 
    The two most basic examine commands are bound to ‘C-c C-d C-p’, to
@@ -3395,7 +3395,7 @@ check the following things:
 
    • When you download the IDLWAVE distribution, make sure you save the
      file under the names ‘idlwave.tar.gz’.
-   • M-TAB switches among running programs—use Esc-TAB instead.
+   • M-<TAB> switches among running programs—use <ESC>-<TAB> instead.
    • Other issues as yet unnamed...
 
    Windows users who’d like to make use of IDLWAVE’s context-aware HTML
@@ -3565,7 +3565,7 @@ common problems and their solutions are documented below.
      This actually happens when running IDL in an XTerm as well.  There
      are a couple of workarounds: ‘define_key,/control,'^d'’ (e.g., in
      your ‘$IDL_STARTUP’ file) will disable the ‘EOF’ character and give
-     you a 512 character limit.  You won’t be able to use <C-d> to quit
+     you a 512 character limit.  You won’t be able to use ‘C-d’ to quit
      the shell, however.  Another possibility is ‘!EDIT_INPUT=0’, which
      gives you an _infinite_ limit (OK, a memory-bounded limit), but
      disables the processing of background widget events (those with
@@ -3606,7 +3606,7 @@ Appendix F GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -4003,7 +4003,7 @@ Appendix F GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -4466,8 +4466,8 @@ Index
 * Load-path shadows <1>:                 Load-Path Shadows.   (line   6)
 * M-?:                                   Online Help.         (line  32)
 * M-q:                                   Continuation Lines.  (line  31)
-* M-<RET>:                               Continuation Lines.  (line   6)
-* M-<TAB>:                               Completion.          (line   6)
+* M-RET:                                 Continuation Lines.  (line   6)
+* M-TAB:                                 Completion.          (line   6)
 * macOS:                                 The IDLWAVE Shell.   (line   6)
 * macOS <1>:                             User Catalog.        (line   6)
 * macOS <2>:                             Windows and macOS.   (line   6)
@@ -4596,70 +4596,70 @@ Node: Getting Started11808
 Node: Lesson I---Development Cycle12087
 Node: Lesson II---Customization20226
 Node: Lesson III---User Catalog25340
-Node: The IDLWAVE Major Mode28163
-Node: Code Formatting29257
-Node: Code Indentation30538
-Node: Continued Statement Indentation32102
-Node: Comment Indentation35411
-Node: Continuation Lines36419
-Node: Syntax Highlighting38986
-Node: Octals and Highlighting40050
-Node: Routine Info41144
-Ref: Routine Info-Footnote-147960
-Node: Online Help48126
-Node: Help with HTML Documentation52268
-Node: Help with Source55898
-Node: Completion58933
-Node: Case of Completed Words63170
-Node: Object Method Completion and Class Ambiguity65015
-Node: Object Method Completion in the Shell67781
-Node: Class and Keyword Inheritance68640
-Node: Structure Tag Completion71021
-Node: Routine Source72812
-Node: Resolving Routines73952
-Node: Code Templates74955
-Node: Abbreviations75490
-Node: Actions79905
-Node: Block Boundary Check81789
-Node: Padding Operators82886
-Node: Case Changes85171
-Node: Doc Header86709
-Node: Motion Commands88001
-Node: Misc Options89145
-Node: The IDLWAVE Shell89770
-Node: Starting the Shell90782
-Node: Using the Shell94466
-Ref: Using the Shell-Footnote-198501
-Node: Commands Sent to the Shell98693
-Node: Debugging IDL Programs100892
-Node: A Tale of Two Modes102322
-Node: Debug Key Bindings103425
-Node: Breakpoints and Stepping105411
-Node: Compiling Programs111549
-Node: Walking the Calling Stack113060
-Node: Electric Debug Mode114179
-Ref: Electric Debug Mode-Footnote-1120481
-Node: Examining Variables120616
-Ref: Examining Variables-Footnote-1125563
-Node: Custom Expression Examination125657
-Ref: Custom Expression Examination-Footnote-1129199
-Node: Acknowledgments129407
-Node: Sources of Routine Info131464
-Node: Routine Definitions132178
-Node: Routine Information Sources133543
-Node: Catalogs137108
-Node: Library Catalogs139771
-Node: User Catalog142672
-Ref: User Catalog-Footnote-1145780
-Ref: User Catalog-Footnote-2145867
-Node: Load-Path Shadows145903
-Node: Documentation Scan148534
-Node: HTML Help Browser Tips150041
-Node: Configuration Examples151520
-Node: Windows and macOS158627
-Node: Troubleshooting160827
-Node: GNU Free Documentation License170846
-Node: Index196200
+Node: The IDLWAVE Major Mode28159
+Node: Code Formatting29253
+Node: Code Indentation30534
+Node: Continued Statement Indentation32098
+Node: Comment Indentation35407
+Node: Continuation Lines36415
+Node: Syntax Highlighting38982
+Node: Octals and Highlighting40046
+Node: Routine Info41140
+Ref: Routine Info-Footnote-147956
+Node: Online Help48122
+Node: Help with HTML Documentation52264
+Node: Help with Source55894
+Node: Completion58929
+Node: Case of Completed Words63166
+Node: Object Method Completion and Class Ambiguity65011
+Node: Object Method Completion in the Shell67777
+Node: Class and Keyword Inheritance68636
+Node: Structure Tag Completion71017
+Node: Routine Source72808
+Node: Resolving Routines73948
+Node: Code Templates74951
+Node: Abbreviations75486
+Node: Actions79901
+Node: Block Boundary Check81785
+Node: Padding Operators82882
+Node: Case Changes85167
+Node: Doc Header86705
+Node: Motion Commands87997
+Node: Misc Options89141
+Node: The IDLWAVE Shell89766
+Node: Starting the Shell90778
+Node: Using the Shell94462
+Ref: Using the Shell-Footnote-198505
+Node: Commands Sent to the Shell98697
+Node: Debugging IDL Programs100896
+Node: A Tale of Two Modes102326
+Node: Debug Key Bindings103429
+Node: Breakpoints and Stepping105415
+Node: Compiling Programs111553
+Node: Walking the Calling Stack113064
+Node: Electric Debug Mode114183
+Ref: Electric Debug Mode-Footnote-1120485
+Node: Examining Variables120620
+Ref: Examining Variables-Footnote-1125575
+Node: Custom Expression Examination125669
+Ref: Custom Expression Examination-Footnote-1129211
+Node: Acknowledgments129419
+Node: Sources of Routine Info131476
+Node: Routine Definitions132190
+Node: Routine Information Sources133555
+Node: Catalogs137120
+Node: Library Catalogs139783
+Node: User Catalog142684
+Ref: User Catalog-Footnote-1145792
+Ref: User Catalog-Footnote-2145879
+Node: Load-Path Shadows145915
+Node: Documentation Scan148546
+Node: HTML Help Browser Tips150053
+Node: Configuration Examples151532
+Node: Windows and macOS158639
+Node: Troubleshooting160845
+Node: GNU Free Documentation License170868
+Node: Index196224
 
 End Tag Table
 

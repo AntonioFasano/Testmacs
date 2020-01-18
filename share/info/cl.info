@@ -1,8 +1,8 @@
-This is cl.info, produced by makeinfo version 6.3 from cl.texi.
+This is cl.info, produced by makeinfo version 6.6 from cl.texi.
 
 This file documents the GNU Emacs Common Lisp emulation package.
 
-   Copyright © 1993, 2001–2017 Free Software Foundation, Inc.
+   Copyright © 1993, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -27,7 +27,7 @@ GNU Emacs Common Lisp Emulation
 
 This file documents the GNU Emacs Common Lisp emulation package.
 
-   Copyright © 1993, 2001–2017 Free Software Foundation, Inc.
+   Copyright © 1993, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -65,6 +65,7 @@ Appendices
 Indexes
 * Function Index::                 An entry for each documented function.
 * Variable Index::                 An entry for each documented variable.
+* Concept Index::                  An entry for each concept.
 
 
 File: cl.info,  Node: Overview,  Next: Program Structure,  Prev: Top,  Up: Top
@@ -1102,16 +1103,17 @@ File: cl.info,  Node: Function Bindings,  Next: Macro Bindings,  Prev: Dynamic B
 These forms make ‘let’-like bindings to functions instead of variables.
 
  -- Macro: cl-flet (bindings...) forms...
-     This form establishes ‘let’-style bindings on the function cells of
-     symbols rather than on the value cells.  Each BINDING must be a
-     list of the form ‘(NAME ARGLIST FORMS...)’, which defines a
-     function exactly as if it were a ‘cl-defun’ form.  The function
-     NAME is defined accordingly but only within the body of the
-     ‘cl-flet’, hiding any external definition if applicable.
+     This form establishes ‘let’-style bindings for functions rather
+     than values.  Each BINDING must be a list of the form ‘(NAME
+     ARGLIST BODY...)’.  Within FORMS, any reference to the function
+     NAME uses the local definition instead of the global one.
+
+     A “reference” to a function name is either a call to that function,
+     or a use of its name quoted by ‘function’ to be passed on to, say,
+     ‘mapcar’.
 
      The bindings are lexical in scope.  This means that all references
-     to the named functions must appear physically within the body of
-     the ‘cl-flet’ form.
+     to the named functions must appear physically within FORMS.
 
      Functions defined by ‘cl-flet’ may use the full Common Lisp
      argument notation supported by ‘cl-defun’; also, the function body
@@ -1134,10 +1136,6 @@ These forms make ‘let’-like bindings to functions instead of variables.
      and in the bodies of the functions themselves.  Thus, ‘cl-labels’
      can define local recursive functions, or mutually-recursive sets of
      functions.
-
-     A “reference” to a function name is either a call to that function,
-     or a use of its name quoted by ‘quote’ or ‘function’ to be passed
-     on to, say, ‘mapcar’.
 
      Note that the ‘cl.el’ version of this macro behaves slightly
      differently.  *Note Obsolete Macros::.
@@ -1272,7 +1270,7 @@ and ‘cond’ forms.
           (cl-typecase x
             (integer (munch-integer x))
             (float (munch-float x))
-            (string (munch-integer (string-to-int x)))
+            (string (munch-integer (string-to-number x)))
             (t (munch-anything x)))
 
      The type specifier ‘t’ matches any type of object; the word
@@ -2702,12 +2700,11 @@ that must be called before the parameters can be used.
      machines, but will fail if the machine’s arithmetic is extremely
      unusual, e.g., decimal.
 
-   Since true Common Lisp supports up to four different floating-point
-precisions, it has families of constants like
+   Since true Common Lisp supports up to four different kinds of
+floating-point numbers, it has families of constants like
 ‘most-positive-single-float’, ‘most-positive-double-float’,
-‘most-positive-long-float’, and so on.  Emacs has only one
-floating-point precision, so this package omits the precision word from
-the constants’ names.
+‘most-positive-long-float’, and so on.  Emacs has only one kind of
+floating-point number, so this package just uses single constants.
 
  -- Variable: cl-most-positive-float
      This constant equals the largest value a Lisp float can hold.  For
@@ -3214,7 +3211,7 @@ chains of cons cells.
 
  -- Function: cl-caddr x
      This function is equivalent to ‘(car (cdr (cdr X)))’.  Likewise,
-     this package defines all 24 ‘cXXXr’ functions where XXX is up to
+     this package aliases all 24 ‘cXXXr’ functions where XXX is up to
      four ‘a’s and/or ‘d’s.  All of these functions are ‘setf’-able, and
      calls to them are expanded inline by the byte-compiler for maximum
      efficiency.
@@ -3468,11 +3465,8 @@ symbol to identify them.
      Given a ‘person’, ‘(copy-person P)’ makes a new object of the same
      type whose slots are ‘eq’ to those of P.
 
-     Given any Lisp object X, ‘(person-p X)’ returns true if X looks
-     like a ‘person’, and false otherwise.  (Again, in Common Lisp this
-     predicate would be exact; in Emacs Lisp the best it can do is
-     verify that X is a vector of the correct length that starts with
-     the correct tag symbol.)
+     Given any Lisp object X, ‘(person-p X)’ returns true if X is a
+     ‘person’, and false otherwise.
 
      Accessors like ‘person-name’ normally check their arguments
      (effectively using ‘person-p’) and signal an error if the argument
@@ -3672,15 +3666,15 @@ symbol to identify them.
      ‘:type’
           The argument should be one of the symbols ‘vector’ or ‘list’.
           This tells which underlying Lisp data type should be used to
-          implement the new structure type.  Vectors are used by
-          default, but ‘(:type list)’ will cause structure objects to be
-          stored as lists instead.
+          implement the new structure type.  Records are used by
+          default, but ‘(:type vector)’ will cause structure objects to
+          be stored as vectors and ‘(:type list)’ lists instead.
 
-          The vector representation for structure objects has the
-          advantage that all structure slots can be accessed quickly,
-          although creating vectors is a bit slower in Emacs Lisp.
-          Lists are easier to create, but take a relatively long time
-          accessing the later slots.
+          The record and vector representations for structure objects
+          have the advantage that all structure slots can be accessed
+          quickly, although creating them are a bit slower in Emacs
+          Lisp.  Lists are easier to create, but take a relatively long
+          time accessing the later slots.
 
      ‘:named’
           This option, which takes no arguments, causes a characteristic
@@ -3690,19 +3684,22 @@ symbol to identify them.
           identifying features.
 
           The default, if you don’t specify ‘:type’ explicitly, is to
-          use named vectors.  Therefore, ‘:named’ is only useful in
-          conjunction with ‘:type’.
+          use records, which are always tagged.  Therefore, ‘:named’ is
+          only useful in conjunction with ‘:type’.
 
                (cl-defstruct (person1) name age sex)
                (cl-defstruct (person2 (:type list) :named) name age sex)
                (cl-defstruct (person3 (:type list)) name age sex)
+               (cl-defstruct (person4 (:type vector)) name age sex)
 
                (setq p1 (make-person1))
-                    ⇒ [cl-struct-person1 nil nil nil]
+                    ⇒ #s(person1 nil nil nil)
                (setq p2 (make-person2))
                     ⇒ (person2 nil nil nil)
                (setq p3 (make-person3))
                     ⇒ (nil nil nil)
+               (setq p4 (make-person4))
+                    ⇒ [nil nil nil]
 
                (person1-p p1)
                     ⇒ t
@@ -3738,8 +3735,8 @@ introspection functions.
 
  -- Function: cl-struct-sequence-type struct-type
      This function returns the underlying data structure for
-     ‘struct-type’, which is a symbol.  It returns ‘vector’ or ‘list’,
-     or ‘nil’ if ‘struct-type’ is not actually a structure.
+     ‘struct-type’, which is a symbol.  It returns ‘record’, ‘vector’ or
+     ‘list’, or ‘nil’ if ‘struct-type’ is not actually a structure.
 
  -- Function: cl-struct-slot-info struct-type
      This function returns a list of slot descriptors for structure
@@ -3837,7 +3834,7 @@ is expanded at compile-time to the Lisp form
 
      (setq i (+ i n))
 
-which is the most efficient ways of doing this operation in Lisp.  Thus,
+which is the most efficient way of doing this operation in Lisp.  Thus,
 there is no performance penalty for using the more readable ‘cl-incf’
 form in your compiled code.
 
@@ -3967,9 +3964,8 @@ rigorously obey the scoping rules set down in Steele’s book.
 
    The variable ‘cl--gensym-counter’ starts out with zero.
 
-   The ‘cl-defstruct’ facility is compatible, except that structures are
-of type ‘:type vector :named’ by default rather than some special,
-distinct type.  Also, the ‘:type’ slot option is ignored.
+   The ‘cl-defstruct’ facility is compatible, except that the ‘:type’
+slot option is ignored.
 
    The second argument of ‘cl-check-type’ is treated differently.
 
@@ -4103,9 +4099,8 @@ code into Emacs.
      are large integers (all integers are “fixnums”).  All arrays are
      one-dimensional.  There are no readtables or pathnames; streams are
      a set of existing data types rather than a new data type of their
-     own.  Hash tables, random-states, structures, and packages
-     (obarrays) are built from Lisp vectors or lists rather than being
-     distinct types.
+     own.  Hash tables, random-states, and packages (obarrays) are built
+     from Lisp vectors or lists rather than being distinct types.
 
    • The Common Lisp Object System (CLOS) is not implemented, nor is the
      Common Lisp Condition System.  However, the EIEIO package (*note
@@ -4502,7 +4497,7 @@ Appendix E GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -4899,7 +4894,7 @@ Appendix E GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -5054,7 +5049,7 @@ Function Index
 * cl-intersection:                       Lists as Sets.       (line  50)
 * cl-isqrt:                              Numerical Functions. (line  18)
 * cl-iter-defun:                         Argument Lists.      (line  22)
-* cl-labels:                             Function Bindings.   (line  29)
+* cl-labels:                             Function Bindings.   (line  30)
 * cl-lcm:                                Numerical Functions. (line  13)
 * cl-ldiff:                              List Functions.      (line  41)
 * cl-letf:                               Modify Macros.       (line  88)
@@ -5196,7 +5191,7 @@ Function Index
                                                               (line  94)
 
 
-File: cl.info,  Node: Variable Index,  Prev: Function Index,  Up: Top
+File: cl.info,  Node: Variable Index,  Next: Concept Index,  Prev: Function Index,  Up: Top
 
 Variable Index
 **************
@@ -5205,89 +5200,118 @@ Variable Index
 * Menu:
 
 * cl-float-epsilon:                      Implementation Parameters.
-                                                               (line 63)
+                                                               (line 62)
 * cl-float-negative-epsilon:             Implementation Parameters.
-                                                               (line 69)
+                                                               (line 68)
 * cl-least-negative-float:               Implementation Parameters.
-                                                               (line 55)
+                                                               (line 54)
 * cl-least-negative-normalized-float:    Implementation Parameters.
-                                                               (line 59)
+                                                               (line 58)
 * cl-least-positive-float:               Implementation Parameters.
-                                                               (line 42)
+                                                               (line 41)
 * cl-least-positive-normalized-float:    Implementation Parameters.
-                                                               (line 47)
+                                                               (line 46)
 * cl-most-negative-float:                Implementation Parameters.
-                                                               (line 38)
+                                                               (line 37)
 * cl-most-positive-float:                Implementation Parameters.
-                                                               (line 32)
+                                                               (line 31)
+
+
+File: cl.info,  Node: Concept Index,  Prev: Variable Index,  Up: Top
+
+Concept Index
+*************
+
+ [index ]
+* Menu:
+
+* &aux:                                  Argument Lists.      (line   6)
+* &key:                                  Argument Lists.      (line   6)
+* block:                                 Blocks and Exits.    (line   6)
+* compiler macros:                       Macros.              (line  23)
+* conditionals:                          Conditionals.        (line   6)
+* define compiler macros:                Macros.              (line  23)
+* destructuring, in argument list:       Argument Lists.      (line 165)
+* destructuring, in cl-loop:             For Clauses.         (line 237)
+* dynamic binding:                       Dynamic Bindings.    (line   6)
+* exit:                                  Blocks and Exits.    (line   6)
+* function binding:                      Function Bindings.   (line   6)
+* generalized variable:                  Generalized Variables.
+                                                              (line   6)
+* iteration:                             Iteration.           (line   6)
+* loop facility:                         Loop Facility.       (line   6)
+* macro binding:                         Macro Bindings.      (line   6)
+* multiple values:                       Multiple Values.     (line   6)
+* variable binding:                      Variable Bindings.   (line   6)
 
 
 
 Tag Table:
 Node: Top923
-Node: Overview2997
-Node: Usage5228
-Node: Organization5939
-Node: Naming Conventions9140
-Node: Program Structure10485
-Node: Argument Lists10936
-Node: Time of Evaluation20760
-Node: Predicates26902
-Node: Type Predicates27246
-Node: Equality Predicates32256
-Node: Control Structure33689
-Node: Assignment34606
-Node: Generalized Variables35901
-Node: Setf Extensions36691
-Node: Modify Macros40964
-Node: Variable Bindings48044
-Node: Dynamic Bindings48631
-Node: Function Bindings49481
-Node: Macro Bindings51807
-Node: Conditionals55224
-Node: Blocks and Exits57937
-Node: Iteration61752
-Node: Loop Facility67182
-Node: Loop Basics68166
-Node: Loop Examples70796
-Node: For Clauses73201
-Node: Iteration Clauses85228
-Node: Accumulation Clauses87350
-Node: Other Clauses89802
-Node: Multiple Values96233
-Node: Macros97806
-Node: Declarations101142
-Node: Symbols109380
-Node: Property Lists109727
-Node: Creating Symbols113090
-Node: Numbers114669
-Node: Predicates on Numbers115163
-Node: Numerical Functions116156
-Node: Random Numbers120018
-Node: Implementation Parameters122660
-Node: Sequences125899
-Node: Sequence Basics126651
-Node: Mapping over Sequences130376
-Node: Sequence Functions136743
-Node: Searching Sequences142517
-Node: Sorting Sequences145725
-Node: Lists148480
-Node: List Functions148972
-Node: Substitution of Expressions151721
-Node: Lists as Sets153710
-Node: Association Lists157599
-Node: Structures159150
-Node: Assertions175989
-Node: Efficiency Concerns178587
-Node: Common Lisp Compatibility183278
-Node: Porting Common Lisp185683
-Node: Obsolete Features194904
-Node: Obsolete Lexical Binding195579
-Node: Obsolete Macros199470
-Node: Obsolete Setf Customization202758
-Node: GNU Free Documentation License209380
-Node: Function Index234740
-Node: Variable Index250041
+Node: Overview3059
+Node: Usage5290
+Node: Organization6001
+Node: Naming Conventions9202
+Node: Program Structure10547
+Node: Argument Lists10998
+Node: Time of Evaluation20822
+Node: Predicates26964
+Node: Type Predicates27308
+Node: Equality Predicates32318
+Node: Control Structure33751
+Node: Assignment34668
+Node: Generalized Variables35963
+Node: Setf Extensions36753
+Node: Modify Macros41026
+Node: Variable Bindings48106
+Node: Dynamic Bindings48693
+Node: Function Bindings49543
+Node: Macro Bindings51676
+Node: Conditionals55093
+Node: Blocks and Exits57809
+Node: Iteration61624
+Node: Loop Facility67054
+Node: Loop Basics68038
+Node: Loop Examples70668
+Node: For Clauses73073
+Node: Iteration Clauses85100
+Node: Accumulation Clauses87222
+Node: Other Clauses89674
+Node: Multiple Values96105
+Node: Macros97678
+Node: Declarations101014
+Node: Symbols109252
+Node: Property Lists109599
+Node: Creating Symbols112962
+Node: Numbers114541
+Node: Predicates on Numbers115035
+Node: Numerical Functions116028
+Node: Random Numbers119890
+Node: Implementation Parameters122532
+Node: Sequences125756
+Node: Sequence Basics126508
+Node: Mapping over Sequences130233
+Node: Sequence Functions136600
+Node: Searching Sequences142374
+Node: Sorting Sequences145582
+Node: Lists148337
+Node: List Functions148829
+Node: Substitution of Expressions151578
+Node: Lists as Sets153567
+Node: Association Lists157456
+Node: Structures159007
+Node: Assertions175858
+Node: Efficiency Concerns178456
+Node: Common Lisp Compatibility183146
+Node: Porting Common Lisp185443
+Node: Obsolete Features194647
+Node: Obsolete Lexical Binding195322
+Node: Obsolete Macros199213
+Node: Obsolete Setf Customization202501
+Node: GNU Free Documentation License209123
+Node: Function Index234485
+Node: Variable Index249786
+Node: Concept Index251062
 
 End Tag Table
 

@@ -1,8 +1,8 @@
-This is mh-e.info, produced by makeinfo version 6.3 from mh-e.texi.
+This is mh-e.info, produced by makeinfo version 6.6 from mh-e.texi.
 
 This is version 8.6 of ‘The MH-E Manual’, last updated 2016-04-29.
 
-   Copyright © 1995, 2001–2003, 2005–2017 Free Software Foundation, Inc.
+   Copyright © 1995, 2001–2003, 2005–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of either:
@@ -35,7 +35,7 @@ The MH-E Manual
 
 This is version 8.6 of ‘The MH-E Manual’, last updated 2016-04-29.
 
-   Copyright © 1995, 2001–2003, 2005–2017 Free Software Foundation, Inc.
+   Copyright © 1995, 2001–2003, 2005–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of either:
@@ -759,7 +759,7 @@ Miscellaneous::).
 
    (2) *Note The GNU Emacs Lisp Reference Manual: (elisp)Top, which
 should be available via the Info system.  It is also available online at
-<http://www.gnu.org/software/emacs/manual/elisp.html>.
+<https://www.gnu.org/software/emacs/manual/elisp.html>.
 
 
 File: mh-e.info,  Node: Options,  Next: Ranges,  Prev: Using This Manual,  Up: Using This Manual
@@ -1413,10 +1413,10 @@ information, see <http://quimby.gnus.org/circus/face/>.
 (ftp://ftp.cs.indiana.edu/pub/faces/compface/compface.tar.Z). Recent
 versions of XEmacs have internal support for ‘X-Face:’ images.  If your
 version of XEmacs does not, then you’ll need both ‘uncompface’ and the
-‘x-face’ package (ftp://ftp.jpl.org/pub/elisp/).
+‘x-face’ package (http://www.jpl.org/ftp/pub/elisp/).
 
    (3) The display of the images requires the ‘wget’ program
-(http://www.gnu.org/software/wget/wget.html) to fetch the image and the
+(https://www.gnu.org/software/wget/wget.html) to fetch the image and the
 ‘convert’ program from the ImageMagick suite
 (http://www.imagemagick.org/script/index.php).
 
@@ -2180,7 +2180,7 @@ example:
 
      (defun my-mh-folder-mode-hook ()
        "Hook to set key bindings in MH-Folder mode."
-       (if (not my-mh-init-done)             ; only need to bind the keys once 
+       (if (not my-mh-init-done)             ; only need to bind the keys once
            (progn
              (local-set-key "//" 'my-search-msg)
              (local-set-key "b" 'mh-burst-digest)    ; better use of ‘b’
@@ -2378,8 +2378,8 @@ to accomplish that.
 
    You can use dired to manipulate the folders themselves.  For example,
 I renamed my ‘+out’ folder to the more common ‘+outbox’ by running dired
-on my mail directory (‘M-x dired RET ~/Mail RET’), moving my cursor to
-‘out’ and using the command ‘R’ (‘dired-do-rename’).
+on my mail directory (‘M-x dired <RET> ~/Mail <RET>’), moving my cursor
+to ‘out’ and using the command ‘R’ (‘dired-do-rename’).
 
    ---------- Footnotes ----------
 
@@ -3948,16 +3948,16 @@ Emacs navigational keys (like the arrow keys, or ‘C-n’) to move the
 cursor over the desired folder and then use the shortcuts for the menu
 items listed in the table below.
 
-‘Visit Folder (<RET>)’
+‘Visit Folder’ (<RET>)
      Visits the selected folder just as if you had used ‘F v’
      (‘mh-speed-view’).
-‘Expand Nested Folders (‘+’)’
+‘Expand Nested Folders’ (‘+’)
      Expands the selected folder in the speedbar, exposing the children
      folders inside it (‘mh-speed-expand-folder’).
-‘Contract Nested Folders (‘-’)’
+‘Contract Nested Folders’ (‘-’)
      Contracts or collapses the selected folder in the speedbar, hiding
      the children folders inside it (‘mh-speed-contract-folder’).
-‘Refresh Speedbar (‘r’)’
+‘Refresh Speedbar’ (‘r’)
      Regenerates the list of folders in the speedbar.  Run this command
      if you’ve added or deleted a folder, or want to update the unseen
      message count before the next automatic update
@@ -5772,7 +5772,7 @@ Appendix E GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -6169,7 +6169,7 @@ Appendix E GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -6253,7 +6253,7 @@ Appendix F GNU General Public License
 
                         Version 3, 29 June 2007
 
-     Copyright © 2007 Free Software Foundation, Inc. <http://fsf.org/>
+     Copyright © 2007 Free Software Foundation, Inc. <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies of this
      license document, but changing it is not allowed.
@@ -6931,7 +6931,7 @@ state the exclusion of warranty; and each file should have at least the
      General Public License for more details.
 
      You should have received a copy of the GNU General Public License
-     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
    Also add information on how to contact you by electronic and paper
 mail.
@@ -6952,14 +6952,14 @@ use an “about box”.
    You should also get your employer (if you work as a programmer) or
 school, if any, to sign a “copyright disclaimer” for the program, if
 necessary.  For more information on this, and how to apply and follow
-the GNU GPL, see <http://www.gnu.org/licenses/>.
+the GNU GPL, see <https://www.gnu.org/licenses/>.
 
    The GNU General Public License does not permit incorporating your
 program into proprietary programs.  If your program is a subroutine
 library, you may consider it more useful to permit linking proprietary
 applications with the library.  If this is what you want to do, use the
 GNU Lesser General Public License instead of this License.  But first,
-please read <http://www.gnu.org/philosophy/why-not-lgpl.html>.
+please read <https://www.gnu.org/licenses/why-not-lgpl.html>.
 
 
 File: mh-e.info,  Node: Key Index,  Next: Command Index,  Prev: GPL,  Up: Top
@@ -7009,11 +7009,11 @@ Key (Character) Index
 * ? <4>:                                 Miscellaneous.       (line  28)
 * |:                                     Reading Mail.        (line  40)
 * | <1>:                                 Files and Pipes.     (line  14)
-* <BS>:                                  Processing Mail Tour.
+* BS:                                    Processing Mail Tour.
                                                               (line  42)
-* <BS> <1>:                              Reading Mail.        (line  36)
-* <BS> <2>:                              Viewing.             (line   6)
-* <BS> <3>:                              Digests.             (line   6)
+* BS <1>:                                Reading Mail.        (line  36)
+* BS <2>:                                Viewing.             (line   6)
+* BS <3>:                                Digests.             (line   6)
 * c:                                     Folders.             (line  13)
 * c <1>:                                 Folders.             (line 203)
 * C-@:                                   Conventions.         (line  80)
@@ -7157,7 +7157,7 @@ Key (Character) Index
 * C-c M-d:                               Editing Drafts.      (line 119)
 * C-c M-d <1>:                           Identities.          (line  14)
 * C-c M-d <2>:                           Identities.          (line 109)
-* C-c <RET>:                             Viewing.             (line 111)
+* C-c RET:                               Viewing.             (line 111)
 * C-d:                                   Reading Mail.        (line  42)
 * C-d <1>:                               Navigating.          (line  33)
 * C-f:                                   Processing Mail Tour.
@@ -7179,7 +7179,7 @@ Key (Character) Index
 * C-p:                                   Processing Mail Tour.
                                                               (line  42)
 * C-p <1>:                               Navigating.          (line  18)
-* C-<SPC>:                               Conventions.         (line  80)
+* C-SPC:                                 Conventions.         (line  80)
 * C-u:                                   Conventions.         (line  39)
 * C-u, with ranges:                      Ranges.              (line  10)
 * C-x 5 0:                               Speedbar.            (line  34)
@@ -7196,11 +7196,11 @@ Key (Character) Index
 * D ?:                                   Reading Mail.        (line  47)
 * D b:                                   Reading Mail.        (line  54)
 * D b <1>:                               Digests.             (line  13)
-* D <BS>:                                Reading Mail.        (line  52)
-* D <BS> <1>:                            Digests.             (line   6)
-* D <SPC>:                               Reading Mail.        (line  50)
-* D <SPC> <1>:                           Digests.             (line   6)
-* <DEL>:                                 Reading Mail Tour.   (line  41)
+* D BS:                                  Reading Mail.        (line  52)
+* D BS <1>:                              Digests.             (line   6)
+* D SPC:                                 Reading Mail.        (line  50)
+* D SPC <1>:                             Digests.             (line   6)
+* DEL:                                   Reading Mail Tour.   (line  41)
 * e:                                     Sending Mail.        (line  19)
 * E:                                     Sending Mail.        (line  20)
 * e <1>:                                 Redistributing.      (line  12)
@@ -7283,12 +7283,12 @@ Key (Character) Index
 * K i <1>:                               Viewing Attachments. (line 131)
 * K o:                                   Reading Mail.        (line  74)
 * K o <1>:                               Viewing Attachments. (line  63)
-* K S-<TAB>:                             Reading Mail.        (line  66)
-* K S-<TAB> <1>:                         Viewing Attachments. (line  25)
+* K S-TAB:                               Reading Mail.        (line  66)
+* K S-TAB <1>:                           Viewing Attachments. (line  25)
 * K t:                                   Reading Mail.        (line  76)
 * K t <1>:                               Viewing Attachments. (line  88)
-* K <TAB>:                               Reading Mail.        (line  64)
-* K <TAB> <1>:                           Viewing Attachments. (line  25)
+* K TAB:                                 Reading Mail.        (line  64)
+* K TAB <1>:                             Viewing Attachments. (line  25)
 * K v:                                   Reading Mail.        (line  79)
 * K v <1>:                               Viewing Attachments. (line  37)
 * l:                                     Files and Pipes.     (line  14)
@@ -7309,31 +7309,11 @@ Key (Character) Index
 * M-p:                                   Reading Mail.        (line  89)
 * M-p <1>:                               Navigating.          (line   6)
 * M-q:                                   Editing Message.     (line  61)
-* M-<TAB>:                               Editing Drafts.      (line  13)
-* M-<TAB> <1>:                           Editing Message.     (line  32)
-* M-<TAB> <2>:                           Aliases.             (line  15)
-* M-<TAB> <3>:                           Aliases.             (line  71)
+* M-TAB:                                 Editing Drafts.      (line  13)
+* M-TAB <1>:                             Editing Message.     (line  32)
+* M-TAB <2>:                             Aliases.             (line  15)
+* M-TAB <3>:                             Aliases.             (line  71)
 * M-x:                                   Conventions.         (line  96)
-* M-x mh-alias-add-address-under-point:  Aliases.             (line 190)
-* M-x mh-alias-add-alias:                Aliases.             (line 162)
-* M-x mh-alias-apropos:                  Aliases.             (line 212)
-* M-x mh-alias-grab-from-field:          Aliases.             (line 190)
-* M-x mh-alias-reload:                   Aliases.             (line 149)
-* M-x mh-rmail:                          Reading Mail Tour.   (line   6)
-* M-x mh-rmail <1>:                      Reading Mail Tour.   (line  12)
-* M-x mh-rmail <2>:                      Leaving MH-E.        (line  12)
-* M-x mh-rmail <3>:                      Reading Mail.        (line   6)
-* M-x mh-smail:                          Sending Mail Tour.   (line   6)
-* M-x mh-smail <1>:                      Processing Mail Tour.
-                                                              (line  72)
-* M-x mh-smail <2>:                      Sending Mail.        (line   6)
-* M-x mh-smail <3>:                      Composing.           (line   6)
-* M-x mh-smail-other-window:             Composing.           (line   6)
-* M-x mh-update-sequences:               Sequences.           (line 102)
-* M-x mh-version:                        Miscellaneous.       (line  12)
-* M-x mh-version <1>:                    Bug Reports.         (line   6)
-* M-x mh-version <2>:                    Getting MH-E.        (line  22)
-* M-x speedbar:                          Speedbar.            (line   6)
 * mouse-1:                               Reading Mail.        (line 122)
 * mouse-1 <1>:                           Viewing Attachments. (line  25)
 * mouse-2:                               Reading Mail.        (line 116)
@@ -7386,17 +7366,17 @@ Key (Character) Index
 * r <1>:                                 Sending Mail.        (line  25)
 * r <2>:                                 Replying.            (line   6)
 * r <3>:                                 Inserting Letter.    (line  36)
-* <RET>:                                 Reading Mail Tour.   (line  19)
-* <RET> <1>:                             Processing Mail Tour.
+* RET:                                   Reading Mail Tour.   (line  19)
+* RET <1>:                               Processing Mail Tour.
                                                               (line   6)
-* <RET> <2>:                             Processing Mail Tour.
+* RET <2>:                               Processing Mail Tour.
                                                               (line  63)
-* <RET> <3>:                             Reading Mail.        (line  24)
-* <RET> <4>:                             Reading Mail.        (line 122)
-* <RET> <5>:                             Viewing.             (line   6)
-* <RET> <6>:                             Viewing Attachments. (line  25)
-* <RET> <7>:                             Files and Pipes.     (line  31)
-* <RET> <8>:                             Navigating.          (line  18)
+* RET <3>:                               Reading Mail.        (line  24)
+* RET <4>:                               Reading Mail.        (line 122)
+* RET <5>:                               Viewing.             (line   6)
+* RET <6>:                               Viewing Attachments. (line  25)
+* RET <7>:                               Files and Pipes.     (line  31)
+* RET <8>:                               Navigating.          (line  18)
 * s:                                     Sending Mail.        (line  27)
 * S ':                                   Sequences.           (line  17)
 * S ' <1>:                               Sequences.           (line  73)
@@ -7419,21 +7399,21 @@ Key (Character) Index
 * S w <1>:                               Sequences.           (line  73)
 * S w <2>:                               Sequences.           (line 115)
 * S-mouse-2:                             HTML.                (line  90)
-* S-<TAB>:                               Editing Drafts.      (line  19)
-* S-<TAB> <1>:                           Editing Message.     (line  19)
-* S-<TAB> <2>:                           Searching.           (line  55)
-* S-<TAB> <3>:                           Searching.           (line 152)
+* S-TAB:                                 Editing Drafts.      (line  19)
+* S-TAB <1>:                             Editing Message.     (line  19)
+* S-TAB <2>:                             Searching.           (line  55)
+* S-TAB <3>:                             Searching.           (line 152)
 * SPC:                                   Conventions.         (line  88)
-* <SPC>:                                 Reading Mail Tour.   (line  41)
-* <SPC> <1>:                             Processing Mail Tour.
+* SPC <1>:                               Reading Mail Tour.   (line  41)
+* SPC <2>:                               Processing Mail Tour.
                                                               (line  51)
-* <SPC> <2>:                             Reading Mail.        (line  34)
-* <SPC> <3>:                             Viewing.             (line   6)
-* <SPC> <4>:                             Digests.             (line   6)
-* <SPC> <5>:                             Editing Drafts.      (line  11)
-* <SPC> <6>:                             Editing Message.     (line  32)
-* <SPC> <7>:                             Aliases.             (line  13)
-* <SPC> <8>:                             Aliases.             (line  71)
+* SPC <3>:                               Reading Mail.        (line  34)
+* SPC <4>:                               Viewing.             (line   6)
+* SPC <5>:                               Digests.             (line   6)
+* SPC <6>:                               Editing Drafts.      (line  11)
+* SPC <7>:                               Editing Message.     (line  32)
+* SPC <8>:                               Aliases.             (line  13)
+* SPC <9>:                               Aliases.             (line  71)
 * t:                                     Digests.             (line  13)
 * t <1>:                                 Folders.             (line  47)
 * t <2>:                                 Folders.             (line 210)
@@ -7453,12 +7433,12 @@ Key (Character) Index
 * T u:                                   Threading.           (line  31)
 * T u <1>:                               Threading.           (line  46)
 * TAB:                                   Conventions.         (line  88)
-* <TAB>:                                 Folders.             (line 282)
-* <TAB> <1>:                             Editing Drafts.      (line  17)
-* <TAB> <2>:                             Editing Message.     (line  19)
-* <TAB> <3>:                             Aliases.             (line  63)
-* <TAB> <4>:                             Searching.           (line  54)
-* <TAB> <5>:                             Searching.           (line 152)
+* TAB <1>:                               Folders.             (line 282)
+* TAB <2>:                               Editing Drafts.      (line  17)
+* TAB <3>:                               Editing Message.     (line  19)
+* TAB <4>:                               Aliases.             (line  63)
+* TAB <5>:                               Searching.           (line  54)
+* TAB <6>:                               Searching.           (line 152)
 * u:                                     Navigating.          (line  37)
 * u <1>:                                 Folders.             (line  50)
 * u <2>:                                 Folders.             (line 177)
@@ -7521,10 +7501,12 @@ Command Index
 * kill-buffer:                           Killing Draft.       (line   6)
 * mailcap-mime-info:                     Viewing Attachments. (line  48)
 * mailcap-mime-types:                    Adding Attachments.  (line  32)
+* mh-alias-add-address-under-point:      Aliases.             (line 190)
 * mh-alias-add-alias:                    Aliases.             (line 162)
 * mh-alias-apropos:                      Aliases.             (line  17)
 * mh-alias-apropos <1>:                  Aliases.             (line 212)
 * mh-alias-grab-from-field:              Aliases.             (line  19)
+* mh-alias-grab-from-field <1>:          Aliases.             (line 190)
 * mh-alias-minibuffer-confirm-address:   Aliases.             (line  91)
 * mh-alias-reload:                       Aliases.             (line  21)
 * mh-alias-reload <1>:                   Aliases.             (line 149)
@@ -7857,6 +7839,9 @@ Command Index
 * mh-update-sequences <1>:               Sequences.           (line 102)
 * mh-version:                            Getting Started.     (line  14)
 * mh-version <1>:                        Miscellaneous.       (line   8)
+* mh-version <2>:                        Miscellaneous.       (line  12)
+* mh-version <3>:                        Bug Reports.         (line   6)
+* mh-version <4>:                        Getting MH-E.        (line  22)
 * mh-visit-folder:                       Folders.             (line  41)
 * mh-visit-folder <1>:                   Folders.             (line 224)
 * mh-visit-folder <2>:                   Speedbar.            (line   6)
@@ -7880,6 +7865,7 @@ Command Index
 * previous-line <1>:                     Navigating.          (line  18)
 * setq:                                  Conventions.         (line  57)
 * setq <1>:                              Scan Line Formats.   (line  93)
+* speedbar:                              Speedbar.            (line   6)
 * trivial-cite:                          Inserting Letter.    (line  65)
 
 
@@ -9242,12 +9228,12 @@ Concept Index
 * spam <1>:                              Junk.                (line   6)
 * spam filters, bogofilter:              Junk.                (line  60)
 * spam filters, bogofilter <1>:          Junk.                (line 181)
-* spam filters, Spamassassin:            Junk.                (line  60)
-* spam filters, Spamassassin <1>:        Junk.                (line 101)
+* spam filters, SpamAssassin:            Junk.                (line  60)
+* spam filters, SpamAssassin <1>:        Junk.                (line 101)
 * spam filters, SpamProbe:               Junk.                (line  60)
 * spam filters, SpamProbe <1>:           Junk.                (line 232)
-* Spamassassin:                          Junk.                (line  60)
-* Spamassassin <1>:                      Junk.                (line 101)
+* SpamAssassin:                          Junk.                (line  60)
+* SpamAssassin <1>:                      Junk.                (line 101)
 * spamc:                                 Junk.                (line 107)
 * SpamProbe:                             Junk.                (line  60)
 * SpamProbe <1>:                         Junk.                (line 232)
@@ -9393,115 +9379,115 @@ Node: More About MH-E28041
 Node: Using This Manual29570
 Ref: Using This Manual-Footnote-132391
 Ref: Using This Manual-Footnote-232479
-Node: Options32676
-Node: Ranges34719
-Node: Folder Selection36550
-Node: Incorporating Mail38907
-Node: Reading Mail43105
-Ref: Reading Mail-Footnote-151876
-Node: Viewing52153
-Ref: Viewing-Footnote-160721
-Ref: Viewing-Footnote-260854
-Ref: Viewing-Footnote-361201
-Node: Viewing Attachments61435
-Ref: Viewing Attachments-Footnote-169493
-Ref: Viewing Attachments-Footnote-269619
-Ref: Viewing Attachments-Footnote-369737
-Ref: Viewing Attachments-Footnote-469951
-Node: HTML70021
-Node: Digests74949
-Ref: Digests-Footnote-176413
-Node: Reading PGP76524
-Ref: Reading PGP-Footnote-179325
-Ref: Reading PGP-Footnote-279574
-Node: Printing79753
-Ref: Printing-Footnote-182653
-Node: Files and Pipes82763
-Node: Navigating84791
-Node: Miscellaneous Commands and Options87603
-Ref: Miscellaneous Commands and Options-Footnote-191591
-Ref: Miscellaneous Commands and Options-Footnote-291900
-Node: Folders91989
-Ref: Folders-Footnote-1107738
-Ref: Folders-Footnote-2107961
-Ref: Folders-Footnote-3108036
-Node: Sending Mail108153
-Node: Composing111345
-Ref: Composing-Footnote-1114798
-Ref: Composing-Footnote-2115052
-Node: Replying115232
-Ref: Replying-Footnote-1118080
-Node: Forwarding118200
-Ref: Forwarding-Footnote-1120209
-Node: Redistributing120328
-Ref: Redistributing-Footnote-1121530
-Ref: Redistributing-Footnote-2121655
-Node: Editing Again121777
-Node: Editing Drafts122908
-Node: Editing Message130135
-Node: Inserting Letter135192
-Ref: Inserting Letter-Footnote-1139277
-Ref: Inserting Letter-Footnote-2139400
-Ref: Inserting Letter-Footnote-3139581
-Node: Inserting Messages139683
-Node: Signature140569
-Node: Picture142315
-Node: Adding Attachments143914
-Ref: Adding Attachments-Footnote-1153897
-Ref: Adding Attachments-Footnote-2153978
-Ref: Adding Attachments-Footnote-3154096
-Ref: Adding Attachments-Footnote-4154153
-Ref: Adding Attachments-Footnote-5154240
-Node: Sending PGP154358
-Node: Checking Recipients156364
-Ref: Checking Recipients-Footnote-1156793
-Node: Sending Message156929
-Ref: Sending Message-Footnote-1157892
-Node: Killing Draft158014
-Node: Aliases158420
-Ref: Aliases-Footnote-1167780
-Node: Identities167880
-Ref: Identities-Footnote-1175224
-Node: Speedbar175277
-Ref: Speedbar-Footnote-1177843
-Node: Menu Bar177977
-Node: Tool Bar178969
-Node: Searching181634
-Node: Threading193887
-Ref: Threading-Footnote-1196930
-Node: Limits197529
-Ref: Limits-Footnote-1199534
-Node: Sequences199671
-Ref: Sequences-Footnote-1205131
-Ref: Sequences-Footnote-2205245
-Ref: Sequences-Footnote-3205279
-Node: Junk205404
-Ref: Junk-Footnote-1216332
-Node: Miscellaneous216668
-Node: Scan Line Formats218571
-Ref: Scan Line Formats-Footnote-1235310
-Ref: Scan Line Formats-Footnote-2235454
-Node: Procmail235580
-Ref: Procmail-Footnote-1241148
-Ref: Procmail-Footnote-2241294
-Ref: Procmail-Footnote-3241456
-Node: Odds and Ends241538
-Node: Bug Reports241956
-Node: Mailing Lists242465
-Node: MH FAQ and Support242983
-Node: Getting MH-E243711
-Node: History245381
-Node: From Brian Reid246011
-Ref: From Brian Reid-Footnote-1247183
-Node: From Jim Larus247664
-Node: From Stephen Gildea249958
-Node: From Bill Wohler252133
-Node: GFDL254071
-Node: GPL279386
-Node: Key Index317138
-Node: Command Index354081
-Node: Option Index382932
-Node: Concept Index415853
+Node: Options32677
+Node: Ranges34720
+Node: Folder Selection36551
+Node: Incorporating Mail38908
+Node: Reading Mail43106
+Ref: Reading Mail-Footnote-151877
+Node: Viewing52154
+Ref: Viewing-Footnote-160722
+Ref: Viewing-Footnote-260855
+Ref: Viewing-Footnote-361207
+Node: Viewing Attachments61442
+Ref: Viewing Attachments-Footnote-169500
+Ref: Viewing Attachments-Footnote-269626
+Ref: Viewing Attachments-Footnote-369744
+Ref: Viewing Attachments-Footnote-469958
+Node: HTML70028
+Node: Digests74956
+Ref: Digests-Footnote-176420
+Node: Reading PGP76531
+Ref: Reading PGP-Footnote-179332
+Ref: Reading PGP-Footnote-279581
+Node: Printing79760
+Ref: Printing-Footnote-182660
+Node: Files and Pipes82770
+Node: Navigating84798
+Node: Miscellaneous Commands and Options87610
+Ref: Miscellaneous Commands and Options-Footnote-191598
+Ref: Miscellaneous Commands and Options-Footnote-291907
+Node: Folders91996
+Ref: Folders-Footnote-1107748
+Ref: Folders-Footnote-2107971
+Ref: Folders-Footnote-3108046
+Node: Sending Mail108163
+Node: Composing111355
+Ref: Composing-Footnote-1114808
+Ref: Composing-Footnote-2115062
+Node: Replying115242
+Ref: Replying-Footnote-1118090
+Node: Forwarding118210
+Ref: Forwarding-Footnote-1120219
+Node: Redistributing120338
+Ref: Redistributing-Footnote-1121540
+Ref: Redistributing-Footnote-2121665
+Node: Editing Again121787
+Node: Editing Drafts122918
+Node: Editing Message130145
+Node: Inserting Letter135202
+Ref: Inserting Letter-Footnote-1139287
+Ref: Inserting Letter-Footnote-2139410
+Ref: Inserting Letter-Footnote-3139591
+Node: Inserting Messages139693
+Node: Signature140579
+Node: Picture142325
+Node: Adding Attachments143924
+Ref: Adding Attachments-Footnote-1153907
+Ref: Adding Attachments-Footnote-2153988
+Ref: Adding Attachments-Footnote-3154106
+Ref: Adding Attachments-Footnote-4154163
+Ref: Adding Attachments-Footnote-5154250
+Node: Sending PGP154368
+Node: Checking Recipients156374
+Ref: Checking Recipients-Footnote-1156803
+Node: Sending Message156939
+Ref: Sending Message-Footnote-1157902
+Node: Killing Draft158024
+Node: Aliases158430
+Ref: Aliases-Footnote-1167790
+Node: Identities167890
+Ref: Identities-Footnote-1175234
+Node: Speedbar175287
+Ref: Speedbar-Footnote-1177853
+Node: Menu Bar177987
+Node: Tool Bar178979
+Node: Searching181644
+Node: Threading193897
+Ref: Threading-Footnote-1196940
+Node: Limits197539
+Ref: Limits-Footnote-1199544
+Node: Sequences199681
+Ref: Sequences-Footnote-1205141
+Ref: Sequences-Footnote-2205255
+Ref: Sequences-Footnote-3205289
+Node: Junk205414
+Ref: Junk-Footnote-1216342
+Node: Miscellaneous216678
+Node: Scan Line Formats218581
+Ref: Scan Line Formats-Footnote-1235320
+Ref: Scan Line Formats-Footnote-2235464
+Node: Procmail235590
+Ref: Procmail-Footnote-1241158
+Ref: Procmail-Footnote-2241304
+Ref: Procmail-Footnote-3241466
+Node: Odds and Ends241548
+Node: Bug Reports241966
+Node: Mailing Lists242475
+Node: MH FAQ and Support242993
+Node: Getting MH-E243721
+Node: History245391
+Node: From Brian Reid246021
+Ref: From Brian Reid-Footnote-1247193
+Node: From Jim Larus247674
+Node: From Stephen Gildea249968
+Node: From Bill Wohler252143
+Node: GFDL254081
+Node: GPL279398
+Node: Key Index317152
+Node: Command Index352645
+Node: Option Index381934
+Node: Concept Index414855
 
 End Tag Table
 

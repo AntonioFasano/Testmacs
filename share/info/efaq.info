@@ -1,6 +1,6 @@
-This is efaq.info, produced by makeinfo version 6.3 from efaq.texi.
+This is efaq.info, produced by makeinfo version 6.6 from efaq.texi.
 
-Copyright © 2001–2017 Free Software Foundation, Inc.
+Copyright © 2001–2019 Free Software Foundation, Inc.
 Copyright © 1994, 1995, 1996, 1997, 1998, 1999, 2000 Reuven M. Lerner
 Copyright © 1992, 1993 Steven Byrnes
 Copyright © 1990, 1991, 1992 Joseph Brian Wells
@@ -40,7 +40,7 @@ This is the GNU Emacs FAQ.
 errors, or have any suggestions, please use ‘M-x report-emacs-bug’ to
 report them.
 
-   This is the version of the FAQ distributed with Emacs 25.3, and
+   This is the version of the FAQ distributed with Emacs 26.3, and
 mainly describes that version.  Although there is some information on
 older versions, details about very old releases (now only of historical
 interest) have been removed.  If you are interested in this, consult
@@ -53,7 +53,7 @@ latest release.
    This FAQ is not updated very frequently.  When you have a question
 about Emacs, the Emacs manual is often the best starting point.
 
-   Copyright © 2001–2017 Free Software Foundation, Inc.
+   Copyright © 2001–2019 Free Software Foundation, Inc.
 Copyright © 1994, 1995, 1996, 1997, 1998, 1999, 2000 Reuven M. Lerner
 Copyright © 1992, 1993 Steven Byrnes
 Copyright © 1990, 1991, 1992 Joseph Brian Wells
@@ -117,12 +117,12 @@ File: efaq.info,  Node: Basic keys,  Next: Extended commands,  Up: FAQ notation
 1.1 What do these mean: ‘C-h’, ‘C-M-a’, <RET>, ‘<ESC> a’, etc.?
 ===============================================================
 
-   • ‘C-x’: press the <x> key while holding down the <Control> key
+   • ‘C-x’: press the ‘x’ key while holding down the <Control> key
 
-   • ‘M-x’: press the <x> key while holding down the <Meta> key (if your
+   • ‘M-x’: press the ‘x’ key while holding down the <Meta> key (if your
      computer doesn’t have a <Meta> key, *note No Meta key::)
 
-   • ‘M-C-x’: press the <x> key while holding down both <Control> and
+   • ‘M-C-x’: press the ‘x’ key while holding down both <Control> and
      <Meta>
 
    • ‘C-M-x’: a synonym for the above
@@ -144,16 +144,16 @@ File: efaq.info,  Node: Basic keys,  Next: Extended commands,  Up: FAQ notation
    Key sequences longer than one key (and some single-key sequences) are
 written inside quotes or on lines by themselves, like this:
 
-       ‘M-x frobnicate-while-foo RET’
+       ‘M-x frobnicate-while-foo <RET>’
 
 Any real spaces in such a key sequence should be ignored; only <SPC>
 really means press the space key.
 
    The ASCII code sent by ‘C-x’ (except for ‘C-?’) is the value that
-would be sent by pressing just <x> minus 96 (or 64 for upper-case <X>)
+would be sent by pressing just ‘x’ minus 96 (or 64 for upper-case ‘X’)
 and will be from 0 to 31.  On Unix and GNU/Linux terminals, the ASCII
 code sent by ‘M-x’ is the sum of 128 and the ASCII code that would be
-sent by pressing just <x>.  Essentially, <Control> turns off bits 5 and
+sent by pressing just ‘x’.  Essentially, <Control> turns off bits 5 and
 6 and <Meta> turns on bit 7(1).
 
    ‘C-?’ (aka <DEL>) is ASCII code 127.  It is a misnomer to call ‘C-?’
@@ -180,7 +180,7 @@ type <RET>.  (*Note Basic keys::, if you’re not sure what ‘M-x’ and
    ‘M-x’ (by default) invokes the command ‘execute-extended-command’.
 This command allows you to run any Emacs command if you can remember the
 command’s name.  If you can’t remember the command’s name, you can type
-<TAB> and <SPC> for completion, <?> for a list of possibilities, and
+<TAB> and <SPC> for completion, ‘?’ for a list of possibilities, and
 ‘M-p’ and ‘M-n’ (or up-arrow and down-arrow) to see previous commands
 entered.  An Emacs “command” is an “interactive” Emacs function.
 
@@ -202,7 +202,7 @@ manual node inside Emacs (assuming nothing is broken) by typing ‘C-h i m
 emacs <RET> m TOPIC <RET>’.
 
    This invokes Info, the GNU hypertext documentation browser.  If you
-don’t already know how to use Info, type <?> from within Info.
+don’t already know how to use Info, type ‘?’ from within Info.
 
    If we refer to TOPIC:SUBTOPIC, type ‘C-h i m emacs <RET> m TOPIC
 <RET> m SUBTOPIC <RET>’.
@@ -342,8 +342,8 @@ File: efaq.info,  Node: Guidelines for newsgroup postings,  Next: Newsgroup arch
 ===================================================================
 
 The Emacs mailing lists are described at the Emacs Savannah page
-(http://savannah.gnu.org/mail/?group=emacs).  Some of them are gatewayed
-to newsgroups.
+(https://savannah.gnu.org/mail/?group=emacs).  Some of them are
+gatewayed to newsgroups.
 
    The newsgroup <news:comp.emacs> is for discussion of Emacs programs
 in general.  The newsgroup <news:gnu.emacs.help> is specifically for GNU
@@ -370,8 +370,7 @@ File: efaq.info,  Node: Newsgroup archives,  Next: Reporting bugs,  Prev: Guidel
 The FSF has maintained archives of all of the GNU mailing lists for many
 years, although there may be some unintentional gaps in coverage.  The
 archive can be browsed over the web at the GNU mail archive
-(http://lists.gnu.org/archive/html/).  Raw files can be downloaded from
-<ftp://lists.gnu.org/>.
+(https://lists.gnu.org/r/).
 
    Web-based Usenet search services, such as Google
 (http://groups.google.com/groups/dir?q=gnu&), also archive the ‘gnu.*’
@@ -404,12 +403,12 @@ if you don’t know how to read the manual.)
    RMS says:
 
      Sending bug reports to the help-gnu-emacs mailing list
-     (http://lists.gnu.org/mailman/listinfo/help-gnu-emacs) (which has
+     (https://lists.gnu.org/mailman/listinfo/help-gnu-emacs) (which has
      the effect of posting on <news:gnu.emacs.help>) is undesirable
      because it takes the time of an unnecessarily large group of
      people, most of whom are just users and have no idea how to fix
      these problem.  The bug-gnu-emacs list
-     (http://lists.gnu.org/mailman/listinfo/bug-gnu-emacs) reaches a
+     (https://lists.gnu.org/mailman/listinfo/bug-gnu-emacs) reaches a
      much smaller group of people who are more likely to know what to do
      and have expressed a wish to receive more messages about Emacs than
      the others.
@@ -447,11 +446,11 @@ File: efaq.info,  Node: Contacting the FSF,  Prev: Unsubscribing from Emacs list
 =============================
 
 For up-to-date information, see the FSF contact web-page
-(http://www.fsf.org/about/contact.html).  You can send general
+(https://www.fsf.org/about/contact.html).  You can send general
 correspondence to <info@fsf.org>.
 
    For details on how to order items directly from the FSF, see the FSF
-on-line store (http://shop.fsf.org/).
+on-line store (https://shop.fsf.org/).
 
 
 File: efaq.info,  Node: Getting help,  Next: Status of Emacs,  Prev: General questions,  Up: Top
@@ -510,7 +509,7 @@ There are several methods for finding out how to do things in Emacs.
 
    • The complete text of the Emacs manual is available via the Info
      hypertext reader.  Type ‘C-h r’ to display the manual in Info mode.
-     Typing <h> immediately after entering Info will provide a short
+     Typing ‘h’ immediately after entering Info will provide a short
      tutorial on how to use it.
 
    • To quickly locate the section of the manual which discusses a
@@ -562,7 +561,7 @@ File: efaq.info,  Node: Getting a printed manual,  Next: Emacs Lisp documentatio
 ====================================================
 
 You can order a printed copy of the Emacs manual from the FSF.  For
-details see the FSF on-line store (http://shop.fsf.org/).
+details see the FSF on-line store (https://shop.fsf.org/).
 
    The full Texinfo source for the manual also comes in the ‘doc/emacs’
 directory of the Emacs distribution, if you’re daring enough to try to
@@ -572,7 +571,7 @@ Texinfo file::).
    If you absolutely have to print your own copy, and you don’t have
 TeX, you can get a PostScript or PDF (or HTML) version from
 
-   <http://www.gnu.org/software/emacs/manual/>
+   <https://www.gnu.org/software/emacs/manual/>
 
    *Note Learning how to do something::, for how to view the manual from
 Emacs.
@@ -590,12 +589,12 @@ function, ‘C-h v’ for a variable.
 Info format (*note Emacs Lisp: (elisp)Top.).
 
    You can also order a hardcopy of the manual from the FSF, for details
-see the FSF on-line store (http://shop.fsf.org/).  (This manual is not
+see the FSF on-line store (https://shop.fsf.org/).  (This manual is not
 always in print.)
 
    An HTML version of the Emacs Lisp Reference Manual is available at
 
-   <http://www.gnu.org/software/emacs/elisp-manual/elisp.html>
+   <https://www.gnu.org/software/emacs/elisp-manual/elisp.html>
 
 
 File: efaq.info,  Node: Installing Texinfo documentation,  Next: Printing a Texinfo file,  Prev: Emacs Lisp documentation,  Up: Getting help
@@ -612,7 +611,7 @@ relevant if you want to install extra Info files by hand.
 may do this using the stand-alone ‘makeinfo’ program, available as part
 of the Texinfo package at
 
-   <http://www.gnu.org/software/texinfo/>
+   <https://www.gnu.org/software/texinfo/>
 
    For information about the Texinfo format, read the Texinfo manual
 which comes with the Texinfo package.  This manual also comes installed
@@ -654,13 +653,13 @@ privileges, you have several options:
    • Info files don’t actually need to be installed before being used.
      You can use a prefix argument for the ‘info’ command and specify
      the name of the Info file in the minibuffer.  This goes to the node
-     named ‘Top’ in that file.  For example, to view a Info file named
+     named ‘Top’ in that file.  For example, to view an Info file named
      ‘INFO-FILE’ in your home directory, you can type this:
 
           C-u C-h i ~/INFO-FILE <RET>
 
      Alternatively, you can feed a file name to the ‘Info-goto-node’
-     command (invoked by pressing <g> in Info mode) by typing the name
+     command (invoked by pressing ‘g’ in Info mode) by typing the name
      of the file in parentheses, like this:
 
           C-h i g (~/INFO-FILE) <RET>
@@ -762,7 +761,7 @@ Emacs ‘Help’ menu, or by typing ‘C-h ?’ (‘M-x help-for-help’).
    More GNU information, including back issues of the ‘GNU’s Bulletin’,
 are at
 
-   <http://www.gnu.org/bulletins/bulletins.html> and
+   <https://www.gnu.org/bulletins/bulletins.html> and
 
    <http://www.cs.pdx.edu/~trent/gnu/gnu.html>
 
@@ -776,7 +775,7 @@ File: efaq.info,  Node: Help installing Emacs,  Next: Obtaining the FAQ,  Prev: 
 *note Problems building Emacs::, if you have problems with the
 installation.
 
-   The GNU Service directory (http://www.fsf.org/resources/service/)
+   The GNU Service directory (https://www.fsf.org/resources/service/)
 lists companies and individuals willing to sell you help in installing
 or using Emacs and other GNU software.
 
@@ -805,6 +804,7 @@ status of its latest version.
 
 * Origin of the term Emacs::
 * Latest version of Emacs::
+* New in Emacs 26::
 * New in Emacs 25::
 * New in Emacs 24::
 * New in Emacs 23::
@@ -819,7 +819,7 @@ File: efaq.info,  Node: Origin of the term Emacs,  Next: Latest version of Emacs
 ==========================================
 
 Emacs originally was an acronym for Editor MACroS.  RMS says he “picked
-the name Emacs because <E> was not in use as an abbreviation on ITS at
+the name Emacs because ‘E’ was not in use as an abbreviation on ITS at
 the time.” The first Emacs was a set of macros written in 1976 at MIT by
 RMS for the editor TECO (Text Editor and COrrector, originally Tape
 Editor and COrrector) under ITS (the Incompatible Timesharing System) on
@@ -838,18 +838,18 @@ original TECO Emacs inside of Emacs.
 name, check out the file ‘etc/JOKES’ (*note File-name conventions::).
 
 
-File: efaq.info,  Node: Latest version of Emacs,  Next: New in Emacs 25,  Prev: Origin of the term Emacs,  Up: Status of Emacs
+File: efaq.info,  Node: Latest version of Emacs,  Next: New in Emacs 26,  Prev: Origin of the term Emacs,  Up: Status of Emacs
 
 4.2 What is the latest version of Emacs?
 ========================================
 
-Emacs 25.3 is the current version as of this writing.  A version number
+Emacs 26.3 is the current version as of this writing.  A version number
 with two components (e.g., ‘24.5’) indicates a released version; three
-components indicate a development version (e.g., ‘26.0.50’ is what will
-eventually become ‘26.1’).
+components indicate a development version (e.g., ‘27.0.50’ is what will
+eventually become ‘27.1’).
 
    Emacs is under active development, hosted at Savannah
-(http://savannah.gnu.org/projects/emacs/).  Follow the instructions
+(https://savannah.gnu.org/projects/emacs/).  Follow the instructions
 given there to clone the project repository.
 
    Because Emacs undergoes many changes before a release, the version
@@ -866,9 +866,68 @@ can give this command a prefix argument to read about which features
 were new in older versions.
 
 
-File: efaq.info,  Node: New in Emacs 25,  Next: New in Emacs 24,  Prev: Latest version of Emacs,  Up: Status of Emacs
+File: efaq.info,  Node: New in Emacs 26,  Next: New in Emacs 25,  Prev: Latest version of Emacs,  Up: Status of Emacs
 
-4.3 What is different about Emacs 25?
+4.3 What is different about Emacs 26?
+=====================================
+
+   • Emacs now provides a limited form of concurrency with Lisp threads.
+
+   • Emacs now supports ‘systemd’.  The new command-line option
+     ‘--fg-daemon’ is part of this support, it causes Emacs to run in
+     the foreground instead of forking, as under ‘--daemon’.
+
+   • Emacs now supports 24-bit true color on text terminals which
+     provide that feature.  *Note Colors on a TTY::.
+
+   • Emacs on X now supports double-buffering, which eliminates display
+     flickering in most situations.
+
+   • You can now scroll the Emacs display horizontally using the mouse
+     or touchpad.
+
+   • Emacs display now includes an optional feature for display of line
+     numbers via the ‘display-line-numbers-mode’ command.  This feature
+     is much faster than the equivalent display offered by packages such
+     as ‘linum’, and also provides many optional features like relative
+     line numbers.
+
+   • The automatic horizontal scrolling of the window display when lines
+     are truncated can now optionally be enabled only for the current
+     line, the line where Emacs shows the cursor.  Under this mode, all
+     the other window lines are not scrolled to show characters outside
+     of the viewport.
+
+   • Letter-case conversions now honor special cases in Turkish and
+     Greek scripts.
+
+   • Support for Enchant is now part of the Emacs spell-checking
+     commands.
+
+   • Tramp now supports Google Drive filesystems.
+
+   • Emacs can now be built while omitting the details of the machine on
+     which it was built, thus making it easier to produce reproducible
+     builds.
+
+   • Security vulnerability related to Enriched Text mode is removed.
+     Enriched mode previously allowed saving ‘display’ properties as
+     part of text; those properties support evaluating arbitrary Lisp
+     code, which opens a vulnerability for Emacs users receiving
+     Enriched Text from external sources.  Execution of arbitrary Lisp
+     forms in ‘display’ properties decoded by Enriched Text mode is now
+     disabled by default.
+
+   • Emacs 26.2 comes with data files imported from the latest Unicode
+     Standard version 11.0.0.
+
+   Consult the Emacs ‘NEWS’ file (‘C-h n’) for the full list of changes
+in Emacs 26.
+
+
+File: efaq.info,  Node: New in Emacs 25,  Next: New in Emacs 24,  Prev: New in Emacs 26,  Up: Status of Emacs
+
+4.4 What is different about Emacs 25?
 =====================================
 
    • Emacs can now embed native widgets inside Emacs buffers, if you
@@ -935,7 +994,7 @@ in Emacs 25.
 
 File: efaq.info,  Node: New in Emacs 24,  Next: New in Emacs 23,  Prev: New in Emacs 25,  Up: Status of Emacs
 
-4.4 What is different about Emacs 24?
+4.5 What is different about Emacs 24?
 =====================================
 
    • Emacs now includes a package manager.  Type ‘M-x list-packages’ to
@@ -989,7 +1048,7 @@ File: efaq.info,  Node: New in Emacs 24,  Next: New in Emacs 23,  Prev: New in E
 
 File: efaq.info,  Node: New in Emacs 23,  Next: New in Emacs 22,  Prev: New in Emacs 24,  Up: Status of Emacs
 
-4.5 What is different about Emacs 23?
+4.6 What is different about Emacs 23?
 =====================================
 
    • Emacs has a new font code that can use multiple font backends,
@@ -1024,7 +1083,7 @@ version control systems; etc.
 
 File: efaq.info,  Node: New in Emacs 22,  Next: New in Emacs 21,  Prev: New in Emacs 23,  Up: Status of Emacs
 
-4.6 What is different about Emacs 22?
+4.7 What is different about Emacs 22?
 =====================================
 
    • Emacs can be built with GTK+ widgets, and supports drag-and-drop
@@ -1096,7 +1155,7 @@ File: efaq.info,  Node: New in Emacs 22,  Next: New in Emacs 21,  Prev: New in E
 
 File: efaq.info,  Node: New in Emacs 21,  Next: New in Emacs 20,  Prev: New in Emacs 22,  Up: Status of Emacs
 
-4.7 What is different about Emacs 21?
+4.8 What is different about Emacs 21?
 =====================================
 
 Emacs 21 features a thorough rewrite of the display engine.  The new
@@ -1114,7 +1173,7 @@ console and on ‘xterm’ with ‘emacs -nw’.
 
 File: efaq.info,  Node: New in Emacs 20,  Prev: New in Emacs 21,  Up: Status of Emacs
 
-4.8 What is different about Emacs 20?
+4.9 What is different about Emacs 20?
 =====================================
 
 The differences between Emacs versions 18 and 19 were rather dramatic;
@@ -1198,7 +1257,7 @@ File: efaq.info,  Node: Setting up a customization file,  Next: Using Customize,
    In general, new Emacs users should not be provided with ‘.emacs’
 files, because this can cause confusing non-standard behavior.  Then
 they send questions to the help-gnu-emacs mailing list
-(http://lists.gnu.org/mailman/listinfo/help-gnu-emacs) asking why Emacs
+(https://lists.gnu.org/mailman/listinfo/help-gnu-emacs) asking why Emacs
 isn’t behaving as documented.
 
    Emacs includes the Customize facility (*note Using Customize::).
@@ -1254,6 +1313,37 @@ capabilities.
 all the colors Emacs knows about on the current display.
 
    Syntax highlighting is on by default since version 22.1.
+
+   Emacs 26.1 and later support direct color mode in terminals.  If
+Emacs finds Terminfo capabilities ‘setb24’ and ‘setf24’, 24-bit direct
+color mode is used.  The capability strings are expected to take one
+24-bit pixel value as argument and transform the pixel to a string that
+can be used to send 24-bit colors to the terminal.
+
+   There aren’t yet any standard terminal type definitions that would
+support the capabilities, but Emacs can be invoked with a custom
+definition as shown below.
+
+     $ cat terminfo-24bit.src
+
+     # Use colon separators.
+     xterm-24bit|xterm with 24-bit direct color mode,
+       use=xterm-256color,
+       setb24=\E[48:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
+       setf24=\E[38:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
+     # Use semicolon separators.
+     xterm-24bits|xterm with 24-bit direct color mode,
+       use=xterm-256color,
+       setb24=\E[48;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
+       setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
+
+     $ tic -x -o ~/.terminfo terminfo-24bit.src
+
+     $ TERM=xterm-24bit emacs -nw
+
+   Currently there’s no standard way to determine whether a terminal
+supports direct color mode.  If such standard arises later on, support
+for ‘setb24’ and ‘setf24’ may be removed.
 
 
 File: efaq.info,  Node: Debugging a customization file,  Next: Displaying the current line or column,  Prev: Colors on a TTY,  Up: Common requests
@@ -1828,7 +1918,7 @@ the top of any Emacs frame.
      brackets and braces at the same time by modifying the syntax
      table.)
 
-   • Here is some Emacs Lisp that will make the <%> key show the
+   • Here is some Emacs Lisp that will make the ‘%’ key show the
      matching parenthesis, like in ‘vi’.  In addition, if the cursor
      isn’t over a parenthesis, it simply inserts a % like normal.
 
@@ -2069,8 +2159,8 @@ following in your ‘.emacs’:
 
    If you’re tired of seeing backup files whenever you do an ‘ls’ at the
 Unix shell, try GNU ‘ls’ with the ‘-B’ option.  GNU ‘ls’ is part of the
-GNU Fileutils package, available from ‘ftp.gnu.org’ and its mirrors
-(*note Current GNU distributions::).
+GNU Fileutils package, available from <https://ftp.gnu.org> and its
+mirrors (*note Current GNU distributions::).
 
    To disable or change the way backups are made, *note (emacs)Backup
 Names::.
@@ -2541,8 +2631,8 @@ by the following environment variables:
 the Xt toolkit.
 
    ‘XFILESEARCHPATH’ and ‘XUSERFILESEARCHPATH’ should be a list of file
-names separated by colons.  ‘XAPPLRESDIR’ should be a list of directory
-names separated by colons.
+names separated by colons.  ‘XAPPLRESDIR’ should be a list of
+directories separated by colons.
 
    Emacs searches for X resources:
 
@@ -2610,12 +2700,12 @@ File: efaq.info,  Node: Shell mode loses the current directory,  Next: Security 
 
 Emacs has no way of knowing when the shell actually changes its
 directory.  This is an intrinsic limitation of Unix.  So it tries to
-guess by recognizing ‘cd’ commands.  If you type ‘cd’ followed by a
-directory name with a variable reference (‘cd $HOME/bin’) or with a
-shell metacharacter (‘cd ../lib*’), Emacs will fail to correctly guess
-the shell’s new current directory.  A huge variety of fixes and
-enhancements to shell mode for this problem have been written to handle
-this problem (*note Finding a package with particular functionality::).
+guess by recognizing ‘cd’ commands.  If you type ‘cd’ followed by
+directory with a variable reference (‘cd $HOME/bin’) or with a shell
+metacharacter (‘cd ../lib*’), Emacs will fail to correctly guess the
+shell’s new current directory.  A huge variety of fixes and enhancements
+to shell mode for this problem have been written to handle this problem
+(*note Finding a package with particular functionality::).
 
    You can tell Emacs the shell’s current directory with the command
 ‘M-x dirs’.
@@ -2751,25 +2841,26 @@ source and binaries, and how to install Emacs on those systems.
 
    Most GNU/Linux distributions provide pre-built Emacs packages.  If
 Emacs is not installed already, you can install it by running (as root)
-a command such as ‘yum install emacs’ (Red Hat and derivatives) or
-‘apt-get install emacs’ (Debian and derivatives).
+a command such as ‘dnf install emacs’ (Red Hat and derivatives; use
+‘yum’ in older distributions) or ‘apt-get install emacs’ (Debian and
+derivatives).
 
    If you want to compile Emacs yourself, read the file ‘INSTALL’ in the
 source distribution.  In brief:
 
    • First download the Emacs sources.  *Note Current GNU
-     distributions::, for a list of ftp sites that make them available.
-     On ‘ftp.gnu.org’, the main GNU distribution site, sources are
+     distributions::, for a list of sites that make them available.  On
+     <https://ftp.gnu.org>, the main GNU distribution site, sources are
      available as
 
-     <ftp://ftp.gnu.org/pub/gnu/emacs/emacs-VERSION.tar.gz>
+     <https://ftp.gnu.org/pub/gnu/emacs/emacs-VERSION.tar.gz>
 
      (Replace ‘VERSION’ with the relevant version number, e.g., ‘23.1’.)
 
    • Next uncompress and extract the source files.  This requires the
      ‘gzip’ and ‘tar’ programs, which are standard utilities.  If your
      system does not have them, these can also be downloaded from
-     ‘ftp.gnu.org’.
+     <https://ftp.gnu.org>.
 
      GNU ‘tar’ can uncompress and extract in a single-step:
 
@@ -2839,7 +2930,7 @@ File: efaq.info,  Node: Finding Emacs on the Internet,  Next: Finding a package 
 =====================================
 
 Information on downloading Emacs is available at the Emacs home-page
-(http://www.gnu.org/software/emacs/).
+(https://www.gnu.org/software/emacs/).
 
    *Note Installing Emacs::, for information on how to obtain and build
 the latest version of Emacs, and see *note Current GNU distributions::,
@@ -2848,8 +2939,8 @@ for a list of archive sites that make GNU software available.
 
 File: efaq.info,  Node: Finding a package with particular functionality,  Next: Packages that do not come with Emacs,  Prev: Finding Emacs on the Internet,  Up: Finding Emacs and related packages
 
-8.2 How do I find a Emacs Lisp package that does XXX?
-=====================================================
+8.2 How do I find an Emacs Lisp package that does XXX?
+======================================================
 
 First of all, you should check to make sure that the package isn’t
 already available.  For example, typing ‘M-x apropos <RET> python <RET>’
@@ -2876,7 +2967,7 @@ File: efaq.info,  Node: Packages that do not come with Emacs,  Next: Spell-check
 ===================================================================
 
 The easiest way to add more features to your Emacs is to use the command
-‘M-x list-packages’.  This contacts the GNU ELPA (http:///elpa.gnu.org)
+‘M-x list-packages’.  This contacts the GNU ELPA (https://elpa.gnu.org)
 (“Emacs Lisp Package Archive”) server and fetches the list of additional
 packages that it offers.  These are GNU packages that are available for
 use with Emacs, but are distributed separately from Emacs itself, for
@@ -2885,7 +2976,7 @@ to see what is available, and then Emacs can automatically download and
 install the packages that you select.  *Note (emacs)Packages::.
 
    There are other, non-GNU, Emacs Lisp package servers, including:
-MELPA (http://melpa.org/); and Marmalade (https://marmalade-repo.org/).
+MELPA (https://melpa.org); and Marmalade (https://marmalade-repo.org).
 To use additional package servers, customize the ‘package-archives’
 variable.  Be aware that installing a package can run arbitrary code, so
 only add sources that you trust.
@@ -2897,9 +2988,9 @@ gatewayed to the Emacs sources newsgroup (news:gnu.emacs.sources)
 official place where people can post or announce their extensions to
 Emacs.
 
-   The Emacs Wiki (http://emacswiki.org) contains pointers to some
-additional extensions.  WikEmacs (http://wikemacs.org) is an alternative
-wiki for Emacs.
+   The Emacs Wiki (https://emacswiki.org) contains pointers to some
+additional extensions.  WikEmacs (https://wikemacs.org) is an
+alternative wiki for Emacs.
 
    The Emacs Lisp List (ELL)
 (http://www.damtp.cam.ac.uk/user/sje30/emacs/ell.html), has pointers to
@@ -2919,14 +3010,17 @@ File: efaq.info,  Node: Spell-checkers,  Next: Current GNU distributions,  Prev:
 
 Various spell-checkers are compatible with Emacs, including:
 
+Hunspell
+     <http://hunspell.sourceforge.net/>
+
 GNU Aspell
      <http://aspell.net/>
 
 Ispell
      <http://fmg-www.cs.ucla.edu/geoff/ispell.html>
 
-Hunspell
-     <http://hunspell.sourceforge.net/>
+Enchant
+     <https://abiword.github.io/enchant/>
 
 
 File: efaq.info,  Node: Current GNU distributions,  Next: Difference between Emacs and XEmacs,  Prev: Spell-checkers,  Up: Finding Emacs and related packages
@@ -2936,11 +3030,11 @@ File: efaq.info,  Node: Current GNU distributions,  Next: Difference between Ema
 
 The most up-to-date official GNU software is normally kept at
 
-   <ftp://ftp.gnu.org/pub/gnu>
+   <https://ftp.gnu.org/pub/gnu>
 
    A list of sites mirroring ‘ftp.gnu.org’ can be found at
 
-   <http://www.gnu.org/order/ftp.html>
+   <https://www.gnu.org/prep/ftp>
 
 
 File: efaq.info,  Node: Difference between Emacs and XEmacs,  Next: Emacs for minimalists,  Prev: Current GNU distributions,  Up: Finding Emacs and related packages
@@ -2985,7 +3079,7 @@ typically has a size of about 130 kbytes, so this can be useful if you
 are in an extremely space-restricted environment.  More information is
 available from
 
-   <http://www.gnu.org/software/zile/>
+   <https://www.gnu.org/software/zile/>
 
 
 File: efaq.info,  Node: Emacs for MS-DOS,  Next: Emacs for MS-Windows,  Prev: Emacs for minimalists,  Up: Finding Emacs and related packages
@@ -3001,10 +3095,10 @@ onwards, including Windows XP and Vista.
    The file ‘etc/PROBLEMS’ contains some additional information
 regarding Emacs under MS-DOS.
 
-   A pre-built binary distribution of the old Emacs 20 is available, as
+   A pre-built binary distribution of the old Emacs 24 is available, as
 described at
 
-   <ftp://ftp.delorie.com/pub/djgpp/current/v2gnu/emacs.README>
+   <http://www.delorie.com/pub/djgpp/current/v2gnu/emacs.README>
 
    For a list of other MS-DOS implementations of Emacs (and Emacs
 look-alikes), consult the list of “Emacs implementations and
@@ -3344,8 +3438,8 @@ On many keyboards, the <Alt> key acts as <Meta>, so try it.
 
    Instead of typing ‘M-a’, you can type ‘<ESC> a’.  In fact, Emacs
 converts ‘M-a’ internally into ‘<ESC> a’ anyway (depending on the value
-of ‘meta-prefix-char’).  Note that you press <Meta> and <a> together,
-but with <ESC>, you press <ESC>, release it, and then press <a>.
+of ‘meta-prefix-char’).  Note that you press <Meta> and ‘a’ together,
+but with <ESC>, you press <ESC>, release it, and then press ‘a’.
 
 
 File: efaq.info,  Node: No Escape key,  Next: Compose Character,  Prev: No Meta key,  Up: Key bindings
@@ -3475,8 +3569,8 @@ be undesirable if you actually intend to use them.
 
 File: efaq.info,  Node: SPC no longer completes file names,  Prev: ExtendChar key does not work as Meta,  Up: Key bindings
 
-9.15 Why doesn’t SPC complete file names anymore?
-=================================================
+9.15 Why doesn’t <SPC> complete file names anymore?
+===================================================
 
 Starting with Emacs 22.1, ‘SPC’ no longer completes file names in the
 minibuffer, so that file names with embedded spaces could be typed
@@ -3548,7 +3642,7 @@ File: efaq.info,  Node: How to add fonts,  Prev: Right-to-left alphabets,  Up: A
 First, download and install the BDF font files and any auxiliary
 packages they need.  The GNU Intlfonts distribution can be found on the
 GNU Software Directory Web site
-(http://directory.fsf.org/localization/intlfonts.html).
+(https://directory.fsf.org/localization/intlfonts.html).
 
    Next, if you are on X Window system, issue the following two commands
 from the shell’s prompt:
@@ -3636,7 +3730,7 @@ therefore need to be added to font-encoding-alist:
 medium’ fontset, or you can select it by setting the default font in
 your ‘~/.emacs’:
 
-       (set-default-font "fontset-bdf")
+       (set-frame-font "fontset-bdf")
 
 
 File: efaq.info,  Node: Mail and news,  Next: Concept index,  Prev: Alternate character sets,  Up: Top
@@ -3762,9 +3856,9 @@ File: efaq.info,  Node: Replying to the sender of a message,  Next: Automaticall
 11.6 How can I force Rmail to reply to the sender of a message, but not the other recipients?
 =============================================================================================
 
-Ron Isaacson says: When you hit <r> to reply in Rmail, by default it CCs
+Ron Isaacson says: When you hit ‘r’ to reply in Rmail, by default it CCs
 all of the original recipients (everyone on the original ‘To’ and ‘CC’
-lists).  With a prefix argument (i.e., typing ‘C-u’ before <r>), it
+lists).  With a prefix argument (i.e., typing ‘C-u’ before ‘r’), it
 replies only to the sender.  However, going through the whole ‘C-u’
 business every time you want to reply is a pain.  This is the best fix
 I’ve been able to come up with:
@@ -3905,7 +3999,7 @@ Concept Index
                                                                (line  6)
 * Automatic filing of outgoing mail:     Saving a copy of outgoing mail.
                                                                (line  6)
-* Backspace key invokes help:            Backspace invokes help.
+* <Backspace> key invokes help:          Backspace invokes help.
                                                                (line  6)
 * Backup files in a single directory:    Disabling backups.    (line 30)
 * Backups, disabling:                    Disabling backups.    (line  6)
@@ -4005,7 +4099,7 @@ Concept Index
                                                                (line  6)
 * Decoration level, in font-lock-mode:   Turning on syntax highlighting.
                                                                (line 34)
-* DEL key does not delete:               Backspace invokes help.
+* <DEL> key does not delete:             Backspace invokes help.
                                                                (line  6)
 * <DEL>, definition of:                  Basic keys.           (line  6)
 * delete-selection-mode:                 Replacing highlighted text.
@@ -4022,6 +4116,7 @@ Concept Index
 * Differences between Emacs 22 and Emacs 23: New in Emacs 23.  (line  6)
 * Differences between Emacs 23 and Emacs 24: New in Emacs 24.  (line  6)
 * Differences between Emacs 24 and Emacs 25: New in Emacs 25.  (line  6)
+* Differences between Emacs 25 and Emacs 26: New in Emacs 26.  (line  6)
 * Differences between Unix and Emacs regexps: Using regular expressions.
                                                                (line  6)
 * Directories and files that come with Emacs: File-name conventions.
@@ -4051,6 +4146,7 @@ Concept Index
 * Documentation, installing new Texinfo files: Installing Texinfo documentation.
                                                                (line  6)
 * DOS, Emacs for:                        Emacs for MS-DOS.     (line  6)
+* double-buffering:                      New in Emacs 26.      (line 15)
 * Downloading and installing Emacs:      Installing Emacs.     (line  6)
 * Downloading Emacs:                     Finding Emacs on the Internet.
                                                                (line  6)
@@ -4072,6 +4168,7 @@ Concept Index
 * Emacs 23, new features in:             New in Emacs 23.      (line  6)
 * Emacs 24, new features in:             New in Emacs 24.      (line  6)
 * Emacs 25, new features in:             New in Emacs 25.      (line  6)
+* Emacs 26, new features in:             New in Emacs 26.      (line  6)
 * Emacs entries for termcap/terminfo:    Termcap/Terminfo entries for Emacs.
                                                                (line  6)
 * Emacs for MS-DOS:                      Emacs for MS-DOS.     (line  6)
@@ -4092,6 +4189,8 @@ Concept Index
                                                                (line  6)
 * emacsclient:                           Using an already running Emacs process.
                                                                (line  6)
+* Enchant:                               Spell-checkers.       (line  6)
+* Enchant support:                       New in Emacs 26.      (line 36)
 * Entering eight-bit characters:         Inputting eight-bit characters.
                                                                (line  6)
 * Epoch:                                 Difference between Emacs and XEmacs.
@@ -4225,7 +4324,7 @@ Concept Index
                                                                (line  6)
 * Help installing Emacs:                 Help installing Emacs.
                                                                (line  6)
-* Help invoked by Backspace:             Backspace invokes help.
+* Help invoked by <Backspace>:           Backspace invokes help.
                                                                (line  6)
 * Help system, entering the:             Basic editing.        (line  6)
 * hide-ifdef, C/C++ expressions in macros: New in Emacs 25.    (line 45)
@@ -4240,6 +4339,7 @@ Concept Index
                                                                (line  6)
 * horizontal scroll bars:                New in Emacs 25.      (line 61)
 * Horizontal scrolling:                  Horizontal scrolling. (line  6)
+* horizontal scrolling of current line:  New in Emacs 26.      (line 27)
 * How to submit a bug report:            Reporting bugs.       (line  6)
 * HP-UX, the <ExtendChar> key:           ExtendChar key does not work as Meta.
                                                                (line  6)
@@ -4316,6 +4416,7 @@ Concept Index
                                                                (line 34)
 * lexical binding:                       New in Emacs 24.      (line 10)
 * <LFD>, definition of:                  Basic keys.           (line  6)
+* line number display:                   New in Emacs 26.      (line 21)
 * Line number, displaying the current:   Displaying the current line or column.
                                                                (line  6)
 * Line wrap:                             Wrapping words automatically.
@@ -4611,6 +4712,7 @@ Concept Index
 * Syntax highlighting on a TTY:          Colors on a TTY.      (line  6)
 * Synthetic X events and security:       Security risks with Emacs.
                                                                (line  6)
+* systemd support:                       New in Emacs 26.      (line  8)
 * Tab length:                            Changing the length of a Tab.
                                                                (line  6)
 * <TAB>, definition of:                  Basic keys.           (line  6)
@@ -4633,6 +4735,7 @@ Concept Index
 * Text, highlighting:                    Highlighting a region.
                                                                (line  6)
 * themes:                                New in Emacs 24.      (line 27)
+* threads:                               New in Emacs 26.      (line  6)
 * Titlebar, displaying the current file name in: Displaying the current file name in the titlebar.
                                                                (line  6)
 * Toggling overwrite-mode:               Overwrite mode.       (line  6)
@@ -4646,6 +4749,7 @@ Concept Index
 * Unbundled packages:                    Packages that do not come with Emacs.
                                                                (line  6)
 * Unicode:                               New in Emacs 23.      (line 11)
+* Unicode 11.0.0:                        New in Emacs 26.      (line 53)
 * Unicode 9.0.0:                         New in Emacs 25.      (line 24)
 * Unicode characters, typing easily:     New in Emacs 25.      (line 13)
 * Unix regexps, differences from Emacs:  Using regular expressions.
@@ -4720,149 +4824,150 @@ Tag Table:
 Node: Top1365
 Node: FAQ notation3751
 Node: Basic keys4201
-Ref: Basic keys-Footnote-16118
-Node: Extended commands6202
-Node: Emacs manual7298
-Node: File-name conventions8298
-Node: Common acronyms9755
-Node: General questions10739
-Node: The LPF11189
-Node: Real meaning of copyleft11509
-Node: Guidelines for newsgroup postings12830
-Node: Newsgroup archives14155
-Node: Reporting bugs15120
-Node: Unsubscribing from Emacs lists17317
-Node: Contacting the FSF17852
-Node: Getting help18288
-Node: Basic editing18777
-Node: Learning how to do something20003
-Node: Getting a printed manual22742
-Node: Emacs Lisp documentation23615
-Node: Installing Texinfo documentation24385
-Node: Printing a Texinfo file28201
-Node: Viewing Info files outside of Emacs29588
-Node: Informational files for Emacs30208
-Node: Help installing Emacs31365
-Node: Obtaining the FAQ31917
-Node: Status of Emacs32474
-Node: Origin of the term Emacs32895
-Node: Latest version of Emacs34162
-Node: New in Emacs 2535532
-Node: New in Emacs 2438527
-Node: New in Emacs 2340786
-Node: New in Emacs 2242213
-Node: New in Emacs 2145343
-Node: New in Emacs 2046190
-Node: Common requests46960
-Node: Setting up a customization file48676
-Node: Using Customize49916
-Node: Colors on a TTY50697
-Node: Debugging a customization file51651
-Node: Displaying the current line or column52603
-Node: Displaying the current file name in the titlebar54061
-Node: Turning on abbrevs by default55260
-Node: Associating modes with files56081
-Node: Highlighting a region57062
-Node: Replacing highlighted text57497
-Node: Controlling case sensitivity58371
-Node: Working with unprintable characters59297
-Node: Searching for/replacing newlines60976
-Node: Yanking text in isearch61384
-Node: Wrapping words automatically61716
-Node: Turning on auto-fill by default62203
-Node: Changing load-path62929
-Node: Using an already running Emacs process63416
-Node: Compiler error messages65900
-Node: Indenting switch statements66263
-Node: Customizing C and C++ indentation66874
-Node: Horizontal scrolling69590
-Node: Overwrite mode70293
-Node: Turning off beeping70814
-Node: Turning the volume down71370
-Node: Automatic indentation72078
-Node: Matching parentheses73852
-Node: Hiding #ifdef lines75536
-Node: Repeating commands76028
-Node: Valid X resources77200
-Node: Evaluating Emacs Lisp code77682
-Node: Changing the length of a Tab79242
-Node: Inserting text at the beginning of each line79985
-Node: Forcing the cursor to remain in the same column81079
-Node: Forcing Emacs to iconify itself81709
-Node: Using regular expressions82078
-Node: Replacing text across multiple files83122
-Node: Documentation for etags84334
-Node: Disabling backups84749
-Node: Disabling auto-save-mode86287
-Node: Going to a line by number87208
-Node: Modifying pull-down menus88722
-Node: Deleting menus and menu options91968
-Node: Turning on syntax highlighting92707
-Node: Scrolling only one line95621
-Node: Editing MS-DOS files96313
-Node: Filling paragraphs with a single space97112
-Node: Escape sequences in shell output97533
-Node: Fullscreen mode on MS-Windows98343
-Node: Bugs and problems99423
-Node: Problems with very large files100471
-Node: ^M in the shell buffer101123
-Node: Problems with Shell Mode102978
-Node: Termcap/Terminfo entries for Emacs103670
-Node: Errors with init files104940
-Node: Emacs ignores X resources105785
-Node: Emacs ignores frame parameters107683
-Node: Editing files with $ in the name108541
-Node: Shell mode loses the current directory108997
-Node: Security risks with Emacs109958
-Node: Dired claims that no file is on this line113847
-Node: Compiling and installing Emacs114797
-Node: Installing Emacs115060
-Node: Problems building Emacs117476
-Node: Finding Emacs and related packages118164
-Node: Finding Emacs on the Internet118711
-Node: Finding a package with particular functionality119257
-Node: Packages that do not come with Emacs120449
-Node: Spell-checkers122557
-Node: Current GNU distributions122968
-Node: Difference between Emacs and XEmacs123425
-Node: Emacs for minimalists125148
-Node: Emacs for MS-DOS125763
-Node: Emacs for MS-Windows126830
-Node: Emacs for GNUstep127180
-Node: Emacs for macOS127521
-Node: Key bindings127827
-Node: Binding keys to commands128490
-Node: Invalid prefix characters130617
-Node: Terminal setup code works after Emacs has begun131489
-Node: Working with function and arrow keys132878
-Node: X key translations for Emacs133422
-Node: Backspace invokes help134253
-Node: Swapping keys138132
-Node: Producing C-XXX with the keyboard139393
-Node: No Meta key140079
-Node: No Escape key140639
-Node: Compose Character141213
-Node: Binding combinations of modifiers and function keys141715
-Node: Meta key does not work in xterm142971
-Node: ExtendChar key does not work as Meta145286
-Node: SPC no longer completes file names146205
-Node: Alternate character sets146943
-Node: Emacs does not display 8-bit characters147243
-Node: Inputting eight-bit characters148041
-Node: Right-to-left alphabets148487
-Node: How to add fonts148946
-Node: Mail and news153479
-Node: Changing the included text prefix153997
-Node: Saving a copy of outgoing mail154700
-Node: Expanding aliases when sending mail155683
-Node: Sorting the messages in an Rmail folder156992
-Node: Rmail writes to /var/spool/mail157363
-Node: Replying to the sender of a message158191
-Node: Automatically starting a mail or news reader159273
-Node: Reading news with Emacs160016
-Node: Making Gnus faster160397
-Node: Catching up in all newsgroups161074
-Node: Concept index161470
+Ref: Basic keys-Footnote-16144
+Node: Extended commands6228
+Node: Emacs manual7328
+Node: File-name conventions8332
+Node: Common acronyms9789
+Node: General questions10773
+Node: The LPF11223
+Node: Real meaning of copyleft11543
+Node: Guidelines for newsgroup postings12864
+Node: Newsgroup archives14190
+Node: Reporting bugs15087
+Node: Unsubscribing from Emacs lists17286
+Node: Contacting the FSF17821
+Node: Getting help18259
+Node: Basic editing18748
+Node: Learning how to do something19974
+Node: Getting a printed manual22717
+Node: Emacs Lisp documentation23592
+Node: Installing Texinfo documentation24364
+Node: Printing a Texinfo file28186
+Node: Viewing Info files outside of Emacs29573
+Node: Informational files for Emacs30193
+Node: Help installing Emacs31351
+Node: Obtaining the FAQ31904
+Node: Status of Emacs32461
+Node: Origin of the term Emacs32902
+Node: Latest version of Emacs34173
+Node: New in Emacs 2635544
+Node: New in Emacs 2538023
+Node: New in Emacs 2441010
+Node: New in Emacs 2343269
+Node: New in Emacs 2244696
+Node: New in Emacs 2147826
+Node: New in Emacs 2048673
+Node: Common requests49443
+Node: Setting up a customization file51159
+Node: Using Customize52400
+Node: Colors on a TTY53181
+Node: Debugging a customization file55478
+Node: Displaying the current line or column56430
+Node: Displaying the current file name in the titlebar57888
+Node: Turning on abbrevs by default59087
+Node: Associating modes with files59908
+Node: Highlighting a region60889
+Node: Replacing highlighted text61324
+Node: Controlling case sensitivity62198
+Node: Working with unprintable characters63124
+Node: Searching for/replacing newlines64803
+Node: Yanking text in isearch65211
+Node: Wrapping words automatically65543
+Node: Turning on auto-fill by default66030
+Node: Changing load-path66756
+Node: Using an already running Emacs process67243
+Node: Compiler error messages69727
+Node: Indenting switch statements70090
+Node: Customizing C and C++ indentation70701
+Node: Horizontal scrolling73417
+Node: Overwrite mode74120
+Node: Turning off beeping74641
+Node: Turning the volume down75197
+Node: Automatic indentation75905
+Node: Matching parentheses77679
+Node: Hiding #ifdef lines79367
+Node: Repeating commands79859
+Node: Valid X resources81031
+Node: Evaluating Emacs Lisp code81513
+Node: Changing the length of a Tab83073
+Node: Inserting text at the beginning of each line83816
+Node: Forcing the cursor to remain in the same column84910
+Node: Forcing Emacs to iconify itself85540
+Node: Using regular expressions85909
+Node: Replacing text across multiple files86953
+Node: Documentation for etags88165
+Node: Disabling backups88580
+Node: Disabling auto-save-mode90122
+Node: Going to a line by number91043
+Node: Modifying pull-down menus92557
+Node: Deleting menus and menu options95803
+Node: Turning on syntax highlighting96542
+Node: Scrolling only one line99456
+Node: Editing MS-DOS files100148
+Node: Filling paragraphs with a single space100947
+Node: Escape sequences in shell output101368
+Node: Fullscreen mode on MS-Windows102178
+Node: Bugs and problems103258
+Node: Problems with very large files104306
+Node: ^M in the shell buffer104958
+Node: Problems with Shell Mode106813
+Node: Termcap/Terminfo entries for Emacs107505
+Node: Errors with init files108775
+Node: Emacs ignores X resources109620
+Node: Emacs ignores frame parameters111514
+Node: Editing files with $ in the name112372
+Node: Shell mode loses the current directory112828
+Node: Security risks with Emacs113782
+Node: Dired claims that no file is on this line117671
+Node: Compiling and installing Emacs118621
+Node: Installing Emacs118884
+Node: Problems building Emacs121345
+Node: Finding Emacs and related packages122033
+Node: Finding Emacs on the Internet122580
+Node: Finding a package with particular functionality123127
+Node: Packages that do not come with Emacs124321
+Node: Spell-checkers126430
+Node: Current GNU distributions126892
+Node: Difference between Emacs and XEmacs127346
+Node: Emacs for minimalists129069
+Node: Emacs for MS-DOS129685
+Node: Emacs for MS-Windows130753
+Node: Emacs for GNUstep131103
+Node: Emacs for macOS131444
+Node: Key bindings131750
+Node: Binding keys to commands132413
+Node: Invalid prefix characters134540
+Node: Terminal setup code works after Emacs has begun135412
+Node: Working with function and arrow keys136801
+Node: X key translations for Emacs137345
+Node: Backspace invokes help138176
+Node: Swapping keys142055
+Node: Producing C-XXX with the keyboard143316
+Node: No Meta key144002
+Node: No Escape key144570
+Node: Compose Character145144
+Node: Binding combinations of modifiers and function keys145646
+Node: Meta key does not work in xterm146902
+Node: ExtendChar key does not work as Meta149217
+Node: SPC no longer completes file names150136
+Node: Alternate character sets150878
+Node: Emacs does not display 8-bit characters151178
+Node: Inputting eight-bit characters151976
+Node: Right-to-left alphabets152422
+Node: How to add fonts152881
+Node: Mail and news157413
+Node: Changing the included text prefix157931
+Node: Saving a copy of outgoing mail158634
+Node: Expanding aliases when sending mail159617
+Node: Sorting the messages in an Rmail folder160926
+Node: Rmail writes to /var/spool/mail161297
+Node: Replying to the sender of a message162125
+Node: Automatically starting a mail or news reader163215
+Node: Reading news with Emacs163958
+Node: Making Gnus faster164339
+Node: Catching up in all newsgroups165016
+Node: Concept index165412
 
 End Tag Table
 

@@ -1,9 +1,9 @@
-This is info.info, produced by makeinfo version 6.3 from info.texi.
+This is info.info, produced by makeinfo version 6.6 from info.texi.
 
 This file describes how to use Info, the menu-driven GNU documentation
 system.
 
-   Copyright © 1989, 1992, 1996–2017 Free Software Foundation, Inc.
+   Copyright © 1989, 1992, 1996–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -49,7 +49,7 @@ commands.  In the stand-alone Info reader, type ‘H’ instead.
    This file describes how to use Info, the menu-driven GNU
 documentation system.
 
-   Copyright © 1989, 1992, 1996–2017 Free Software Foundation, Inc.
+   Copyright © 1989, 1992, 1996–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -282,10 +282,10 @@ of its subnodes, <SPC> takes you to the next node or to the parent’s
 next node.
 
    Many keyboards nowadays have two scroll keys labeled ‘PageUp’ and
-‘PageDown’ (or maybe ‘Prior’ and ‘Next’).  If your keyboard has these
+‘PageDown’ (or maybe ‘prior’ and ‘next’).  If your keyboard has these
 keys, you can use them to move forward and backward through the text of
-one node, like <SPC> and <BACKSPACE> (or <DEL>).  However, <PAGEUP> and
-<PAGEDOWN> keys never scroll beyond the beginning or the end of the
+one node, like <SPC> and <BACKSPACE> (or <DEL>).  However, <PageUp> and
+<PageDown> keys never scroll beyond the beginning or the end of the
 current node.
 
    If your screen is ever garbaged, you can tell Info to display it
@@ -309,7 +309,7 @@ in the stand-alone Info reader), which displays a brief list of
 commands.  When you are finished looking at the list, make it go away by
 typing <SPC> repeatedly.
 
->> Type a <?> (or <H> in the stand-alone Info reader) now.
+>> Type ‘?’ (or ‘H’ in the stand-alone Info reader) now.
    Press <SPC> to see consecutive screenfuls of the list
    until finished.  Then type <SPC> several times.  If
    you are using Emacs, the help will then go away automatically.
@@ -1093,7 +1093,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1490,7 +1490,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1668,10 +1668,12 @@ topics discussed in this document.
 * mouse-2 (Info mode):                   Help-M.              (line 154)
 * multiple Info buffers:                 Create Info buffer.  (line   6)
 * n (Info mode):                         Help.                (line  27)
+* next (Info mode):                      Help-^L.             (line  52)
 * node, in Info documents:               Help.                (line  11)
 * p (Info mode):                         Help-P.              (line   6)
-* PAGEDOWN (Info mode):                  Help-^L.             (line  52)
-* PAGEUP (Info mode):                    Help-^L.             (line  52)
+* PageDown (Info mode):                  Help-^L.             (line  52)
+* PageUp (Info mode):                    Help-^L.             (line  52)
+* prior (Info mode):                     Help-^L.             (line  52)
 * q (Info mode):                         Help-Q.              (line   6)
 * quitting Info mode:                    Help-Q.              (line   6)
 * r (Info mode):                         Help-Int.            (line  41)
@@ -1703,25 +1705,25 @@ Node: Help-Small-Screen3898
 Node: Help6054
 Node: Help-P7782
 Node: Help-^L9066
-Ref: Help-^L-Footnote-113675
-Node: Help-Inv14069
-Node: Help-]15797
-Node: Help-M17433
-Node: Help-FOO26254
-Node: Help-Xref27289
-Node: Help-Cross31059
-Node: Help-Int31755
-Node: Help-Q34902
-Node: Advanced36081
-Node: Search Text37304
-Node: Search Index39134
-Node: Go to node41651
-Node: Choose menu subtopic42770
-Node: Create Info buffer44018
-Node: Emacs Info Variables45598
-Node: Further Reading49585
-Node: GNU Free Documentation License50349
-Node: Index75700
+Ref: Help-^L-Footnote-113681
+Node: Help-Inv14075
+Node: Help-]15803
+Node: Help-M17439
+Node: Help-FOO26260
+Node: Help-Xref27295
+Node: Help-Cross31065
+Node: Help-Int31761
+Node: Help-Q34908
+Node: Advanced36087
+Node: Search Text37310
+Node: Search Index39140
+Node: Go to node41657
+Node: Choose menu subtopic42776
+Node: Create Info buffer44024
+Node: Emacs Info Variables45604
+Node: Further Reading49591
+Node: GNU Free Documentation License50355
+Node: Index75708
 
 End Tag Table
 

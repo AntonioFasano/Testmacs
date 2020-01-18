@@ -1,6 +1,6 @@
-This is viper.info, produced by makeinfo version 6.3 from viper.texi.
+This is viper.info, produced by makeinfo version 6.6 from viper.texi.
 
-Copyright © 1995–1997, 2001–2017 Free Software Foundation, Inc.
+Copyright © 1995–1997, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -61,7 +61,7 @@ may be visited as needed.
 the current address for Viper bug reports.  Please use the Ex command
 ‘:submitReport’ for this purpose.
 
-   Copyright © 1995–1997, 2001–2017 Free Software Foundation, Inc.
+   Copyright © 1995–1997, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -906,7 +906,7 @@ and remembered (This is called “learn mode” in some editors.)
 ‘register’ is any character from ‘a’ through ‘z’.  Then you can execute
 this macro using ‘@register’.  It is, of course, possible to yank some
 text into a register and execute it using ‘@register’.  Typing ‘@@’,
-‘@RET’, or ‘@C-j’ will execute the last macro that was executed using
+‘@<RET>’, or ‘@C-j’ will execute the last macro that was executed using
 ‘@register’.
 
    Viper will automatically lowercase the register, so that pressing the
@@ -1440,7 +1440,7 @@ of Vi variables, type ‘:se <SPC> <TAB>’.
      Movement and Markers::, for more info.
 ‘viper-ex-style-editing t’
      Set this to ‘nil’, if you want ‘C-h’ and <DEL> to not stop at the
-     beginning of a line in Insert state, <X> and <x> to delete
+     beginning of a line in Insert state, ‘X’ and ‘x’ to delete
      characters across lines in Vi command state, etc.
 ‘viper-ESC-moves-cursor-back t’
      It ‘t’, cursor moves back 1 character when switching from insert
@@ -1464,9 +1464,9 @@ of Vi variables, type ‘:se <SPC> <TAB>’.
 ‘viper-glob-function’
      The value of this variable is the function symbol used to expand
      wildcard symbols.  This is platform-dependent.  The default tries
-     to set this variable to work with most shells, MS Windows, OS/2,
-     etc.  However, if it doesn’t work the way you expect, you should
-     write your own.  Use ‘viper-glob-unix-files’ and
+     to set this variable to work with most shells, MS Windows, etc.
+     However, if it doesn’t work the way you expect, you should write
+     your own.  Use ‘viper-glob-unix-files’ and
      ‘viper-glob-mswindows-files’ in ‘viper-util.el’ as examples.
 
      This feature is used to expand wildcards in the Ex command ‘:e’.
@@ -2921,7 +2921,7 @@ File: viper.info,  Node: Editing in Insert State,  Next: Deleting Text,  Prev: A
 
 Minibuffer can be edited similarly to Insert state, and you can switch
 between Insert/Replace/Vi states at will.  Some users prefer plain Emacs
-feel in the minibuffer.  To this end, set VIPER-VI-STYLE-IN-MINIBUFFER
+feel in the minibuffer.  To this end, set ‘viper-vi-style-in-minibuffer’
 to ‘nil’.
 
 ‘C-v’
@@ -3302,16 +3302,17 @@ if you type ‘1:w’ you would see ‘:11,22w’ in the minibuffer.
 ‘:n [count] [+<cmd>] [<files>]’
      Edit <count> file, or edit files.  The count comes from ‘:args’.
 ‘:N [count] [+<cmd>] [<files>]’
-     Like ‘:n’, but the meaning of the variable EX-CYCLE-OTHER-WINDOW is
-     reversed.
+     Like ‘:n’, but the meaning of the variable ‘ex-cycle-other-window’
+     is reversed.
 ‘:b’
-     Switch to another buffer.  If EX-CYCLE-OTHER-WINDOW is ‘t’, switch
-     in another window.  Buffer completion is supported.  The variable
-     VIPER-READ-BUFFER-FUNCTION controls which function is actually used
-     to read the buffer name.  The default is ‘read-buffer’, but better
-     alternatives are also available in Emacs (e.g., ‘ido-read-buffer’).
+     Switch to another buffer.  If ‘ex-cycle-other-window’ is ‘t’,
+     switch in another window.  Buffer completion is supported.  The
+     variable ‘viper-read-buffer-function’ controls which function is
+     actually used to read the buffer name.  The default is
+     ‘read-buffer’, but better alternatives are also available in Emacs
+     (e.g., ‘ido-read-buffer’).
 ‘:B’
-     Like ‘:b’, but the meaning of EX-CYCLE-OTHER-WINDOW is reversed.
+     Like ‘:b’, but the meaning of ‘ex-cycle-other-window’ is reversed.
 ‘:<address>r <name>’
      Read the file <name> into the buffer after the line <address>.
 ‘v, V, C-v’
@@ -3476,8 +3477,8 @@ File: viper.info,  Node: Options,  Next: Emacs Related Commands,  Prev: Shell Co
      Same as ‘tabstop’, but affects all buffers.
 ‘wrapmargin=<count>’
 ‘wm=<count>’
-     wrapmargin: In append mode Vi automatically puts a <lf> whenever
-     there is a <sp> or <ht> within <wm> columns from the right margin.
+     wrapmargin: In append mode Vi automatically puts an <lf> whenever
+     there is an <sp> or <ht> within <wm> columns from the right margin.
 ‘wrapscan’
 ‘ws’
      wrapscan: When searching, the end is considered ‘stuck’ to the
@@ -3570,7 +3571,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -3967,7 +3968,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -4143,7 +4144,7 @@ Key Index
 * #g<move> <1>:                          Search and Replace.  (line  67)
 * #g<move> <2>:                          Mapping.             (line  44)
 * #q<move>:                              New Commands.        (line  51)
-* #q<move> :                             Changing Text.       (line  76)
+* #q<move> <1>:                          Changing Text.       (line  76)
 * #s<move>:                              New Commands.        (line  55)
 * $:                                     Move Commands.       (line 124)
 * %:                                     Move Commands.       (line 124)
@@ -4174,10 +4175,7 @@ Key Index
 * <address>:                             Groundwork.          (line  34)
 * <args>:                                Groundwork.          (line  70)
 * <cmd>:                                 Groundwork.          (line  70)
-* <cr>:                                  Move Commands.       (line 124)
-* <lf>:                                  Move Commands.       (line 124)
 * <move>:                                Groundwork.          (line  34)
-* <sp>:                                  Move Commands.       (line 124)
 * =<move>:                               Changing Text.       (line  76)
 * ><move>:                               Appending Text.      (line  59)
 * >>:                                    Appending Text.      (line  59)
@@ -4257,15 +4255,15 @@ Key Index
                                                               (line  20)
 * C-x:                                   Vi State.            (line  11)
 * C-x <1>:                               New Commands.        (line   9)
-* C-x0:                                  Emacs Related Commands.
+* C-x 0:                                 Emacs Related Commands.
                                                               (line  45)
-* C-x1:                                  Emacs Related Commands.
+* C-x 1:                                 Emacs Related Commands.
                                                               (line  45)
-* C-x2:                                  Emacs Related Commands.
+* C-x 2:                                 Emacs Related Commands.
                                                               (line  45)
-* C-xC-f:                                Emacs Related Commands.
+* C-x C-f:                               Emacs Related Commands.
                                                               (line  45)
-* C-xo:                                  Emacs Related Commands.
+* C-x o:                                 Emacs Related Commands.
                                                               (line  45)
 * C-y:                                   Display.             (line  43)
 * C-y <1>:                               Emacs Related Commands.
@@ -4280,15 +4278,16 @@ Key Index
 * C-]:                                   Vi State.            (line  24)
 * C-] <1>:                               New Commands.        (line  85)
 * C-^:                                   File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * c<move>:                               Changing Text.       (line  76)
 * cc:                                    Changing Text.       (line  76)
+* CR:                                    Move Commands.       (line 124)
 * D:                                     Deleting Text.       (line  33)
 * d<move>:                               Deleting Text.       (line  33)
 * dd:                                    Deleting Text.       (line  33)
 * E:                                     Move Commands.       (line 124)
 * e:                                     Move Commands.       (line 124)
-* <ESC>:                                 States in Viper.     (line   6)
+* ESC:                                   States in Viper.     (line   6)
 * F<char>:                               Move Commands.       (line 124)
 * f<char>:                               Move Commands.       (line 124)
 * G:                                     Move Commands.       (line 124)
@@ -4302,6 +4301,7 @@ Key Index
 * k:                                     Move Commands.       (line 124)
 * L:                                     Move Commands.       (line 124)
 * l:                                     Move Commands.       (line 124)
+* LF:                                    Move Commands.       (line 124)
 * M:                                     Move Commands.       (line 124)
 * m,:                                    Marking.             (line  38)
 * M-n:                                   New Commands.        (line 101)
@@ -4314,12 +4314,12 @@ Key Index
 * m<a-z> <1>:                            Marking.             (line  38)
 * m<a-z> <2>:                            Yanking.             (line  29)
 * m>:                                    Marking.             (line  38)
-* meta button1up:                        Mouse-bound Commands.
+* META button1up:                        Mouse-bound Commands.
                                                               (line  22)
-* meta button2up:                        Mouse-bound Commands.
+* META button2up:                        Mouse-bound Commands.
                                                               (line  21)
-* meta shift button1up:                  Viper Specials.      (line 301)
-* meta shift button2up:                  Viper Specials.      (line 301)
+* META SHIFT button1up:                  Viper Specials.      (line 301)
+* META SHIFT button2up:                  Viper Specials.      (line 301)
 * m^:                                    Marking.             (line  38)
 * N:                                     Move Commands.       (line 124)
 * n:                                     Move Commands.       (line 124)
@@ -4343,6 +4343,7 @@ Key Index
 * S-mouse-2:                             Viper Specials.      (line 301)
 * S-mouse-2 <1>:                         Mouse-bound Commands.
                                                               (line  22)
+* SPC:                                   Move Commands.       (line 124)
 * T<char>:                               Move Commands.       (line 124)
 * t<char>:                               Move Commands.       (line 124)
 * u:                                     Vi State.            (line  54)
@@ -4351,9 +4352,9 @@ Key Index
 * v:                                     New Commands.        (line  29)
 * V:                                     New Commands.        (line  29)
 * v <1>:                                 File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * V <1>:                                 File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * W:                                     Move Commands.       (line 124)
 * w:                                     Move Commands.       (line 124)
 * X:                                     Deleting Text.       (line  33)
@@ -4370,7 +4371,7 @@ Key Index
 * zL:                                    Display.             (line  43)
 * zM:                                    Display.             (line  43)
 * ZZ:                                    File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 
 
 File: viper.info,  Node: Function Index,  Next: Variable Index,  Prev: Key Index,  Up: Top
@@ -4392,21 +4393,21 @@ Function Index
 * Ex <address>r <name>:                  Shell Commands.      (line  46)
 * Ex args:                               New Commands.        (line 129)
 * Ex args <1>:                           File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex cd [<dir>]:                         File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex copy [z]:                           Changing Text.       (line  76)
 * Ex e [<files>]:                        File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex e!:                                 Undoing.             (line  17)
 * Ex e! [<files>]:                       File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex edit [<files>]:                     File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex edit! [<files>]:                    File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex f:                                  File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex g:                                  Search and Replace.  (line  67)
 * Ex global:                             Search and Replace.  (line  67)
 * Ex k:                                  Marking.             (line  38)
@@ -4418,35 +4419,35 @@ Function Index
 * Ex move [z]:                           Changing Text.       (line  76)
 * Ex n:                                  New Commands.        (line 129)
 * Ex n [<count> | <file>]:               File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex pre:                                New Commands.        (line 129)
 * Ex pre <1>:                            File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex PreviousRelatedFile:                New Commands.        (line 134)
 * Ex PreviousRelatedFile <1>:            Viper Specials.      (line 198)
 * Ex pwd:                                New Commands.        (line 129)
 * Ex pwd <1>:                            File and Buffer Handling.
-                                                              (line 113)
-* Ex q:                                  File and Buffer Handling.
                                                               (line 114)
+* Ex q:                                  File and Buffer Handling.
+                                                              (line 115)
 * Ex q!:                                 Undoing.             (line  17)
 * Ex q! <1>:                             File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex quit:                               File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex quit!:                              File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex r:                                  File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex read:                               File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex rec:                                Undoing.             (line  17)
 * Ex rec <1>:                            File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex RelatedFile:                        New Commands.        (line 134)
 * Ex RelatedFile <1>:                    Viper Specials.      (line 198)
 * Ex rew:                                File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex s/<pat>/<repl>/<f>:                 Changing Text.       (line  76)
 * Ex set:                                Rudimentary Changes. (line   6)
 * Ex set <option>:                       Options.             (line  80)
@@ -4474,11 +4475,11 @@ Function Index
 * Ex set ws:                             Options.             (line  80)
 * Ex sh:                                 Shell Commands.      (line  46)
 * Ex stop:                               File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex substitute/<pat>/<repl>/<f>:        Changing Text.       (line  76)
 * Ex substitute/<pat>/<repl>/<f> <1>:    Search and Replace.  (line  67)
 * Ex suspend:                            File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex t [z]:                              Changing Text.       (line  76)
 * Ex tag <name>:                         Search and Replace.  (line  67)
 * Ex unmap <char>:                       Mapping.             (line  44)
@@ -4486,34 +4487,34 @@ Function Index
 * Ex v:                                  Search and Replace.  (line  67)
 * Ex vglobal:                            Search and Replace.  (line  67)
 * Ex W:                                  File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex w !<cmd>:                           Shell Commands.      (line  46)
 * Ex w <file>:                           File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex w >> <file>:                        File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex w! <file>:                          File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex wq:                                 File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex Write:                              File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex write <file>:                       File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex write >> <file>:                    File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex write! <file>:                      File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex WW:                                 File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex WWrite:                             File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex WWrite <1>:                         File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex x:                                  File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex x!:                                 File and Buffer Handling.
-                                                              (line 114)
+                                                              (line 115)
 * Ex x,y w !<cmd>:                       Shell Commands.      (line  46)
 * Ex yank:                               Yanking.             (line  28)
 * remove-hook:                           Packages that Change Keymaps.
@@ -4597,7 +4598,7 @@ Variable Index
 * viper-parse-sexp-ignore-comments:      Move Commands.       (line 123)
 * viper-re-query-replace:                Rudimentary Changes. (line 293)
 * viper-re-search:                       Rudimentary Changes. (line 293)
-* VIPER-READ-BUFFER-FUNCTION:            File and Buffer Handling.
+* viper-read-buffer-function:            File and Buffer Handling.
                                                               (line 106)
 * viper-replace-overlay-cursor-color:    Rudimentary Changes. (line 225)
 * viper-replace-overlay-face:            Rudimentary Changes. (line 293)
@@ -4910,44 +4911,44 @@ Node: Basics39435
 Node: Undo and Backups42114
 Node: History43338
 Node: Macros and Registers44994
-Node: Completion46799
-Node: Improved Search47254
-Node: Abbreviation Facilities49725
-Node: Movement and Markers50744
-Node: New Commands53947
-Node: Useful Packages60397
-Node: Customization62530
-Node: Rudimentary Changes64417
-Node: Key Bindings79962
-Node: Packages that Change Keymaps90137
-Node: Viper Specials96198
-Node: Vi Macros114528
-Node: Commands128389
-Node: Groundwork129282
-Node: Text Handling136171
-Node: Move Commands136848
-Node: Marking140777
-Node: Appending Text142095
-Node: Editing in Insert State144509
-Node: Deleting Text145117
-Node: Changing Text146483
-Node: Search and Replace149657
-Node: Yanking152350
-Node: Undoing153304
-Node: Display153672
-Node: File and Buffer Handling155039
-Node: Mapping159802
-Node: Shell Commands161567
-Node: Options163512
-Node: Emacs Related Commands165888
-Node: Mouse-bound Commands167553
-Node: GNU Free Documentation License168461
-Node: Acknowledgments193816
-Node: Key Index197022
-Node: Function Index214734
-Node: Variable Index226556
-Node: Package Index232300
-Node: Concept Index232959
+Node: Completion46801
+Node: Improved Search47256
+Node: Abbreviation Facilities49727
+Node: Movement and Markers50746
+Node: New Commands53949
+Node: Useful Packages60399
+Node: Customization62532
+Node: Rudimentary Changes64419
+Node: Key Bindings79965
+Node: Packages that Change Keymaps90140
+Node: Viper Specials96201
+Node: Vi Macros114531
+Node: Commands128392
+Node: Groundwork129285
+Node: Text Handling136174
+Node: Move Commands136851
+Node: Marking140780
+Node: Appending Text142098
+Node: Editing in Insert State144512
+Node: Deleting Text145126
+Node: Changing Text146492
+Node: Search and Replace149666
+Node: Yanking152359
+Node: Undoing153313
+Node: Display153681
+Node: File and Buffer Handling155048
+Node: Mapping159840
+Node: Shell Commands161605
+Node: Options163550
+Node: Emacs Related Commands165928
+Node: Mouse-bound Commands167593
+Node: GNU Free Documentation License168501
+Node: Acknowledgments193858
+Node: Key Index197064
+Node: Function Index214776
+Node: Variable Index226598
+Node: Package Index232342
+Node: Concept Index233001
 
 End Tag Table
 

@@ -1,6 +1,6 @@
-This is vip.info, produced by makeinfo version 6.3 from vip.texi.
+This is vip.info, produced by makeinfo version 6.6 from vip.texi.
 
-Copyright © 1987, 2001–2017 Free Software Foundation, Inc.
+Copyright © 1987, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -41,7 +41,7 @@ before you start using VIP.  Other nodes may be visited as needed.
 ‘ms@Sail.Stanford.Edu’ if you are outside of Japan and to
 ‘masahiko@sato.riec.tohoku.junet’ if you are in Japan.
 
-   Copyright © 1987, 2001–2017 Free Software Foundation, Inc.
+   Copyright © 1987, 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -458,7 +458,7 @@ Bindings::, for details.
      In Vi, ‘C-g’ is used to get information about the file associated
      to the current buffer.  Here, ‘g’ will do that, and ‘C-g’ is used
      to abort a command (this is for compatibility with emacs mode.)
-‘SPC’
+‘<SPC>’
 ‘<RET>’
      Now these keys will scroll up and down the text of current window.
      Convenient for viewing the text.
@@ -1024,7 +1024,7 @@ Following commands are available for searching and replacing.
      (‘isearch-forward’).
 ‘C-r’
      Search backward incrementally (‘isearch-backward’).
-‘R STRING RET NEWSTRING’
+‘R STRING <RET> NEWSTRING’
      There are two modes of replacement, “vanilla” and “regular
      expression”.  If the mode is vanilla you will get a prompt ‘Replace
      string:’, and if the mode is regular expression you will ge a
@@ -1035,7 +1035,7 @@ Following commands are available for searching and replacing.
      treated as a regular expression and every string matching the
      regular expression is replaced with NEWSTRING
      (‘vip-replace-string’).
-‘Q STRING RET NEWSTRING’
+‘Q STRING <RET> NEWSTRING’
      Same as ‘R’ except that you will be asked form confirmation before
      each replacement
      (‘vip-query-replace’).
@@ -1279,7 +1279,7 @@ the global keymap.  See GNU Emacs Manual for details.
 
 ‘C-@’
      Set mark and push previous mark on mark ring (‘set-mark-command’).
-‘TAB’
+‘<TAB>’
      Indent line for current major mode (‘indent-for-tab-command’).
 ‘C-j’
      Insert a newline, and maybe indent according to mode.
@@ -1585,7 +1585,7 @@ values.
 ‘vip-tags-file-name "TAGS"’
      The name of the file used as the tags table.
 ‘vip-help-in-insert-mode nil’
-     If ‘t’ then <C-h> is bound to ‘help-command’ in insert mode, if
+     If ‘t’ then ‘C-h’ is bound to ‘help-command’ in insert mode, if
      ‘nil’ then it sis bound to ‘delete-backward-char’.
 You can reset these constants in VIP by the Ex command ‘set’.  Or you
 can include a line like this in your ‘~/.emacs.d/vip’ file:
@@ -1622,7 +1622,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -2019,7 +2019,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -2428,33 +2428,33 @@ Node: Marking13600
 Node: Region Commands14131
 Node: New Commands14850
 Node: New Bindings17782
-Node: Window Commands20062
-Node: Buffer Commands20568
-Node: File Commands21092
-Node: Misc Commands21495
-Node: Vi Commands21939
-Node: Numeric Arguments22951
-Node: Important Keys23447
-Node: Buffers and Windows25280
-Node: Files27599
-Node: Viewing the Buffer30992
-Node: Mark Commands32997
-Node: Motion Commands33878
-Node: Searching and Replacing39743
-Node: Modifying Commands42135
-Node: Delete Commands43578
-Node: Yank Commands45346
-Node: Put Back Commands46283
-Node: Change Commands47777
-Node: Repeating and Undoing Modifications48845
-Node: Other Vi Commands49679
-Node: Commands in Insert Mode53462
-Node: Ex Commands55637
-Node: Ex Command Reference56844
-Node: Customization63545
-Node: Customizing Constants63986
-Node: Customizing Key Bindings65405
-Node: GNU Free Documentation License66492
+Node: Window Commands20064
+Node: Buffer Commands20570
+Node: File Commands21094
+Node: Misc Commands21497
+Node: Vi Commands21941
+Node: Numeric Arguments22953
+Node: Important Keys23449
+Node: Buffers and Windows25282
+Node: Files27601
+Node: Viewing the Buffer30994
+Node: Mark Commands32999
+Node: Motion Commands33880
+Node: Searching and Replacing39745
+Node: Modifying Commands42141
+Node: Delete Commands43584
+Node: Yank Commands45352
+Node: Put Back Commands46289
+Node: Change Commands47783
+Node: Repeating and Undoing Modifications48851
+Node: Other Vi Commands49685
+Node: Commands in Insert Mode53470
+Node: Ex Commands55645
+Node: Ex Command Reference56852
+Node: Customization63553
+Node: Customizing Constants63994
+Node: Customizing Key Bindings65417
+Node: GNU Free Documentation License66504
 
 End Tag Table
 

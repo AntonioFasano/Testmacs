@@ -1,0 +1,9 @@
+@echo off 
+
+echo.
+echo I am going to delete c:\testmacs and myself 
+
+TIMEOUT /T 15 /NOBREAK
+rmdir /q /s c:\testmacs
+del %0
+

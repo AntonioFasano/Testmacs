@@ -1,9 +1,9 @@
-This is reftex.info, produced by makeinfo version 6.3 from reftex.texi.
+This is reftex.info, produced by makeinfo version 6.6 from reftex.texi.
 
-This manual documents RefTeX (version 25.3), a package to do labels,
+This manual documents RefTeX (version 26.3), a package to do labels,
 references, citations and indices for LaTeX documents with Emacs.
 
-   Copyright © 1997–2017 Free Software Foundation, Inc.
+   Copyright © 1997–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -27,10 +27,10 @@ File: reftex.info,  Node: Top,  Next: Introduction,  Up: (dir)
 RefTeX
 ******
 
-This manual documents RefTeX (version 25.3), a package to do labels,
+This manual documents RefTeX (version 26.3), a package to do labels,
 references, citations and indices for LaTeX documents with Emacs.
 
-   Copyright © 1997–2017 Free Software Foundation, Inc.
+   Copyright © 1997–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -46,7 +46,7 @@ references, citations and indices for LaTeX documents with Emacs.
    RefTeX is a package for managing Labels, References, Citations and
 index entries with GNU Emacs.
 
-   This manual documents RefTeX version 25.3.
+   This manual documents RefTeX version 26.3.
 
    Don’t be discouraged by the size of this manual, which covers RefTeX
 in great depth.  All you need to know to use RefTeX can be summarized on
@@ -1402,8 +1402,8 @@ customizing ‘reftex-ref-macro-prompt’ and relying only on the selection
 facilities provided in the last step.
 
    In the last step, i.e., the label selection, two key bindings are
-provided to set the reference macro.  Type <v> in order to cycle forward
-through the list of available macros or <V> to cycle backward.  The mode
+provided to set the reference macro.  Type ‘v’ in order to cycle forward
+through the list of available macros or ‘V’ to cycle backward.  The mode
 line of the selection buffer shows the macro currently selected.
 
    In case you are not satisfied with the order of macros when cycling
@@ -2742,7 +2742,7 @@ File: reftex.info,  Node: AUCTeX,  Next: Problems and Work-Arounds,  Prev: Optim
 AUCTeX is without doubt the best major mode for editing TeX and LaTeX
 files with Emacs (*note AUCTeX: (auctex)Top.).  If AUCTeX is not part of
 your Emacs distribution, you can get it(1) by FTP from the AUCTeX web
-site (http://www.gnu.org/software/auctex/).
+site (https://www.gnu.org/software/auctex/).
 
 * Menu:
 
@@ -3036,7 +3036,7 @@ File: reftex.info,  Node: Imprint,  Next: Commands,  Prev: Problems and Work-Aro
 
 RefTeX was written by Carsten Dominik, with contributions by Stephen
 Eglen.  RefTeX is currently maintained by the AUCTeX project, see the
-RefTeX web page (http://www.gnu.org/software/auctex/reftex.html) for
+RefTeX web page (https://www.gnu.org/software/auctex/reftex.html) for
 detailed information.
 
    If you have questions about RefTeX, you can send email to the AUCTeX
@@ -3079,8 +3079,8 @@ File: reftex.info,  Node: Commands,  Next: Options,  Prev: Imprint,  Up: Top
 
 Here is a summary of RefTeX’s commands which can be executed from LaTeX
 files.  Command which are executed from the special buffers are not
-described here.  All commands are available from the ‘Ref’ menu.  See
-*Note Key Bindings::.
+described here.  All commands are available from the ‘Ref’ menu.  *Note
+Key Bindings::.
 
  -- Command: reftex-toc
      Show the table of contents for the current document.  When called
@@ -3897,8 +3897,8 @@ File: reftex.info,  Node: Options - Creating Citations,  Next: Options - Index S
 
  -- User Option: reftex-cite-prompt-optional-args
      Non-‘nil’ means, prompt for empty optional arguments in cite
-     macros.  When an entry in ‘reftex-cite-format’ ist given with
-     square brackets to indicate optional arguments (for example
+     macros.  When an entry in ‘reftex-cite-format’ is given with square
+     brackets to indicate optional arguments (for example
      ‘\\cite[][]{%l}’), RefTeX can prompt for values.  Possible values
      are:
           nil     Never prompt for optional arguments
@@ -4643,7 +4643,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -5040,7 +5040,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -5221,7 +5221,7 @@ Index
 * C-c g:                                 Key Bindings.        (line  28)
 * C-c l:                                 Key Bindings.        (line  28)
 * C-c r:                                 Key Bindings.        (line  28)
-* C-c <RET>:                             AUCTeX-RefTeX Interface.
+* C-c RET:                               AUCTeX-RefTeX Interface.
                                                               (line  41)
 * C-c s:                                 Key Bindings.        (line  28)
 * C-c t:                                 Key Bindings.        (line  28)
@@ -6045,65 +6045,65 @@ Node: Non-Standard Environments51944
 Node: Putting it Together55982
 Node: Reference Info56758
 Node: Reference Styles57423
-Ref: Reference Styles-Footnote-161638
-Node: LaTeX xr Package61757
-Node: Citations62921
-Node: Creating Citations63814
-Node: Citation Styles68762
-Node: Citation Info70857
-Node: Chapterbib and Bibunits71522
-Node: Citations Outside LaTeX72200
-Node: BibTeX Database Subsets73344
-Node: Index Support74760
-Node: Creating Index Entries77974
-Node: The Index Phrases File79377
-Node: Collecting Phrases81565
-Ref: Collecting Phrases-Footnote-184484
-Ref: Collecting Phrases-Footnote-284574
-Node: Consistency Checks84663
-Node: Global Indexing86188
-Ref: Global Indexing-Footnote-189454
-Node: Displaying and Editing the Index89601
-Node: Builtin Index Macros95794
-Node: Defining Index Macros96426
-Ref: Defining Index Macros-Footnote-1100088
-Node: Viewing Cross-References100153
-Ref: Viewing Cross-References-Footnote-1102876
-Ref: Viewing Cross-References-Footnote-2102961
-Node: RefTeXs Menu103021
-Node: Key Bindings103430
-Node: Faces105032
-Node: Multifile Documents105588
-Node: Language Support107559
-Node: Finding Files109052
-Node: Optimizations112234
-Node: AUCTeX117577
-Ref: AUCTeX-Footnote-1118221
-Node: AUCTeX-RefTeX Interface118301
-Ref: AUCTeX-RefTeX Interface-Footnote-1120666
-Ref: AUCTeX-RefTeX Interface-Footnote-2120788
-Node: Style Files120951
-Ref: Style Files-Footnote-1124946
-Node: Bib-Cite125071
-Node: Problems and Work-Arounds126143
-Node: Imprint130300
-Node: Commands132364
-Node: Options140918
-Node: Options - Table of Contents141943
-Node: Options - Defining Label Environments147034
-Node: Options - Creating Labels158056
-Node: Options - Referencing Labels162567
-Node: Options - Creating Citations167762
-Node: Options - Index Support174574
-Node: Options - Viewing Cross-References184485
-Node: Options - Finding Files187153
-Node: Options - Optimizations191176
-Node: Options - Fontification195803
-Node: Options - Misc199246
-Node: Keymaps and Hooks201113
-Node: Changes201891
-Node: GNU Free Documentation License207372
-Node: Index232717
+Ref: Reference Styles-Footnote-161646
+Node: LaTeX xr Package61765
+Node: Citations62929
+Node: Creating Citations63822
+Node: Citation Styles68770
+Node: Citation Info70865
+Node: Chapterbib and Bibunits71530
+Node: Citations Outside LaTeX72208
+Node: BibTeX Database Subsets73352
+Node: Index Support74768
+Node: Creating Index Entries77982
+Node: The Index Phrases File79385
+Node: Collecting Phrases81573
+Ref: Collecting Phrases-Footnote-184492
+Ref: Collecting Phrases-Footnote-284582
+Node: Consistency Checks84671
+Node: Global Indexing86196
+Ref: Global Indexing-Footnote-189462
+Node: Displaying and Editing the Index89609
+Node: Builtin Index Macros95802
+Node: Defining Index Macros96434
+Ref: Defining Index Macros-Footnote-1100096
+Node: Viewing Cross-References100161
+Ref: Viewing Cross-References-Footnote-1102884
+Ref: Viewing Cross-References-Footnote-2102969
+Node: RefTeXs Menu103029
+Node: Key Bindings103438
+Node: Faces105040
+Node: Multifile Documents105596
+Node: Language Support107567
+Node: Finding Files109060
+Node: Optimizations112242
+Node: AUCTeX117585
+Ref: AUCTeX-Footnote-1118230
+Node: AUCTeX-RefTeX Interface118310
+Ref: AUCTeX-RefTeX Interface-Footnote-1120675
+Ref: AUCTeX-RefTeX Interface-Footnote-2120797
+Node: Style Files120960
+Ref: Style Files-Footnote-1124955
+Node: Bib-Cite125080
+Node: Problems and Work-Arounds126152
+Node: Imprint130309
+Node: Commands132374
+Node: Options140924
+Node: Options - Table of Contents141949
+Node: Options - Defining Label Environments147040
+Node: Options - Creating Labels158062
+Node: Options - Referencing Labels162573
+Node: Options - Creating Citations167768
+Node: Options - Index Support174579
+Node: Options - Viewing Cross-References184490
+Node: Options - Finding Files187158
+Node: Options - Optimizations191181
+Node: Options - Fontification195808
+Node: Options - Misc199251
+Node: Keymaps and Hooks201118
+Node: Changes201896
+Node: GNU Free Documentation License207377
+Node: Index232724
 
 End Tag Table
 

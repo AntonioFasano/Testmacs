@@ -1,7 +1,7 @@
-This is ada-mode.info, produced by makeinfo version 6.3 from
+This is ada-mode.info, produced by makeinfo version 6.6 from
 ada-mode.texi.
 
-Copyright © 1999–2017 Free Software Foundation, Inc.
+Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -24,7 +24,7 @@ File: ada-mode.info,  Node: Top,  Next: Overview,  Up: (dir)
 Ada Mode
 ********
 
-Copyright © 1999–2017 Free Software Foundation, Inc.
+Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -65,7 +65,7 @@ File: ada-mode.info,  Node: Overview,  Next: Installation,  Prev: Top,  Up: Top
 The Emacs mode for programming in Ada helps the user in understanding
 existing code and facilitates writing new code.
 
-   When the Gnu Ada compiler GNAT is used, the cross-reference
+   When the GNU Ada compiler GNAT is used, the cross-reference
 information output by the compiler is used to provide powerful code
 navigation (jump to definition, find all uses, etc.).
 
@@ -204,7 +204,7 @@ File: ada-mode.info,  Node: Other compiler,  Next: Other customization,  Prev: N
 3.2 Other compiler
 ==================
 
-By default, Ada mode is configured to use the Gnu Ada compiler GNAT.
+By default, Ada mode is configured to use the GNU Ada compiler GNAT.
 
    To use a different Ada compiler, you must specify the command lines
 used to run that compiler, either in lisp variables or in Emacs Ada mode
@@ -1274,7 +1274,7 @@ specified by the variable ‘ada-case-exception-file’ (default
 casing of one word or word fragment.  Comments may be included,
 separated from the word by a space.
 
-   If the word starts with an asterisk (<*>), it defines the casing as a
+   If the word starts with an asterisk (‘*’), it defines the casing as a
 word fragment (or “substring”); part of a word between two underscores
 or word boundary.
 
@@ -1409,7 +1409,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1806,7 +1806,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1970,10 +1970,10 @@ Node: Identifier completion40280
 Node: Automatic Smart Indentation41884
 Node: Formatting Parameter Lists44754
 Node: Automatic Casing45184
-Node: Statement Templates48584
-Node: Comment Handling50247
-Node: GNU Free Documentation License50802
-Node: Index76158
+Node: Statement Templates48588
+Node: Comment Handling50251
+Node: GNU Free Documentation License50806
+Node: Index76164
 
 End Tag Table
 

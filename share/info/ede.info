@@ -1,8 +1,8 @@
-This is ede.info, produced by makeinfo version 6.3 from ede.texi.
+This is ede.info, produced by makeinfo version 6.6 from ede.texi.
 
 This file describes EDE, the Emacs Development Environment.
 
-   Copyright © 1998–2001, 2004–2005, 2008–2017 Free Software Foundation,
+   Copyright © 1998–2001, 2004–2005, 2008–2019 Free Software Foundation,
 Inc.
 
      Permission is granted to copy, distribute and/or modify this
@@ -36,7 +36,7 @@ GNU ways of doing things.
 
    This file describes EDE, the Emacs Development Environment.
 
-   Copyright © 1998–2001, 2004–2005, 2008–2017 Free Software Foundation,
+   Copyright © 1998–2001, 2004–2005, 2008–2019 Free Software Foundation,
 Inc.
 
      Permission is granted to copy, distribute and/or modify this
@@ -128,14 +128,14 @@ compilation.
 First, lets create a directory for our project.  For this example, we’ll
 start with something in ‘/tmp’.
 
-     C-x C-f /tmp/myproject/README RET
-     M-x make-directory RET RET
+     C-x C-f /tmp/myproject/README <RET>
+     M-x make-directory <RET> <RET>
 
    Now put some plain text in your README file to start.
 
    Now, lets create the project:
 
-     M-x ede-new RET Automake RET myproject RET
+     M-x ede-new <RET> Automake <RET> myproject <RET>
 
    Nothing visible happened, but if you use ‘dired’ to look at the
 directory, you should see this:
@@ -153,8 +153,8 @@ directory, you should see this:
 We’ll make a more complex project, so use dired to create some more
 directories using the ‘+’ key, and typing in new directories:
 
-     + include RET
-     + src RET
+     + include <RET>
+     + src <RET>
 
    Now I’ll short-cut in this tutorial.  Create the following files:
 
@@ -206,11 +206,11 @@ create those projects.
 
    With ‘main.cpp’ as your current buffer, type:
 
-     M-x ede-new RET Automake RET src RET
+     M-x ede-new <RET> Automake <RET> src <RET>
 
    and in ‘myproj.hh’ as your current buffer, type:
 
-     M-x ede-new RET Automake RET include RET
+     M-x ede-new <RET> Automake <RET> include <RET>
 
    These steps effectively only create the Project.ede file in which you
 will start adding targets.
@@ -224,14 +224,14 @@ buffer.
 
    Note: If for some reason a directory list buffer, or file does not
 have the ‘Project’ menu item, or if EDE keybindings don’t work, just use
-‘M-x revert-buffer RET’ to force a refresh.  Sometimes creating a new
+‘M-x revert-buffer <RET>’ to force a refresh.  Sometimes creating a new
 project doesn’t restart buffers correctly.
 
    Lets start with the header file.  In ‘include/myproj.hh’, you could
 use the menu, but we will now start using the EDE command prefix which
 is ‘C-c .’.
 
-     C-c . t includes RET miscellaneous RET y
+     C-c . t includes <RET> miscellaneous <RET> y
 
    This creates a misc target for holding your includes, and then adds
 myproj.hh to the target.  Automake (the tool) has better ways to do
@@ -240,7 +240,7 @@ this, but for this project, it is sufficient.
    Next, visit the ‘src’ directory using dired.  There should be a
 ‘Project’ menu.  You can create a new target with
 
-     . t myprogram RET program RET
+     . t myprogram <RET> program <RET>
 
    Note that ‘. t’ is a command for creating a target.  This command is
 also in the menu.  This will create a target that will build a program.
@@ -249,7 +249,7 @@ If you want, visit ‘Project.ede’ to see the structure built so far.
    Next, place the cursor on ‘main.cpp’, and use ‘. a’ to add that file
 to your target.
 
-     . a myprogram RET
+     . a myprogram <RET>
 
    Note that these prompts often have completion, so you can just press
 ‘TAB’ to complete the name ‘myprogram’.
@@ -260,8 +260,8 @@ all in your dired buffer, and add them all at the same time.
    Next, do the same for the library by placing the cursor on
 ‘mylib.cpp’.
 
-     . t mylib RET sharedobject RET
-     . a mylib RET
+     . t mylib <RET> sharedobject <RET>
+     . a mylib <RET>
 
 3.5 Step 5: Compile, and fail
 =============================
@@ -292,7 +292,7 @@ the include path.
 
    Visit ‘main.cpp’.
 
-     M-x customize-project RET
+     M-x customize-project <RET>
 
    Select the ‘[Settings]’ subgroup of options.  Under ‘Variable :’
 click ‘[INS]’.  At this point, you need to be somewhat savvy with
@@ -342,7 +342,7 @@ library.  To do that, we need to customize our target instead of the
 project.  This is because variables such as the include path are treated
 globally, whereas dependencies for a target are target specific.
 
-     M-x customize-target RET
+     M-x customize-target <RET>
 
    On the first page, you will see an Ldlibs-local section.  Add mylib
 to it by first clicking ‘[INS]’, and they adding the library.  It should
@@ -367,7 +367,7 @@ elements to compile:
 
 You can run your program directly from EDE.
 
-     C-c . R RET RET
+     C-c . R <RET> <RET>
 
    If your program takes command line arguments, you can type them in
 when it offers the command line you want to use to run your program.
@@ -753,9 +753,9 @@ expanded.
    The include path only affects C/C++ header files.  Use the slot
 ‘:header-match-regexp’ to change it.
 
-   The ‘:system-include-path’ allows you to specify full directory names
-to include directories where system header files can be found.  These
-will be applied to files in this project only.
+   The ‘:system-include-path’ allows you to specify absolute names of
+include directories where system header files can be found.  These will
+be applied to files in this project only.
 
    With ‘:compile-command’ you can provide a command which should be run
 when calling ‘ede-compile-project’.
@@ -986,8 +986,8 @@ EIEIO to extending classes, and writing methods.
 
    If you intend to extend EDE, it is most likely that a new target type
 is needed in one of the existing project types.  The rest of this
-chapter will discuss extending the ‘ede-project’ class, and it’s
-targets.  See ‘project-am.el’ for basic details on adding targets to it.
+chapter will discuss extending the ‘ede-project’ class, and its targets.
+See ‘project-am.el’ for basic details on adding targets to it.
 
    For the ‘ede-project’ type, the core target class is called
 ‘ede-proj-target’.  Inheriting from this will give you everything you
@@ -1409,14 +1409,14 @@ Slots:
      Get the inode of the directory project PROJ is in.
 
  -- Method: ede-project-root :AFTER this
-     If a project knows it’s root, return it here.  Allows for
+     If a project knows its root, return it here.  Allows for
      one-project-object-for-a-tree type systems.
 
  -- Method: ede-find-subproject-for-directory :AFTER proj dir
      Find a subproject of PROJ that corresponds to DIR.
 
  -- Method: ede-project-root-directory :AFTER this &optional file
-     If a project knows it’s root, return it here.  Allows for
+     If a project knows its root, return it here.  Allows for
      one-project-object-for-a-tree type systems.  Optional FILE is the
      file to test.  It is ignored in preference of the anchor file for
      the project.
@@ -2277,7 +2277,7 @@ Slots:
      In sources for THIS, change version numbers to VERSION.
 
  -- Method: project-delete-target :AFTER ot
-     Delete the current target OT from it’s parent project.
+     Delete the current target OT from its parent project.
 
  -- Method: ede-target-sourcecode :AFTER this
      Return the sourcecode objects which THIS permits.
@@ -2307,8 +2307,8 @@ Slots:
      Return non-‘nil’ if THIS target wants FILE.
 
  -- Method: project-add-file :AFTER ot file
-     Add the current buffer into project project target OT.  Argument
-     FILE is the file to add.
+     Add the current buffer into project target OT.  Argument FILE is
+     the file to add.
 
  -- Method: ede-target-name :AFTER this
      Return the name of THIS target, suitable for make or debug style
@@ -2442,7 +2442,7 @@ Slots:
      ‘compiler’ slot.  Converts all symbols into the objects to be used.
 
  -- Method: project-delete-target :AFTER this
-     Delete the current target THIS from it’s parent project.
+     Delete the current target THIS from its parent project.
 
  -- Method: ede-proj-makefile-target-name :AFTER this
      Return the name of the main target for THIS target.
@@ -3395,7 +3395,7 @@ Slots:
           Type: ‘list’
 
           The commands used to execute this compiler.  The object which
-          uses this compiler will place these commands after it’s rule
+          uses this compiler will place these commands after its rule
           definition.
 
      ‘:autoconf’
@@ -3489,7 +3489,7 @@ Slots:
           Type: ‘list’
 
           The commands used to execute this compiler.  The object which
-          uses this compiler will place these commands after it’s rule
+          uses this compiler will place these commands after its rule
           definition.
 
      ‘:objectextention’
@@ -3605,7 +3605,7 @@ Slots:
           Type: ‘list’
 
           The commands used to execute this compiler.  The object which
-          uses this compiler will place these commands after it’s rule
+          uses this compiler will place these commands after its rule
           definition.
 
      ‘:objectextention’
@@ -3623,7 +3623,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -4020,7 +4020,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -4103,72 +4103,72 @@ Node: Top930
 Node: EDE Project Concepts2763
 Node: EDE Mode4153
 Node: Quick Start4778
-Node: Creating a project12395
-Node: Modifying your project14491
-Node: Add/Remove target15049
-Node: Add/Remove files15756
-Node: Customize Features16705
-Node: Project Local Variables17707
-Node: EDE Project Features19240
-Node: Changing Compilers and Flags19947
-Node: Configurations20911
-Node: Building and Debugging21828
-Node: Miscellaneous commands22448
-Ref: ede-locate-setup-options23298
-Node: Make and Automake projects24087
-Node: Automake direct projects24794
-Node: Simple projects25398
-Node: ede-cpp-root26282
-Node: ede-emacs31738
-Node: ede-linux32112
-Node: ede-generic-project32846
-Node: Custom Locate34896
-Node: Extending EDE36510
-Node: Development Overview39252
-Node: Detecting a Project43592
-Node: User interface methods46765
-Node: Base project methods48026
-Node: Sourcecode objects49439
-Node: Compiler and Linker objects51196
-Node: Project53491
-Node: ede-project-placeholder53818
-Node: ede-project55881
-Node: ede-cpp-root-project65013
-Node: ede-simple-project69120
-Node: ede-simple-base-project69722
-Node: ede-proj-project70283
-Node: project-am-makefile76084
-Node: ede-step-project77185
-Node: Targets80699
-Node: ede-target81435
-Node: ede-proj-target87624
-Node: ede-proj-target-makefile93708
-Node: semantic-ede-proj-target-grammar96904
-Node: ede-proj-target-makefile-objectcode98323
-Node: ede-proj-target-makefile-archive99921
-Node: ede-proj-target-makefile-program101069
-Node: ede-proj-target-makefile-shared-object103017
-Node: ede-proj-target-elisp104750
-Node: ede-proj-target-elisp-autoloads106709
-Node: ede-proj-target-makefile-miscelaneous110169
-Node: ede-proj-target-makefile-info111411
-Node: ede-proj-target-scheme113882
-Node: project-am-target114680
-Node: project-am-objectcode115697
-Node: project-am-program116744
-Node: project-am-header-noinst117369
-Node: project-am-header-inst118064
-Node: project-am-lisp118750
-Node: project-am-texinfo119349
-Node: project-am-man120395
-Node: Sourcecode120964
-Node: ede-sourcecode121193
-Node: Compilers123958
-Node: ede-compilation-program124371
-Node: ede-compiler127685
-Node: ede-object-compiler130933
-Node: ede-linker131728
-Node: GNU Free Documentation License133261
+Node: Creating a project12449
+Node: Modifying your project14545
+Node: Add/Remove target15103
+Node: Add/Remove files15810
+Node: Customize Features16759
+Node: Project Local Variables17761
+Node: EDE Project Features19294
+Node: Changing Compilers and Flags20001
+Node: Configurations20965
+Node: Building and Debugging21882
+Node: Miscellaneous commands22502
+Ref: ede-locate-setup-options23352
+Node: Make and Automake projects24141
+Node: Automake direct projects24848
+Node: Simple projects25452
+Node: ede-cpp-root26336
+Node: ede-emacs31786
+Node: ede-linux32160
+Node: ede-generic-project32894
+Node: Custom Locate34944
+Node: Extending EDE36558
+Node: Development Overview39296
+Node: Detecting a Project43636
+Node: User interface methods46809
+Node: Base project methods48070
+Node: Sourcecode objects49483
+Node: Compiler and Linker objects51240
+Node: Project53535
+Node: ede-project-placeholder53862
+Node: ede-project55919
+Node: ede-cpp-root-project65051
+Node: ede-simple-project69158
+Node: ede-simple-base-project69760
+Node: ede-proj-project70321
+Node: project-am-makefile76122
+Node: ede-step-project77223
+Node: Targets80737
+Node: ede-target81473
+Node: ede-proj-target87651
+Node: ede-proj-target-makefile93732
+Node: semantic-ede-proj-target-grammar96928
+Node: ede-proj-target-makefile-objectcode98347
+Node: ede-proj-target-makefile-archive99945
+Node: ede-proj-target-makefile-program101093
+Node: ede-proj-target-makefile-shared-object103041
+Node: ede-proj-target-elisp104774
+Node: ede-proj-target-elisp-autoloads106733
+Node: ede-proj-target-makefile-miscelaneous110193
+Node: ede-proj-target-makefile-info111435
+Node: ede-proj-target-scheme113906
+Node: project-am-target114704
+Node: project-am-objectcode115721
+Node: project-am-program116768
+Node: project-am-header-noinst117393
+Node: project-am-header-inst118088
+Node: project-am-lisp118774
+Node: project-am-texinfo119373
+Node: project-am-man120419
+Node: Sourcecode120988
+Node: ede-sourcecode121217
+Node: Compilers123982
+Node: ede-compilation-program124395
+Node: ede-compiler127706
+Node: ede-object-compiler130951
+Node: ede-linker131746
+Node: GNU Free Documentation License133276
 
 End Tag Table
 

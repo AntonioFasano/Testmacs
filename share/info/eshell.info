@@ -1,8 +1,8 @@
-This is eshell.info, produced by makeinfo version 6.3 from eshell.texi.
+This is eshell.info, produced by makeinfo version 6.6 from eshell.texi.
 
 This manual is for Eshell, the Emacs shell.
 
-   Copyright © 1999–2017 Free Software Foundation, Inc.
+   Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -34,7 +34,7 @@ interface similar to command shells such as ‘bash’, ‘zsh’, ‘rc’, or
 
    This manual is for Eshell, the Emacs shell.
 
-   Copyright © 1999–2017 Free Software Foundation, Inc.
+   Copyright © 1999–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -65,6 +65,10 @@ File: eshell.info,  Node: Introduction,  Next: Commands,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
+
+* Menu:
+
+* Contributors to Eshell::
 
 1.1 What is Eshell?
 ===================
@@ -113,21 +117,6 @@ computer frequently enough, it is more than worthwhile in the long run.
 Any tool you use often deserves the time spent learning to master it.
 (2)
 
-1.2 What Eshell is not
-======================
-
-Eshell is _not_ a replacement for system shells such as ‘bash’ or ‘zsh’.
-Use Eshell when you want to move text between Emacs and external
-processes; if you only want to pipe output from one external process to
-another (and then another, and so on), use a system shell, because
-Emacs’s IO system is buffer oriented, not stream oriented, and is very
-inefficient at such tasks.  If you want to write shell scripts in
-Eshell, don’t; either write an elisp library or use a system shell.
-
-   Some things Eshell just doesn’t do well.  It fills the niche between
-IELM and your system shell, where the peculiar use-cases lie, and it is
-less than ideal outside that niche.
-
 * Menu:
 
 * Contributors to Eshell::      People who have helped out!
@@ -144,7 +133,7 @@ easier than it looks: ‘ls -lt **/*.doc(Lk+50aM+5)’.
 
 File: eshell.info,  Node: Contributors to Eshell,  Up: Introduction
 
-1.3 Contributors to Eshell
+1.2 Contributors to Eshell
 ==========================
 
 Contributions to Eshell are welcome.  I have limited time to work on
@@ -208,10 +197,10 @@ available in the Emacs Lisp library.  It does this by transforming the
 input line into a callable Lisp form.(1)
 
    The command can be either an Elisp function or an external command.
-Eshell looks first for an *note alias: Aliases. with the same name as
-the command, then a *note built-in command: Built-ins. or a function
-with the same name; if there is no match, it then tries to execute it as
-an external command.
+Eshell looks first for an alias (*note Aliases::) with the same name as
+the command, then a built-in (*note Built-ins::) or a function with the
+same name; if there is no match, it then tries to execute it as an
+external command.
 
    The semicolon (‘;’) can be used to separate multiple command
 invocations on a single line.  A command invocation followed by an
@@ -259,10 +248,10 @@ this should not be necessary.  You can check what will be applied by the
      /bin/ls
 
    If you want to discard a given built-in command, you could declare an
-alias, *note Aliases::.  Example:
+alias (*note Aliases::).  Example:
 
      ~ $ which sudo
-     eshell/sudo is a compiled Lisp function in `em-unix.el'
+     eshell/sudo is a compiled Lisp function in `em-tramp.el'.
      ~ $ alias sudo '*sudo $*'
      ~ $ which sudo
      sudo is an alias, defined as "*sudo $*"
@@ -279,8 +268,8 @@ these will print a usage message when given the ‘--help’ option.
      or, with no arguments, prints the current paths in this variable.
 
 ‘alias’
-     Define an alias (*note Aliases::).  This does not add it to the
-     aliases file.
+     Define an alias (*note Aliases::).  This adds it to the aliases
+     file.
 
 ‘clear’
      Scrolls the contents of the eshell window out of sight, leaving a
@@ -329,7 +318,9 @@ these will print a usage message when given the ‘--help’ option.
      Find::.
 
 ‘make’
-     Run ‘make’ through ‘compile’.  *Note (emacs)Compilation::.
+     Run ‘make’ through ‘compile’ when run asynchronously (e.g., ‘make
+     &’).  *Note (emacs)Compilation::.  Otherwise call the external
+     ‘make’ command.
 
 ‘occur’
      Alias to Emacs’s ‘occur’.  *Note (emacs)Other Repeating Search::.
@@ -386,6 +377,9 @@ Eshell knows a few built-in variables:
      This variable contains the exit code of the last command (0 or 1
      for Lisp functions, based on successful completion).
 
+   *Note Aliases::, for the built-in variables ‘$*’, ‘$1’, ‘$2’, ..., in
+alias definitions.
+
 
 File: eshell.info,  Node: Variables,  Next: Aliases,  Prev: Built-ins,  Up: Commands
 
@@ -408,11 +402,17 @@ File: eshell.info,  Node: Aliases,  Next: History,  Prev: Variables,  Up: Comman
 
 Aliases are commands that expand to a longer input line.  For example,
 ‘ll’ is a common alias for ‘ls -l’, and would be defined with the
-command invocation ‘alias ll ls -l’; with this defined, running ‘ll foo’
-in Eshell will actually run ‘ls -l foo’.  Aliases defined (or deleted)
-by the ‘alias’ command are automatically written to the file named by
-‘eshell-aliases-file’, which you can also edit directly (although you
-will have to manually reload it).
+command invocation ‘alias ll 'ls -l $*'’; with this defined, running ‘ll
+foo’ in Eshell will actually run ‘ls -l foo’.  Aliases defined (or
+deleted) by the ‘alias’ command are automatically written to the file
+named by ‘eshell-aliases-file’, which you can also edit directly
+(although you will have to manually reload it).
+
+   Note that unlike aliases in Bash, arguments must be handled
+explicitly.  Typically the alias definition would end in ‘$*’ to pass
+all arguments along.  More selective use of arguments via ‘$1’, ‘$2’,
+etc., is also possible.  For example, ‘alias mcd 'mkdir $1 && cd $1'’
+would cause ‘mcd foo’ to create and switch to a directory called ‘foo’.
 
 
 File: eshell.info,  Node: History,  Next: Completion,  Prev: Aliases,  Up: Commands
@@ -619,7 +619,7 @@ File: eshell.info,  Node: Globbing,  Prev: Dollars Expansion,  Up: Expansion
 Eshell’s globbing syntax is very similar to that of Zsh.  Users coming
 from Bash can still use Bash-style globbing, as there are no
 incompatibilities.  Most globbing is pattern-based expansion, but there
-is also predicate-based expansion.  See *note (zsh)Filename Generation::
+is also predicate-based expansion.  *Note (zsh)Filename Generation::,
 for full syntax.  To customize the syntax and behavior of globbing in
 Eshell see the Customize(1) groups “eshell-glob” and “eshell-pred”.
 
@@ -855,7 +855,7 @@ Piping to a Lisp function is not supported
 
      Make it so that the Lisp command on the right of the pipe is
      repeatedly called with the input strings as arguments.  This will
-     require changing ‘eshell-do-pipeline’ to handle non-process
+     require changing ‘eshell-do-pipelines’ to handle non-process
      targets.
 
 Input redirection is not supported
@@ -898,7 +898,7 @@ If a globbing pattern returns one match, should it be a list?
 
 Make sure syntax table is correct in Eshell mode
 
-     So that ‘M-DEL’ acts in a predictable manner, etc.
+     So that ‘M-<DEL>’ acts in a predictable manner, etc.
 
 Allow all Eshell buffers to share the same history and list-dir
 
@@ -912,12 +912,12 @@ Split up parsing of text after ‘$’ in ‘esh-var.el’
      Make it similar to the way that ‘esh-arg.el’ is structured.  Then
      add parsing of ‘$[?\n]’.
 
-After pressing ‘M-RET’, redisplay before running the next command
+After pressing ‘M-<RET>’, redisplay before running the next command
 
 Argument predicates and modifiers should work anywhere in a path
 
-          /usr/local/src/editors/vim $ vi **/CVS(/)/Root(.)
-          Invalid regexp: "Unmatched ( or \\("
+          /usr/local/src/editors/vim $ vi **/CVS(/)/Root(.)  Invalid regexp:
+          "Unmatched ( or \\("
 
      With ‘zsh’, the glob above expands to all files named ‘Root’ in
      directories named ‘CVS’.
@@ -964,7 +964,7 @@ Error if a glob doesn’t expand due to a predicate
      An error should be generated only if ‘eshell-error-if-no-glob’ is
      non-‘nil’.
 
-‘(+ RET SPC TAB’ does not cause ‘indent-according-to-mode’ to occur
+‘(+ <RET> <SPC> <TAB>’ does not cause ‘indent-according-to-mode’ to occur
 
 Create ‘eshell-auto-accumulate-list’
 
@@ -1024,7 +1024,7 @@ Write an ‘info’ alias that can take arguments
 
 Create a mode ‘eshell-browse’
 
-     It would treat the Eshell buffer as a outline.  Collapsing the
+     It would treat the Eshell buffer as an outline.  Collapsing the
      outline hides all of the output text.  Collapsing again would show
      only the first command run in each directory
 
@@ -1202,7 +1202,7 @@ Write a version of ‘xargs’ based on command rewriting
 
 Write an alias for ‘less’ that brings up a ‘view-mode’ buffer
 
-     Such that the user can press <SPC> and <DEL>, and then <q> to
+     Such that the user can press <SPC> and <DEL>, and then ‘q’ to
      return to Eshell.  It would be equivalent to: ‘X > #<buffer Y>;
      view-buffer #<buffer Y>’.
 
@@ -1219,7 +1219,7 @@ Problem using ‘M-x eshell’ after using ‘eshell-command’
      ‘eshell-command’ and invoke ‘ls’, and then use ‘M-x eshell’, it
      doesn’t display anything.
 
-‘M-RET’ during a long command (using smart display) doesn’t work
+‘M-<RET>’ during a long command (using smart display) doesn’t work
 
      Since it keeps the cursor up where the command was invoked.
 
@@ -1232,7 +1232,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1629,7 +1629,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1722,15 +1722,12 @@ Concept Index
 * contributors:                          Contributors to Eshell.
                                                                (line  6)
 * email to the author:                   Bugs and ideas.       (line  6)
-* Eshell, what it is:                    Introduction.         (line  9)
-* Eshell, what it is not:                Introduction.         (line 56)
+* Eshell, what it is:                    Introduction.         (line 13)
 * FAQ:                                   Bugs and ideas.       (line  6)
 * known bugs:                            Bugs and ideas.       (line  6)
 * problems, list of common:              Bugs and ideas.       (line  6)
 * reporting bugs and ideas:              Bugs and ideas.       (line  6)
-* what Eshell is not:                    Introduction.         (line 56)
-* what is Eshell?:                       Introduction.         (line  9)
-* what isn’t Eshell?:                    Introduction.         (line 56)
+* what is Eshell?:                       Introduction.         (line 13)
 
 
 File: eshell.info,  Node: Function and Variable Index,  Next: Command Index,  Prev: Concept Index,  Up: Top
@@ -1741,11 +1738,13 @@ Function and Variable Index
  [index ]
 * Menu:
 
-* $$:                                    Built-ins.           (line 137)
-* $+:                                    Built-ins.           (line 127)
-* $-:                                    Built-ins.           (line 130)
-* $?:                                    Built-ins.           (line 141)
-* $_:                                    Built-ins.           (line 134)
+* $$:                                    Built-ins.           (line 139)
+* $*:                                    Aliases.             (line   6)
+* $+:                                    Built-ins.           (line 129)
+* $-:                                    Built-ins.           (line 132)
+* $1, $2, ...:                           Aliases.             (line  14)
+* $?:                                    Built-ins.           (line 143)
+* $_:                                    Built-ins.           (line 136)
 * eshell-destroy-buffer-when-process-dies: Input/Output.      (line  36)
 * eshell-prefer-lisp-functions:          Built-ins.           (line  25)
 * eshell-source-file:                    Scripts.             (line   6)
@@ -1763,7 +1762,7 @@ Command Index
 * addpath:                               Built-ins.           (line  33)
 * agrep:                                 Built-ins.           (line  58)
 * alias:                                 Built-ins.           (line  37)
-* cd:                                    Built-ins.           (line  96)
+* cd:                                    Built-ins.           (line  98)
 * clear:                                 Built-ins.           (line  41)
 * date:                                  Built-ins.           (line  46)
 * define:                                Built-ins.           (line  50)
@@ -1779,55 +1778,55 @@ Command Index
 * listify:                               Built-ins.           (line  77)
 * locate:                                Built-ins.           (line  82)
 * make:                                  Built-ins.           (line  87)
-* occur:                                 Built-ins.           (line  90)
-* printnl:                               Built-ins.           (line  93)
+* occur:                                 Built-ins.           (line  92)
+* printnl:                               Built-ins.           (line  95)
 * source:                                Scripts.             (line   6)
-* su:                                    Built-ins.           (line 116)
-* sudo:                                  Built-ins.           (line 117)
+* su:                                    Built-ins.           (line 118)
+* sudo:                                  Built-ins.           (line 119)
 
 
 
 Tag Table:
 Node: Top902
 Node: Introduction2384
-Ref: Introduction-Footnote-15822
-Ref: Introduction-Footnote-25912
-Node: Contributors to Eshell6115
-Node: Commands7283
-Node: Invocation7708
-Ref: Invocation-Footnote-18854
-Node: Arguments8951
-Node: Built-ins9655
-Node: Variables14301
-Ref: Variables-Footnote-114659
-Node: Aliases14688
-Node: History15283
-Node: Completion16881
-Ref: Completion-Footnote-118513
-Node: for loop18613
-Node: Scripts19146
-Node: Expansion19744
-Ref: Expansion-Footnote-120366
-Ref: Expansion-Footnote-220487
-Node: Dollars Expansion20604
-Node: Globbing22731
-Ref: Globbing-Footnote-123300
-Node: Input/Output23343
-Node: Extension modules26901
-Ref: Extension modules-Footnote-127828
-Ref: Extension modules-Footnote-227876
-Ref: Extension modules-Footnote-327914
-Node: Writing a module28026
-Node: Module testing28162
-Node: Directory handling28321
-Node: Key rebinding28485
-Node: Smart scrolling28640
-Node: Terminal emulation28799
-Node: Bugs and ideas28942
-Node: GNU Free Documentation License45293
-Node: Concept Index70653
-Node: Function and Variable Index72059
-Node: Command Index72833
+Ref: Introduction-Footnote-15134
+Ref: Introduction-Footnote-25224
+Node: Contributors to Eshell5427
+Node: Commands6595
+Node: Invocation7020
+Ref: Invocation-Footnote-18162
+Node: Arguments8259
+Node: Built-ins8963
+Node: Variables13813
+Ref: Variables-Footnote-114171
+Node: Aliases14200
+Node: History15170
+Node: Completion16768
+Ref: Completion-Footnote-118400
+Node: for loop18500
+Node: Scripts19033
+Node: Expansion19631
+Ref: Expansion-Footnote-120253
+Ref: Expansion-Footnote-220374
+Node: Dollars Expansion20491
+Node: Globbing22618
+Ref: Globbing-Footnote-123184
+Node: Input/Output23227
+Node: Extension modules26785
+Ref: Extension modules-Footnote-127712
+Ref: Extension modules-Footnote-227760
+Ref: Extension modules-Footnote-327798
+Node: Writing a module27910
+Node: Module testing28046
+Node: Directory handling28205
+Node: Key rebinding28369
+Node: Smart scrolling28524
+Node: Terminal emulation28683
+Node: Bugs and ideas28826
+Node: GNU Free Documentation License45196
+Node: Concept Index70558
+Node: Function and Variable Index71743
+Node: Command Index72663
 
 End Tag Table
 

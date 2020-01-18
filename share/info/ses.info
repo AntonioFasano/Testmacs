@@ -1,8 +1,8 @@
-This is ses.info, produced by makeinfo version 6.3 from ses.texi.
+This is ses.info, produced by makeinfo version 6.6 from ses.texi.
 
 This file documents SES: the Simple Emacs Spreadsheet.
 
-   Copyright © 2002–2017 Free Software Foundation, Inc.
+   Copyright © 2002–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -33,7 +33,7 @@ SES: Simple Emacs Spreadsheet
 
    This file documents SES: the Simple Emacs Spreadsheet.
 
-   Copyright © 2002–2017 Free Software Foundation, Inc.
+   Copyright © 2002–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -150,6 +150,12 @@ end-points, e.g.:
    (The ‘apply’ is necessary because ‘ses-range’ produces a _list_ of
 values.  This allows for more complex possibilities.)
 
+   Alternatively you can use the ‘!’ modifier of ‘ses-range’ to remove
+blank cells from the returned list, which allows to use ‘+’ instead of
+‘ses+’:
+
+     (apply '+ (ses-range A2 A5 !))
+
 
 File: ses.info,  Node: The Basics,  Next: Advanced Features,  Prev: Quick Tutorial,  Up: Top
 
@@ -157,7 +163,7 @@ File: ses.info,  Node: The Basics,  Next: Advanced Features,  Prev: Quick Tutori
 ************
 
 To create a new spreadsheet, visit a nonexistent file whose name ends
-with ".ses".  For example, ‘C-x C-f test.ses RET’.
+with ".ses".  For example, ‘C-x C-f test.ses <RET>’.
 
    A “cell identifier” is a symbol with a column letter and a row
 number.  Cell B7 is the 2nd column of the 7th row.  For very wide
@@ -226,7 +232,11 @@ To insert a value into a cell, simply type a numeric expression,
      you (‘ses-read-cell’).  To access another cell’s value, just use
      its identifier in your expression.  Whenever the other cell is
      changed, this cell’s formula will be reevaluated.  While typing in
-     the expression, you can use ‘M-<TAB>’ to complete symbol names.
+     the expression, you can use the following keys:
+     ‘M-<TAB>’
+          to complete symbol names, and
+     ‘C-h C-n’
+          to list the named cells symbols in a help buffer.
 
 ‘' (apostrophe)’
      Enter a symbol (ses-read-symbol).  SES remembers all symbols that
@@ -236,7 +246,7 @@ To insert a value into a cell, simply type a numeric expression,
    To enter something else (e.g., a vector), begin with a digit, then
 erase the digit and type whatever you want.
 
-‘RET’
+‘<RET>’
      Edit the existing formula in the current cell (‘ses-edit-cell’).
 
 ‘C-c C-c’
@@ -269,7 +279,7 @@ Basic commands:
 ‘w’
      (‘ses-set-column-width’)
 
-‘TAB’
+‘<TAB>’
      Moves point to the next rightward cell, or inserts a new column if
      already at last cell on line, or inserts a new row if at endline
      (‘ses-forward-or-insert’).
@@ -300,14 +310,52 @@ File: ses.info,  Node: Printer functions,  Next: Clearing cells,  Prev: Resizing
 Printer functions convert binary cell values into the print forms that
 Emacs will display on the screen.
 
-   A printer can be a format string, like ‘"$%.2f"’.  The result string
-is right-aligned within the print cell.  To get left-alignment, use
-parentheses: ‘("$%.2f")’.  A printer can also be a one-argument function
-(a symbol or a lambda), whose result is a string (right-aligned) or list
-of one string (left-aligned).  While typing in a lambda, you can use
-‘M-<TAB>’ to complete the names of symbols.
+* Menu:
 
-   Each cell has a printer.  If ‘nil’, the column-printer for the cell’s
+* Various kinds of printer functions::
+* Configuring what printer function applies::
+* Standard printer functions::
+* Local printer functions::
+* Writing a lambda printer function::
+
+
+File: ses.info,  Node: Various kinds of printer functions,  Next: Configuring what printer function applies,  Up: Printer functions
+
+3.3.1 Various kinds of printer functions
+----------------------------------------
+
+When configuring what printer function applies (*note Configuring what
+printer function applies::), you can enter a printer function as one of
+the following:
+
+   • A format string, like ‘"$%.2f"’.  The result string is
+     right-aligned within the print cell.  To get left-alignment, use
+     parentheses: ‘("$%.2f")’.
+   • A printer can also be a one-argument function, the result of which
+     is a string (right-aligned) or list of one string (left-aligned).
+     Such a function can be in turn configured as:
+        • A lambda expression, for instance:
+
+               (lambda (x)
+                 (cond
+                    ((null x) "")
+                    ((numberp x) (format "%.2f" x))
+                    (t (ses-center-span x ?# 'ses-prin1))))
+
+          While typing in a lambda, you can use ‘M-<TAB>’ to complete
+          the names of symbols.
+        • A symbol referring to a standard printer function (*note
+          Standard printer functions::).
+        • A symbol referring to a local printer function (*note Local
+          printer functions::).
+
+
+File: ses.info,  Node: Configuring what printer function applies,  Next: Standard printer functions,  Prev: Various kinds of printer functions,  Up: Printer functions
+
+3.3.2 Configuring what printer function applies
+-----------------------------------------------
+
+Each cell has a printer.  If ‘nil’, the column-printer for the cell’s
 column is used.  If that is also ‘nil’, the default-printer for the
 spreadsheet is used.
 
@@ -322,13 +370,31 @@ spreadsheet is used.
      Enter the default printer for the spreadsheet
      (‘ses-read-default-printer’).
 
-   The ‘ses-read-XXX-printer’ commands have their own minibuffer
-history, which is preloaded with the set of all printers used in this
-spreadsheet, plus the standard printers.
+   The ‘ses-read-XXX-printer’ allows the following commands during
+editing:
 
-   The standard printers are suitable only for cells, not columns or
-default, because they format the value using the column-printer (or
-default-printer if ‘nil’) and then center the result:
+‘<arrow-up>’
+‘<arrow-down>’
+     To browse history: the ‘ses-read-XXX-printer’ commands have their
+     own minibuffer history, which is preloaded with the set of all
+     printers used in this spreadsheet, plus the standard printers
+     (*note Standard printer functions::) and the local printers (*note
+     Local printer functions::).
+‘<TAB>’
+     To complete the local printer symbols, and
+‘C-h C-p’
+     To list the local printers in a help buffer.
+
+
+File: ses.info,  Node: Standard printer functions,  Next: Local printer functions,  Prev: Configuring what printer function applies,  Up: Printer functions
+
+3.3.3 Standard printer functions
+--------------------------------
+
+Except for ‘ses-prin1’, the other standard printers are suitable only
+for cells, not columns or default, because they format the value using
+the column-printer (or default-printer if ‘nil’) and then center the
+result:
 
 ‘ses-center’
      Just centering.
@@ -345,12 +411,111 @@ default-printer if ‘nil’) and then center the result:
 ‘ses-tildefill-span’
      Centering with tildes (~) and spill-over.
 
-   You can define printer function local to a sheet with the command
+‘ses-prin1’
+     This is the fallback printer, used when calling the configured
+     printer throws some error.
+
+
+File: ses.info,  Node: Local printer functions,  Next: Writing a lambda printer function,  Prev: Standard printer functions,  Up: Printer functions
+
+3.3.4 Local printer functions
+-----------------------------
+
+You can define printer function local to a sheet with the command
 ‘ses-define-local-printer’.  For instance, define a printer ‘foo’ to
 ‘"%.2f"’, and then use symbol ‘foo’ as a printer function.  Then, if you
 call again ‘ses-define-local-printer’ on ‘foo’ to redefine it as
 ‘"%.3f"’, all the cells using printer ‘foo’ will be reprinted
 accordingly.
+
+   Sometimes there are local printers that you want to define or
+re-define automatically every time you open a sheet.  For instance
+imagine that you want to define/re-define automatically a local printer
+‘euro’ to display a number like an amount of euros, that is to say
+number ‘3.1’ would be displayed as ‘3.10€’.  To do so in any non
+read-only SES buffer, you can add some code like this to your ‘.emacs’
+init file:
+
+     (defun my-ses-mode-hook ()
+       (unless buffer-read-only
+         (ses-define-local-printer
+          'euro
+          (lambda (x)
+            (cond
+     	((null x) "")
+     	((numberp x) (format "%.2f€" x))
+     	(t (ses-center-span x ?# 'ses-prin1)))))))
+     (add-hook 'ses-mode-hook 'my-ses-mode-hook)
+
+   If you replace command ‘ses-define-local-printer’ by function
+‘ses-define-if-new-local-printer’ the definition will occur only if a
+local printer with the same name in not already defined.
+
+
+File: ses.info,  Node: Writing a lambda printer function,  Prev: Local printer functions,  Up: Printer functions
+
+3.3.5 Writing a lambda printer function
+---------------------------------------
+
+You can write a printer function with a lambda expression taking one
+argument in two cases:
+
+   • when you configure the printer function applying to a cell or
+     column, or
+   • when you define a local printer function with command
+     ‘ses-define-local-printer’.
+
+   When doing so, please take care that the returned value is a string,
+or a list containing a string, even when the input argument has an
+unexpected value.  Here is an example:
+
+     (lambda (val)
+        (cond
+           ((null val) "")
+           ((and (numberp val) (>= val 0)) (format "%.1f" val))
+           (t (ses-center-span val ?# 'ses-prin1))))
+
+   This example will:
+
+   • When the cell is empty (ie. when ‘val’ is ‘nil’), print an empty
+     string ‘""’
+   • When the cell value is a non negative number, format the value in
+     fixed-point notation with one decimal after point
+   • Otherwise, handle the value as erroneous by printing it as an
+     s-expression (using ‘ses-prin1’), centered and surrounded by ‘#’
+     filling.
+
+   Another precaution to take is to avoid stack overflow due to a
+printer function calling itself indefinitely.  This mistake can happen
+when you use a local printer as a column printer, and this local printer
+implicitly calls the current column printer, so it will call itself
+recursively.  Imagine for instance that you want to create some local
+printer ‘=fill’ that would center the content of a cell and surround it
+by equal signs ‘=’, and you do it this way:
+
+     (lambda (x)
+       (cond
+        ((null x) "")
+        (t (ses-center x 0 ?=))))
+
+   Because ‘=fill’ uses the standard printer ‘ses-center’ without
+explicitly passing any printer to it, ‘ses-center’ will call the current
+column printer if any, or the spreadsheet default printer otherwise.  So
+using ‘=fill’ as a column printer will result in a stack overflow in
+this column.  SES does not check for that; you just have to be careful.
+For instance, re-write ‘=fill’ like this:
+
+     (lambda (x)
+       (cond
+        ((null x) "")
+        ((stringp x) (ses-center x 0 ?= " %s "))
+        (t (ses-center-span x ?# 'ses-prin1))))
+
+   The code above applies the ‘=’ filling only to strings; it also
+surrounds the string by one space on each side before filling with ‘=’
+signs.  So the string ‘Foo’ will be displayed like ‘=== Foo ===’ in an
+11 character wide column.  Anything other than an empty cell or a
+non-string is displayed as an error by using ‘#’ filling.
 
 
 File: ses.info,  Node: Clearing cells,  Next: Copy/cut/paste,  Prev: Printer functions,  Up: The Basics
@@ -360,7 +525,7 @@ File: ses.info,  Node: Clearing cells,  Next: Copy/cut/paste,  Prev: Printer fun
 
 These commands set both formula and printer to ‘nil’:
 
-‘DEL’
+‘<DEL>’
      Clear cell and move left (‘ses-clear-cell-backward’).
 
 ‘C-d’
@@ -474,7 +639,9 @@ File: ses.info,  Node: Advanced Features,  Next: For Gurus,  Prev: The Basics,  
      Pops up a menu to set the current row as the header, or revert to
      column letters.
 ‘M-x ses-rename-cell’
-     Rename a cell from a standard A1-like name to any string.
+     Rename a cell from a standard A1-like name to any string that can
+     be a valid local variable name (See also *note Nonrelocatable
+     references::).
 ‘M-x ses-repair-cell-reference-all’
      When you interrupt a cell formula update by clicking ‘C-g’, then
      the cell reference link may be broken, which will jeopardize
@@ -642,7 +809,12 @@ some useful functions to call from your formulas:
 
 ‘(ses-delete-blanks &rest ARGS)’
      Returns a list from which all blank cells (value is either ‘nil’ or
-     ’*skip*) have been deleted.
+     ’*skip*) have been deleted.  Order of args is reverted.  Please
+     note that ‘ses-range’ has a ‘!’ modifier that allows to remove
+     blanks, so it is possible to write:
+          (ses-range A1 A5 !)
+     instead of
+          (apply 'ses-delete-blanks (ses-range A1 A5 <))
 
 ‘(ses+ &rest ARGS)’
      Sum of non-blank arguments.
@@ -687,12 +859,12 @@ tabs, so these are replaced with question marks.
      recalculation/reprinting (‘ses-recalculate-cell’).  You can use
      this to undo the effect of ‘t’.
 
-   When a printer function signals an error, the fallback printer ‘"%s"’
-is substituted.  This is useful when your column printer is numeric-only
-and you use a string as a cell value.  Note that the standard default
-printer is “%.7g” which is numeric-only, so cells that are empty of
-contain strings will use the fallback printer.  ‘c’ on such cells will
-display “Format specifier doesn’t match argument type”.
+   When a printer function signals an error, the fallback printer
+‘ses-prin1’ is substituted.  This is useful when your column printer is
+numeric-only and you use a string as a cell value.  Note that the
+standard default printer is ‘"%.7g"’ which is numeric-only, so cells
+that are empty of contain strings will use the fallback printer.  ‘c’ on
+such cells will display “Format specifier doesn’t match argument type”.
 
 
 File: ses.info,  Node: Import and export,  Next: Virus protection,  Prev: More on cell printing,  Up: Advanced Features
@@ -822,13 +994,23 @@ File: ses.info,  Node: Nonrelocatable references,  Next: The data area,  Prev: D
 ‘C-y’ relocates all cell-references in a pasted formula, while ‘C-u C-y’
 relocates none of the cell-references.  What about mixed cases?
 
-   You can use
+   The best way is to rename cells that you do not want to be
+relocatable by using ‘ses-rename-cell’.  Cells that do not have an
+A1-like name style are not relocated on yank.  Using this method, the
+concerned cells won’t be relocated whatever formula they appear in.
+Please note however that when a formula contains some range ‘(ses-range
+CELL1 CELL2)’ then in the yanked formula each range bound CELL1 and
+CELL2 are relocated, or not, independently, depending on whether they
+are A1-like or renamed.
+
+   An alternative method is to use
      (symbol-value 'B3)
    to make an “absolute reference”.  The formula relocator skips over
 quoted things, so this will not be relocated when pasted or when
 rows/columns are inserted/deleted.  However, B3 will not be recorded as
 a dependency of this cell, so this cell will not be updated
-automatically when B3 is changed.
+automatically when B3 is changed, this is why using ‘ses-rename-cell’ is
+most of the time preferable.
 
    The variables ‘row’ and ‘col’ are dynamically bound while a cell
 formula is being evaluated.  You can use
@@ -843,14 +1025,15 @@ File: ses.info,  Node: The data area,  Next: Buffer-local variables in spreadshe
 =================
 
 Begins with an 014 character, followed by sets of cell-definition macros
-for each row, followed by column-widths, column-printers,
-default-printer, and header-row.  Then there’s the global parameters
-(file-format ID, numrows, numcols) and the local variables (specifying
-SES mode for the buffer, etc.).
+for each row, followed by the set of local printer definitions, followed
+by column-widths, column-printers, default-printer, and header-row.
+Then there’s the global parameters (file-format ID, row count, column
+count, local printer count) and the local variables (specifying SES mode
+for the buffer, etc.).
 
-   When a SES file is loaded, first the numrows and numcols values are
-loaded, then the entire data area is ‘eval’ed, and finally the local
-variables are processed.
+   When a SES file is loaded, first the global parameters are loaded,
+then the entire data area is ‘eval’ed, and finally the local variables
+are processed.
 
    You can edit the data area, but don’t insert or delete any newlines
 except in the local-variables part, since SES locates things by counting
@@ -996,13 +1179,20 @@ Index
 * ses-append-row-jump-first-column:      Resizing.             (line  6)
 * ses-average:                           Standard formula functions.
                                                                (line  6)
-* ses-center:                            Printer functions.    (line  6)
-* ses-center-span:                       Printer functions.    (line  6)
+* ses-center:                            Standard printer functions.
+                                                               (line 11)
+* ses-center-span:                       Standard printer functions.
+                                                               (line 14)
 * ses-clear-cell-backward:               Clearing cells.       (line  6)
 * ses-clear-cell-forward:                Clearing cells.       (line  6)
-* ses-dashfill:                          Printer functions.    (line  6)
-* ses-dashfill-span:                     Printer functions.    (line  6)
-* ses-define-local-printer:              Printer functions.    (line  6)
+* ses-dashfill:                          Standard printer functions.
+                                                               (line 17)
+* ses-dashfill-span:                     Standard printer functions.
+                                                               (line 20)
+* ses-define-if-new-local-printer:       Local printer functions.
+                                                               (line 33)
+* ses-define-local-printer:              Local printer functions.
+                                                               (line  6)
 * ses-delete-blanks:                     Standard formula functions.
                                                                (line  6)
 * ses-delete-column:                     Resizing.             (line  6)
@@ -1023,10 +1213,17 @@ Index
 * ses-mark-row:                          The Basics.           (line  6)
 * ses-mark-whole-buffer:                 The Basics.           (line  6)
 * ses-mode-hook:                         Customizing SES.      (line  6)
+* ses-prin1:                             Standard printer functions.
+                                                               (line 26)
+* ses-prin1 <1>:                         More on cell printing.
+                                                               (line 36)
 * ses-read-cell:                         Formulas.             (line  6)
-* ses-read-cell-printer:                 Printer functions.    (line  6)
-* ses-read-column-printer:               Printer functions.    (line  6)
-* ses-read-default-printer:              Printer functions.    (line  6)
+* ses-read-cell-printer:                 Configuring what printer function applies.
+                                                               (line 11)
+* ses-read-column-printer:               Configuring what printer function applies.
+                                                               (line 15)
+* ses-read-default-printer:              Configuring what printer function applies.
+                                                               (line 18)
 * ses-read-header-row:                   Advanced Features.    (line  6)
 * ses-read-symbol:                       Formulas.             (line  6)
 * ses-recalculate-all:                   Formulas.             (line  6)
@@ -1035,14 +1232,17 @@ Index
                                                                (line  6)
 * ses-reconstruct-all:                   The data area.        (line  6)
 * ses-rename-cell:                       Advanced Features.    (line 17)
+* ses-rename-cell <1>:                   Nonrelocatable references.
+                                                               (line 10)
 * ses-renarrow-buffer:                   The print area.       (line  6)
-* ses-repair-cell-reference-all:         Advanced Features.    (line 19)
+* ses-repair-cell-reference-all:         Advanced Features.    (line 21)
 * ses-reprint-all:                       The print area.       (line  6)
 * ses-set-column-width:                  Resizing.             (line  6)
 * ses-set-header-row:                    Advanced Features.    (line  7)
 * ses-sort-column:                       Sorting by column.    (line  6)
 * ses-sort-column-click:                 Sorting by column.    (line  6)
-* ses-tildefill-span:                    Printer functions.    (line  6)
+* ses-tildefill-span:                    Standard printer functions.
+                                                               (line 23)
 * ses-truncate-cell:                     More on cell printing.
                                                                (line  6)
 * ses-yank-pop:                          Copy/cut/paste.       (line  6)
@@ -1094,7 +1294,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1491,7 +1691,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1573,31 +1773,36 @@ Tag Table:
 Node: Top890
 Node: Sales Pitch2432
 Node: Quick Tutorial3272
-Node: The Basics5915
-Node: Formulas7360
-Node: Resizing8893
-Node: Printer functions10113
-Node: Clearing cells12327
-Node: Copy/cut/paste12680
-Node: Customizing SES15012
-Node: Advanced Features16425
-Node: The print area17738
-Node: Ranges in formulas18425
-Node: Sorting by column21879
-Node: Standard formula functions22830
-Node: More on cell printing23532
-Node: Import and export25601
-Node: Virus protection26226
-Node: Spreadsheets with details and summary27651
-Node: For Gurus28864
-Node: Deferred updates29126
-Node: Nonrelocatable references30668
-Node: The data area31593
-Node: Buffer-local variables in spreadsheets32844
-Node: Uses of defadvice in SES34322
-Node: Index35170
-Node: Acknowledgments45162
-Node: GNU Free Documentation License45739
+Node: The Basics6119
+Node: Formulas7566
+Node: Resizing9219
+Node: Printer functions10441
+Node: Various kinds of printer functions10885
+Node: Configuring what printer function applies12195
+Node: Standard printer functions13474
+Node: Local printer functions14375
+Node: Writing a lambda printer function15921
+Node: Clearing cells18646
+Node: Copy/cut/paste19001
+Node: Customizing SES21333
+Node: Advanced Features22746
+Node: The print area24154
+Node: Ranges in formulas24841
+Node: Sorting by column28295
+Node: Standard formula functions29246
+Node: More on cell printing30204
+Node: Import and export32280
+Node: Virus protection32905
+Node: Spreadsheets with details and summary34330
+Node: For Gurus35543
+Node: Deferred updates35805
+Node: Nonrelocatable references37347
+Node: The data area38876
+Node: Buffer-local variables in spreadsheets40195
+Node: Uses of defadvice in SES41673
+Node: Index42521
+Node: Acknowledgments53735
+Node: GNU Free Documentation License54312
 
 End Tag Table
 

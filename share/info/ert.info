@@ -1,6 +1,6 @@
-This is ert.info, produced by makeinfo version 6.3 from ert.texi.
+This is ert.info, produced by makeinfo version 6.6 from ert.texi.
 
-Copyright © 2008, 2010–2017 Free Software Foundation, Inc.
+Copyright © 2008, 2010–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -23,7 +23,7 @@ File: ert.info,  Node: Top,  Next: Introduction,  Up: (dir)
 ERT: Emacs Lisp Regression Testing
 **********************************
 
-Copyright © 2008, 2010–2017 Free Software Foundation, Inc.
+Copyright © 2008, 2010–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -54,6 +54,7 @@ and for traditional software development methods.
 * How to Debug Tests::          What to do if a test fails.
 * Extending ERT::               ERT is extensible in several ways.
 * Other Testing Concepts::      Features not in ERT.
+* Index::                       Concept, Function and Variable Index
 * GNU Free Documentation License::  The license for this documentation.
 
  — The Detailed Node Listing —
@@ -85,6 +86,10 @@ Other Testing Concepts
 
 * Mocks and Stubs::           Stubbing out code that is irrelevant to the test.
 * Fixtures and Test Suites::  How ERT differs from tools for other languages.
+
+Index
+
+* Index::                       Concept, Function and Variable Index
 
 Appendix
 
@@ -182,9 +187,10 @@ File: ert.info,  Node: Running Tests Interactively,  Next: Running Tests in Batc
 ===============================
 
 You can run the tests that are currently defined in your Emacs with the
-command ‘M-x ert RET t RET’.  (For an explanation of the ‘t’ argument,
-*note Test Selectors::.)  ERT will pop up a new buffer, the ERT results
-buffer, showing the results of the tests run.  It looks like this:
+command ‘M-x ert <RET> t <RET>’.  (For an explanation of the ‘t’
+argument, *note Test Selectors::.)  ERT will pop up a new buffer, the
+ERT results buffer, showing the results of the tests run.  It looks like
+this:
 
      Selector: t
      Passed:  31
@@ -234,13 +240,13 @@ bar, ERT shows details about each test that had an unexpected result.
 In the example above, there are two failures, both due to failed
 ‘should’ forms.  *Note Understanding Explanations::, for more details.
 
-   In the ERT results buffer, ‘TAB’ and ‘S-TAB’ cycle between buttons.
-Each name of a function or macro in this buffer is a button; moving
-point to it and typing ‘RET’ jumps to its definition.
+   In the ERT results buffer, ‘<TAB>’ and ‘S-<TAB>’ cycle between
+buttons.  Each name of a function or macro in this buffer is a button;
+moving point to it and typing ‘<RET>’ jumps to its definition.
 
    Pressing ‘r’ re-runs the test near point on its own.  Pressing ‘d’
 re-runs it with the debugger enabled.  ‘.’ jumps to the definition of
-the test near point (‘RET’ has the same effect if point is on the name
+the test near point (‘<RET>’ has the same effect if point is on the name
 of the test).  On a failed test, ‘b’ shows the backtrace of the failure.
 
    ‘l’ shows the list of ‘should’ forms executed in the test.  If any
@@ -306,7 +312,8 @@ Lisp’s type specifier syntax:
      or symbols naming tests.
    • ‘(eql TEST)’ selects TEST, a test or a symbol naming a test.
    • ‘(and SELECTORS...)’ selects the tests that match all SELECTORS.
-   • ‘(or SELECTORS...)’ selects the tests that match any SELECTOR.
+   • ‘(or SELECTORS...)’ selects the tests that match any of the
+     SELECTORS.
    • ‘(not SELECTOR)’ selects all tests that do not match SELECTOR.
    • ‘(tag TAG)’ selects all tests that have TAG on their tags list.
      (Tags are optional labels you can apply to tests when you define
@@ -769,7 +776,7 @@ usable by other code.  But there is no mature API yet.
    Contributions to ERT are welcome.
 
 
-File: ert.info,  Node: Other Testing Concepts,  Next: GNU Free Documentation License,  Prev: Extending ERT,  Up: Top
+File: ert.info,  Node: Other Testing Concepts,  Next: Index,  Prev: Extending ERT,  Up: Top
 
 6 Other Testing Concepts
 ************************
@@ -856,7 +863,105 @@ less often.  This can be achieved with the ‘:tag’ argument to
 ‘ert-deftest’ and ‘tag’ test selectors.
 
 
-File: ert.info,  Node: GNU Free Documentation License,  Prev: Other Testing Concepts,  Up: Top
+File: ert.info,  Node: Index,  Next: GNU Free Documentation License,  Prev: Other Testing Concepts,  Up: Top
+
+Index
+*****
+
+ [index ]
+* Menu:
+
+* ., in ert results buffer:              Running Tests Interactively.
+                                                               (line 64)
+* :expected-result:                      Expected Failures.    (line  6)
+* b, in ert results buffer:              Running Tests Interactively.
+                                                               (line 64)
+* backtrace of a failed test:            Running Tests Interactively.
+                                                               (line 64)
+* batch-mode testing:                    Running Tests in Batch Mode.
+                                                               (line  6)
+* d, in ert results buffer:              Running Tests Interactively.
+                                                               (line 64)
+* debugging failed tests:                Interactive Debugging.
+                                                               (line  6)
+* defining explanation functions:        Defining Explanation Functions.
+                                                               (line  6)
+* discard obsolete test results:         Interactive Debugging.
+                                                               (line 37)
+* ert:                                   Running Tests Interactively.
+                                                               (line  6)
+* ert-deftest:                           How to Write Tests.   (line  6)
+* ert-equal-including-properties:        Useful Techniques.    (line 38)
+* ert-explainer, property:               Defining Explanation Functions.
+                                                               (line 15)
+* ert-run-tests-batch:                   Running Tests in Batch Mode.
+                                                               (line  6)
+* ert-run-tests-batch-and-exit:          Running Tests in Batch Mode.
+                                                               (line  6)
+* ert-summarize-tests-batch-and-exit:    Running Tests in Batch Mode.
+                                                               (line 19)
+* expected failures:                     Expected Failures.    (line  6)
+* explanations, understanding:           Understanding Explanations.
+                                                               (line  6)
+* extending ert:                         Extending ERT.        (line  6)
+* fixtures:                              Fixtures and Test Suites.
+                                                               (line  6)
+* how to run ert tests:                  How to Run Tests.     (line  6)
+* how to write tests:                    How to Write Tests.   (line  6)
+* instrumenting test for Edebug:         Interactive Debugging.
+                                                               (line 32)
+* interactive debugging:                 Interactive Debugging.
+                                                               (line  6)
+* interactive testing:                   Running Tests Interactively.
+                                                               (line  6)
+* introduction to ERT:                   Introduction.         (line  6)
+* jump to the test source code:          Interactive Debugging.
+                                                               (line 14)
+* known bugs:                            Expected Failures.    (line  6)
+* l, in ert results buffer:              Running Tests Interactively.
+                                                               (line 69)
+* L, in ert results buffer:              Running Tests Interactively.
+                                                               (line 73)
+* low-level functions:                   Low-Level Functions for Working with Tests.
+                                                               (line  6)
+* make-ert-test:                         Useful Techniques.    (line 38)
+* mocks and stubs:                       Mocks and Stubs.      (line  6)
+* preconditions of a test:               Tests and Their Environment.
+                                                               (line  6)
+* r, in ert results buffer:              Running Tests Interactively.
+                                                               (line 64)
+* re-running a failed test:              Interactive Debugging.
+                                                               (line  9)
+* running tests in batch mode:           Running Tests in Batch Mode.
+                                                               (line  6)
+* running tests interactively:           Running Tests Interactively.
+                                                               (line  6)
+* S-TAB, in ert results buffer:          Running Tests Interactively.
+                                                               (line 60)
+* selecting tests:                       Test Selectors.       (line  6)
+* should, ert macro:                     The should Macro.     (line  6)
+* should-error, ert macro:               The should Macro.     (line 35)
+* should-not, ert macro:                 The should Macro.     (line 35)
+* show backtrace of failed test:         Interactive Debugging.
+                                                               (line 22)
+* skipping tests:                        Tests and Their Environment.
+                                                               (line  6)
+* TAB, in ert results buffer:            Running Tests Interactively.
+                                                               (line 60)
+* test preconditions:                    Tests and Their Environment.
+                                                               (line  6)
+* test results buffer:                   Running Tests Interactively.
+                                                               (line 48)
+* test selector:                         Test Selectors.       (line  6)
+* tests and their environment:           Tests and Their Environment.
+                                                               (line 17)
+* tips and tricks:                       Useful Techniques.    (line  6)
+* understanding explanations:            Understanding Explanations.
+                                                               (line  6)
+* useful techniques:                     Useful Techniques.    (line  6)
+
+
+File: ert.info,  Node: GNU Free Documentation License,  Prev: Index,  Up: Top
 
 Appendix A GNU Free Documentation License
 *****************************************
@@ -864,7 +969,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1261,7 +1366,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1341,26 +1446,27 @@ their use in free software.
 
 Tag Table:
 Node: Top847
-Node: Introduction3748
-Node: How to Run Tests6681
-Node: Running Tests Interactively7443
-Node: Running Tests in Batch Mode10287
-Node: Test Selectors11625
-Node: How to Write Tests13784
-Node: The should Macro14665
-Node: Expected Failures16761
-Node: Tests and Their Environment18992
-Node: Useful Techniques22577
-Node: How to Debug Tests26381
-Node: Understanding Explanations26780
-Node: Interactive Debugging28696
-Node: Extending ERT30879
-Node: Defining Explanation Functions31236
-Node: Low-Level Functions for Working with Tests32174
-Node: Other Testing Concepts33003
-Node: Mocks and Stubs33413
-Node: Fixtures and Test Suites33998
-Node: GNU Free Documentation License36420
+Node: Introduction3894
+Node: How to Run Tests6827
+Node: Running Tests Interactively7589
+Node: Running Tests in Batch Mode10446
+Node: Test Selectors11784
+Node: How to Write Tests13956
+Node: The should Macro14837
+Node: Expected Failures16933
+Node: Tests and Their Environment19164
+Node: Useful Techniques22749
+Node: How to Debug Tests26553
+Node: Understanding Explanations26952
+Node: Interactive Debugging28868
+Node: Extending ERT31051
+Node: Defining Explanation Functions31408
+Node: Low-Level Functions for Working with Tests32346
+Node: Other Testing Concepts33175
+Node: Mocks and Stubs33560
+Node: Fixtures and Test Suites34145
+Node: Index36567
+Node: GNU Free Documentation License43007
 
 End Tag Table
 

@@ -1,9 +1,9 @@
-This is pgg.info, produced by makeinfo version 6.3 from pgg.texi.
+This is pgg.info, produced by makeinfo version 6.6 from pgg.texi.
 
 This file describes PGG 0.1, an Emacs interface to various PGP
 implementations.
 
-   Copyright © 2001, 2003–2017 Free Software Foundation, Inc.
+   Copyright © 2001, 2003–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -34,7 +34,7 @@ new code we recommend EasyPG instead.  *Note EasyPG: (epa)Top.
    This file describes PGG 0.1, an Emacs interface to various PGP
 implementations.
 
-   Copyright © 2001, 2003–2017 Free Software Foundation, Inc.
+   Copyright © 2001, 2003–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -491,7 +491,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -888,7 +888,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1042,8 +1042,8 @@ Node: Back end methods15481
 Node: Getting output18003
 Node: Parsing OpenPGP packets18643
 Node: GNU Free Documentation License19370
-Node: Function Index44737
-Node: Variable Index46276
+Node: Function Index44739
+Node: Variable Index46278
 
 End Tag Table
 

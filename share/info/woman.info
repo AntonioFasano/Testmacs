@@ -1,9 +1,9 @@
-This is woman.info, produced by makeinfo version 6.3 from woman.texi.
+This is woman.info, produced by makeinfo version 6.6 from woman.texi.
 
 This file documents WoMan: A program to browse Unix manual pages “W.O.
 (without) man”.
 
-Copyright © 2001–2017 Free Software Foundation, Inc.
+Copyright © 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -26,7 +26,7 @@ File: woman.info,  Node: Top,  Next: Introduction,  Up: (dir)
 WoMan: Browse Unix Manual Pages “W.O. (without) Man”
 ****************************************************
 
-     As distributed with Emacs 25.3.
+     As distributed with Emacs 26.3.
 
      Francis J. Wright <F.J.Wright@qmw.ac.uk>
      School of Mathematical Sciences (http://centaur.maths.qmw.ac.uk/)
@@ -36,7 +36,7 @@ WoMan: Browse Unix Manual Pages “W.O. (without) Man”
 This file documents WoMan: A program to browse Unix manual pages “W.O.
 (without) man”.
 
-Copyright © 2001–2017 Free Software Foundation, Inc.
+Copyright © 2001–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -809,8 +809,8 @@ browse, and the appearance of the browsing interface.
      Any environment variables (names of which must have the Unix-style
      form ‘$NAME’, e.g., ‘$HOME’, ‘$EMACSDATA’, ‘$EMACS_DIR’, regardless
      of platform) are evaluated first but each element must evaluate to
-     a _single_ directory name.  Trailing ‘/’s are ignored.  (Specific
-     directories in ‘woman-path’ are also searched.)
+     a _single_ name of a directory.  Trailing ‘/’s are ignored.
+     (Specific directories in ‘woman-path’ are also searched.)
 
      On Microsoft platforms I recommend including drive letters
      explicitly, e.g.:
@@ -850,7 +850,7 @@ browse, and the appearance of the browsing interface.
      Any environment variables (names of which must have the Unix-style
      form ‘$NAME’, e.g., ‘$HOME’, ‘$EMACSDATA’, ‘$EMACS_DIR’, regardless
      of platform) are evaluated first but each element must evaluate to
-     a _single_ directory name (regexp, see above).  For example
+     a _single_ name of a directory (regexp, see above).  For example
 
           ("$EMACSDATA")
 
@@ -1128,7 +1128,7 @@ obviously wrongly or significantly differently from ‘man’) or
 inelegantly, then please
 
   1. try the latest version of ‘woman.el’ from the Emacs repository on
-     <http://savannah.gnu.org/projects/emacs/>.  If it still fails,
+     <https://savannah.gnu.org/projects/emacs/>.  If it still fails,
      please
 
   2. use ‘M-x report-emacs-bug’ to send a bug report.  Please include
@@ -1168,7 +1168,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1565,7 +1565,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1832,18 +1832,18 @@ Node: Convenience30976
 Node: Imenu31764
 Node: Customization32594
 Node: Interface Options34651
-Node: Formatting Options43735
-Node: Faces45387
-Node: Special symbols46707
-Node: Log47972
-Node: Technical49120
-Node: Bugs49840
-Node: Acknowledgments50592
-Node: GNU Free Documentation License51555
-Node: Command Index76906
-Node: Variable Index78896
-Node: Keystroke Index81530
-Node: Concept Index83363
+Node: Formatting Options43744
+Node: Faces45396
+Node: Special symbols46716
+Node: Log47981
+Node: Technical49129
+Node: Bugs49849
+Node: Acknowledgments50602
+Node: GNU Free Documentation License51565
+Node: Command Index76918
+Node: Variable Index78908
+Node: Keystroke Index81542
+Node: Concept Index83375
 
 End Tag Table
 

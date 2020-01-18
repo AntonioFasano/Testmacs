@@ -3,7 +3,7 @@
 ;; ----->  Copy this in share\emacs\site-lisp\site-start.el
 
 ;; Author: Antonio Fasano
-;; Version: 0.5
+;; Version: 0.6
 ;; Keywords: exam, quiz, test, forms, widget
 ;; This program requires: cl-lib subr-x seq emacs "25"
 
@@ -91,11 +91,12 @@
 (require 'subr-x)
 (require 'seq)
 
+
 ;;; ==================== ;;;
 ;;; === Customise Me === ;;;
 ;;; ==================== ;;;
 
-(defconst exam-version  "0.5"
+(defconst exam-version  "0.6"
   "Current app version.")
 
 (defconst exam-loc-server-ini  "~/server*.txt"
@@ -103,7 +104,7 @@
 Note that the \"~\" is redirected by the Testemacs launcher to a subdirectory of the Testemacs package named \"data\". If the variable has wildcards, the first valid server path is used. See `set-server-share' for more.")
 
 (defconst exam-net-init "INITFILE*.txt"
-  "File name in the remoted share with values for `exam-max-time', and `quest-count' and `exam-course'.
+  "File name in the remoted share with values for `exam-max-time-active', and `quest-count' and `exam-course'.
 If the variable has wildcards, the first path found is used.")
 
 (defconst exam-default-fields
@@ -156,6 +157,7 @@ To add line-breaks to TEXT use `n' preceeded by a single slash.")
 ;;; === end of Customise Me
 ;;; =======================
 
+
 ;;; =================== ;;;
 ;;; === Global Vars === ;;;
 ;;; =================== ;;;
@@ -224,35 +226,50 @@ To be used in case one needs to cancel timer.")
   "Non-nil if the user is prompted  with a question. In this case some tasks in `exam-schedule-hook' might be postpones, until the user complete the answer.")
 
 
-;;; Buffer local vars used during the init phase or on click events
-;;; ---------------------------------------------------------------
-
-(defvar-local exam-net-course-pt nil
+(defvar exam-net-course-pt nil
   "Path of course related net folder inside `exam-net-data-pt'.")
 
-(defvar-local exam-answered-ones  nil
+(defvar exam-answered-ones  nil
   "Total answered questions.")
 
-(defvar-local exam-max-time nil
-  "Maximum allowed time in minutes for entering answers. Retrieved from `exam-net-init' file.")
+(defvar exam-max-time-active nil
+  "Maximum allowed time in minutes to complete the currently active test. Its initial value applies to multiple-choice (time for entering answers) and is retrieved from `exam-net-init' file. When the R test is running, its value is set to the value of `exam-max-time-r'")
 
-(defvar-local quest-count nil
+(defvar exam-max-time-r nil
+  "Maximum allowed time in minutes to complete the R test is running")
+
+(defvar quest-count nil
   "Number of available questions. Retrieved from `exam-net-init' file.")
 
-(defvar-local exam-course nil
+(defvar exam-course nil
   "Name of the course. Retrieved from `exam-net-init' file.")
+
+
+;;; Buffer local vars used during the init phase or on click events
+;;; ---------------------------------------------------------------
 
 (defvar-local answers-given nil
   "Answer vector given by the students.")
 
 (defvar-local question-widgets nil
-  "List of queestion widgets.")
+  "List of question widgets.")
+
+
+;;; R configuration 
+;;; ---------------------------------------------------------------
+(defvar exam-r-executable (concat (file-name-directory (directory-file-name invocation-directory)) ; up one
+				  "app/bin/i386/Rterm.exe")
+  "R executable relative to Emacs invocation directory.")
+
+(defvar exam-r-running-p nil 
+  "Non-nil when R part of the exam is running.")
 
 
 ;;; === end of Global Vars
 ;;; ======================
 
 
+
 ;;; ============= ;;;
 ;;; === Style === ;;;
 ;;; ============= ;;;
@@ -267,6 +284,7 @@ To be used in case one needs to cancel timer.")
 ;;; === end of Style
 ;;; ================
 
+
 ;;; =================== ;;;
 ;;; === FS Helpers  === ;;;
 ;;; =================== ;;;
@@ -410,7 +428,7 @@ Please type your option below ↓"))
 ;;; =====================
 
 
-
+
 ;;; ======================== ;;;
 ;;; === Widget Functions === ;;;
 ;;; ======================== ;;;
@@ -468,6 +486,7 @@ Please type your option below ↓"))
 ;;; ===========================
 
 
+
 ;;; ================== ;;;
 ;;; === Stop Hooks === ;;;
 ;;; ================== ;;;
@@ -478,7 +497,9 @@ In case of confirmation save form and exit."
 
   ;; The funct below is used to create an experience similar to C-x C-c
   ;; It will trigger related kill-emacs-query-functions
-  (save-buffers-kill-terminal))
+  (if exam-r-running-p  
+      (save-buffers-kill-terminal)
+    (if (exam-exit-hook) (exam-r-run))))
 
 (defun exam-exit-hook ()
   "Hook called whenerever users asks to exit."
@@ -490,7 +511,7 @@ In case of confirmation save form and exit."
 				      (string-match "\\(ans-string:\\)\\(.+\\)" exam-ans-string)
 				      (substring exam-ans-string  (match-end 1) (match-end 2)))))
     (setq msg
-	  (concat  "Your current answers are:\n" msg
+	  (concat  (unless exam-r-running-p  "Your current answers are:\n" msg)
 		   "\n\nAre you **absolutely sure** you want to finish your test now?"))       
     ;; Works only for Linux GUI (setq yes (y-or-n-p-with-timeout msg exam-remaining-secs nil))
     (setq yes (y-or-n-p msg)) 
@@ -502,7 +523,9 @@ In case of confirmation save form and exit."
   "Save answer string and exit. Dangerous for debugging, since unsaved material is lost!."
   (exam-save-test)
   (delete-cookie)
-  (kill-emacs))
+  (if exam-r-running-p  
+      (kill-emacs)
+    (exam-r-run)))
 
 (defsubst exam-schedule-hook ()
   "Maintenance tasks run at form setup and every subsequent `exam-update-freq' seconds.
@@ -593,6 +616,7 @@ The string STR can be formatted with the parameters PARS."
 ;;; =====================
 
 
+
 ;;; ========================= ;;;
 ;;; Main Form Setup Functions ;;;
 ;;; ========================= ;;;
@@ -612,13 +636,13 @@ The key bindings for `exam-mode' are:
 (defun exam-mode-header (max-time)
   "Set the header-line for test mode and initialize countdown timer."
 
-    ;; Set header-line
+  ;; Set header-line
   (setq header-line-format
 	'(:eval
 	  (format " Residual minutes: %s | Answered: %d out of %d      Ver. %s"
 		  (format "%02d"  (+ (/ exam-remaining-secs 60) 1)) ; countdown as a minute string
-		  (buffer-local-value 'exam-answered-ones (get-buffer exam-buffer-name))
-		  (buffer-local-value 'quest-count (get-buffer exam-buffer-name))
+		  exam-answered-ones ;(buffer-local-value 'exam-answered-ones (get-buffer exam-buffer-name))
+		  quest-count ;(buffer-local-value 'quest-count (get-buffer exam-buffer-name))
 		  exam-version
 		  )))
 
@@ -656,8 +680,12 @@ The key bindings for `exam-mode' are:
 	  txt (mapcar 'split-string  (butlast txt))
 	  txt (cl-pairlis (car txt) (cadr txt))
 
-	  exam-max-time
+	  exam-max-time-active
 	  (string-to-number (cdr (assoc "time" txt)))
+
+	  exam-max-time-r
+	  (string-to-number (cdr (assoc "time-r" txt)))
+	  
 	  quest-count
 	  (string-to-number (cdr (assoc "questcount" txt)))
 	  exam-course  (cdr (assoc "course" txt))
@@ -859,6 +887,7 @@ The property is a lambda whose body contains the name of the field riceived by F
 ;;; === end of Main Form Setup Functions
 ;;; ====================================
 
+
 ;;; ======================= ;;;
 ;;; === Remote Commands === ;;;
 ;;; ======================= ;;;
@@ -961,10 +990,10 @@ The name of local custom file is set in `exam-loc-cust-fld' the remote name is o
 ;;; === end of Remote Commands
 ;;; ==========================
 
+
 ;;; ========================== ;;;
 ;;; === Get Custom Fields  === ;;;
 ;;; ========================== ;;;
-
 
 (defun unique-p  (list)
   "NOT USED Return nil if LIST has duplicates or LIST."
@@ -1062,7 +1091,7 @@ See `exam-err' for more safe belts."
 ;;; === end of Get Custom Fields
 ;;; ============================
 
-
+
 ;;; ============= ;;;
 ;;; === Main  === ;;;
 ;;; ============= ;;;
@@ -1084,7 +1113,7 @@ See `exam-err' for more safe belts."
       (exam-make-dirs)
       
       ;; Set header-line (will start timed functions)
-      (exam-mode-header exam-max-time)
+      (exam-mode-header exam-max-time-active)
 
       ;;Make form 
       (exam-insert-header)
@@ -1151,7 +1180,67 @@ For debug scenarios or after raising exceptions."
 ;;; ===============
 
 
+
+;;; ================= ;;;
+;;; === Manage R  === ;;;
+;;; ================= ;;;
 
+(defun exam-r-run ()
+  "Run R"
+  (message "Starting second part of the test...")
+  (setq exam-r-running-p  t)
+  (require 'ess-r-mode)
+  ;; No smart comma ess-handy-commands
+  (define-key inferior-ess-mode-map (kbd ",")  nil )
+
+  (setq inferior-R-program-name exam-r-executable)
+  (setq ess-ask-for-ess-directory nil) ; Don't prompt for data dir
+  (setq ess-use-tracebug nil) ; no debug
+  (setq ess-history-file  nil) ; no history between sessions 
+  (setq default-directory (expand-file-name "~"))
+  (R)
+  (delete-other-windows)
+  (kill-buffer "*Test*")
+  (exam-mode-header exam-max-time-r)
+  (cua-mode)
+  (comint-clear-buffer)
+
+  (ess-eval-linewise "message(\"Run: info()\")" 'invis)
+  (message "You are ready to go!"))
+
+;; Kill on exit R
+(advice-add 'ess-process-sentinel :after #'testmacs-r-exit-function)
+(defun testmacs-r-exit-function (proc message)
+  "Kill Emacs on R exit"
+  (delete-cookie)
+
+  ;; Copy local rds
+  (let ((loc-ans-rds-pt (concat (file-name-sans-extension exam-loc-ans-file-pt)  ".rds"))
+	(net-ans-rds-pt (concat (file-name-sans-extension exam-net-ans-file-pt)  ".rds")))
+
+
+    (delete-file net-ans-rds-pt)
+    (if (file-exists-p net-ans-rds-pt) (delete-file net-ans-rds-pt)) ; 2nd attempt
+
+    ;; copy only if previous local copy was deleted  
+    (copy-file loc-ans-rds-pt net-ans-rds-pt t)
+    (if (not (file-exists-p net-ans-rds-pt)) (copy-file loc-ans-rds-pt net-ans-rds-pt t)))
+
+
+  ;;for debug
+  ;;(with-temp-file "~/kill-hook"  (insert "kill hook called"))
+
+  
+  (kill-emacs))
+
+
+  
+
+;;; === end of Manage R 
+;;; ===================
+
+
+
 ;;; ======================== ;;;
 ;;; === Debug Functions  === ;;;
 ;;; ======================== ;;;
@@ -1197,7 +1286,4 @@ For debug scenarios or after raising exceptions."
 
 ;;; FIRE!
 (test)
-
-
- 
 

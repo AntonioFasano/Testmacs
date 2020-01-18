@@ -1,8 +1,8 @@
-This is auth.info, produced by makeinfo version 6.3 from auth.texi.
+This is auth.info, produced by makeinfo version 6.6 from auth.texi.
 
 This file describes the Emacs auth-source library.
 
-   Copyright © 2008–2017 Free Software Foundation, Inc.
+   Copyright © 2008–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -32,7 +32,7 @@ This manual describes the Emacs auth-source library.
 
    This file describes the Emacs auth-source library.
 
-   Copyright © 2008–2017 Free Software Foundation, Inc.
+   Copyright © 2008–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -51,6 +51,7 @@ This manual describes the Emacs auth-source library.
 * Help for users::
 * Multiple GMail accounts with Gnus::
 * Secret Service API::
+* The Unix password store::
 * Help for developers::
 * GnuPG and EasyPG Assistant Configuration::
 * GNU Free Documentation License::  The license for this documentation.
@@ -76,8 +77,9 @@ password (known as the secret).
 
    Similarly, the auth-source library supports multiple storage backend,
 currently either the classic “netrc” backend, examples of which you can
-see later in this document, or the Secret Service API.  This is done
-with EIEIO-based backends and you can write your own if you want.
+see later in this document, the Secret Service API, and pass, the
+standard unix password manager.  This is done with EIEIO-based backends
+and you can write your own if you want.
 
 
 File: auth.info,  Node: Help for users,  Next: Multiple GMail accounts with Gnus,  Prev: Overview,  Up: Top
@@ -135,9 +137,9 @@ library is not loaded for some other reason.
  -- Variable: auth-sources
 
      The ‘auth-sources’ variable tells the auth-source library where
-     your netrc files or Secret Service API collection items live for a
-     particular host and protocol.  While you can get fancy, the default
-     and simplest configuration is:
+     your netrc files, Secret Service API collection items, or your
+     password store live for a particular host and protocol.  While you
+     can get fancy, the default and simplest configuration is:
 
           ;;; old default: required :host and :port, not needed anymore
           (setq auth-sources '((:source "~/.authinfo.gpg" :host t :port t)))
@@ -148,6 +150,9 @@ library is not loaded for some other reason.
           ;;; use the Secrets API LOGIN collection
           ;;; (*note Secret Service API::)
           (setq auth-sources '("secrets:Login"))
+          ;;; use pass (~/.password-store)
+          ;;; (*note The Unix password store::)
+          (setq auth-sources '(password-store))
 
      By adding multiple entries to ‘auth-sources’ with a particular host
      or protocol, you can have specific netrc files for that host or
@@ -222,7 +227,7 @@ entries in your ‘gnus-secondary-select-methods’ with distinct names:
      machine gmail2 login account2@gmail.com password "account2 password" port imap
 
 
-File: auth.info,  Node: Secret Service API,  Next: Help for developers,  Prev: Multiple GMail accounts with Gnus,  Up: Top
+File: auth.info,  Node: Secret Service API,  Next: The Unix password store,  Prev: Multiple GMail accounts with Gnus,  Up: Top
 
 4 Secret Service API
 ********************
@@ -355,9 +360,34 @@ and then fall back to ‘~/.authinfo.gpg’.
                           "~/.authinfo.gpg"))
 
 
-File: auth.info,  Node: Help for developers,  Next: GnuPG and EasyPG Assistant Configuration,  Prev: Secret Service API,  Up: Top
+File: auth.info,  Node: The Unix password store,  Next: Help for developers,  Prev: Secret Service API,  Up: Top
 
-5 Help for developers
+5 The Unix password store
+*************************
+
+The standard unix password manager (or just ‘pass’) stores your
+passwords in ‘gpg’-protected files following the Unix philosophy.
+
+   Emacs integration of ‘pass’ follows the first approach suggested by
+the pass project itself for data organization to find data.  This means
+that the filename of the file containing the password for a user on a
+particular host must contain the host name.  The file itself must
+contain the password on the first line, as well as a ‘username’ field
+containing the username on a subsequent line.  A ‘port’ field can be
+used to differentiate the authentication data for several services with
+the same username on the same host.
+
+   Users of ‘pass’ may also be interested in functionality provided by
+other Emacs packages dealing with pass:
+
+   • password-store: library wrapping ‘pass’;
+   • pass: major mode to manipulate the store and edit entries;
+   • helm-pass: helm interface for pass.
+
+
+File: auth.info,  Node: Help for developers,  Next: GnuPG and EasyPG Assistant Configuration,  Prev: The Unix password store,  Up: Top
+
+6 Help for developers
 *********************
 
 The auth-source library lets you control logging output easily.
@@ -463,9 +493,9 @@ EasyPG Assistant (*note Caching Passphrases: (epa)Caching Passphrases.).
 
    To quick start, here are some questions:
 
-  1. Do you use GnuPG version 2 instead of GnuPG version 1?
-  2. Do you use symmetric encryption rather than public key encryption?
-  3. Do you want to use gpg-agent?
+   • Do you use GnuPG version 2 instead of GnuPG version 1?
+   • Do you use symmetric encryption rather than public key encryption?
+   • Do you want to use gpg-agent?
 
    Here are configurations depending on your answers:
 
@@ -494,7 +524,7 @@ Appendix B GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -891,7 +921,7 @@ Appendix B GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1015,16 +1045,17 @@ Variable Index
 
 Tag Table:
 Node: Top894
-Node: Overview2200
-Node: Help for users2953
-Node: Multiple GMail accounts with Gnus8322
-Node: Secret Service API9144
-Node: Help for developers15317
-Node: GnuPG and EasyPG Assistant Configuration19135
-Node: GNU Free Documentation License20869
-Node: Index46245
-Node: Function Index46363
-Node: Variable Index47600
+Node: Overview2228
+Node: Help for users3024
+Node: Multiple GMail accounts with Gnus8554
+Node: Secret Service API9376
+Node: The Unix password store15553
+Node: Help for developers16678
+Node: GnuPG and EasyPG Assistant Configuration20501
+Node: GNU Free Documentation License22241
+Node: Index47619
+Node: Function Index47737
+Node: Variable Index48974
 
 End Tag Table
 

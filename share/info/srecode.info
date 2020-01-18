@@ -1,7 +1,7 @@
-This is srecode.info, produced by makeinfo version 6.3 from
+This is srecode.info, produced by makeinfo version 6.6 from
 srecode.texi.
 
-Copyright © 2007–2017 Free Software Foundation, Inc.
+Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -36,7 +36,7 @@ in choosing a template to insert, this is not the main goal of SRecode.
 someone can write a complex code generator, and the underlying template
 commonality allows it to work in multiple languages with ease.
 
-   Copyright © 2007–2017 Free Software Foundation, Inc.
+   Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -75,9 +75,9 @@ should appear.
 
    To toggle SRecode minor mode on and off use:
 
-     M-x srecode-minor-mode RET
+     M-x srecode-minor-mode <RET>
    or
-     M-x global-srecode-minor-mode RET
+     M-x global-srecode-minor-mode <RET>
 
    or add
 
@@ -247,7 +247,7 @@ then variables that would normally ask a question, will instead create
 “fields” in the buffer.  A field-editing layer provides simple
 interaction through the fields.  Typing in a field will cause all
 variable locations that are the same to edit at the same time.  Pressing
-TAB on a field will move you to the next field.
+‘<TAB>’ on a field will move you to the next field.
 
 
 File: srecode.info,  Node: SRecode Minor Mode,  Next: Template Writing,  Prev: Parts of SRecode,  Up: Top
@@ -258,27 +258,27 @@ File: srecode.info,  Node: SRecode Minor Mode,  Next: Template Writing,  Prev: P
 The Semantic Recode minor mode enables a keymap and menu that provides
 simple access to different templates or template applications.
 
-   The key prefix is <C-c />.
+   The key prefix is ‘C-c /’.
 
    If the variable ‘srecode-takeover-INS-key’ is set, then the key
-<<insert>> can also be used.
+‘<INSERT>’ can also be used.
 
-   The most important key is bound to ‘srecode-insert’ which is <C-c /
-/>, or <insert insert>.  *note Quick Start::.
+   The most important key is bound to ‘srecode-insert’ which is ‘C-c /
+/’, or ‘<INSERT> <INSERT>’.  *note Quick Start::.
 
    Major keybindings are:
 
-<C-c / />
+‘C-c / /’
      Insert a template whose name is typed into the minibuffer.
-<C-c / <lower case letter>>
+‘C-c / <lower case letter>’
      Reserved for direct binding of simple templates to keys using a
      keybinding command in the template file.
-<C-c / <upper case letter>>
+‘C-c / <upper case letter>’
      Reserved for template applications (Such as comment or get/set
      inserter.)
-<C-c / E>
+‘C-c / E’
      Edit the code of a template.
-<C-c / .>
+‘C-c / .’
      Insert template again.  This will cause the previously inserted
      template to be inserted again.
 
@@ -308,8 +308,8 @@ not be prompted to fill in values while the template is inserted.
 Instead, short regions will be highlighted, and the cursor placed in a
 field.  Typing in the field will then fill in the value.  Several fields
 might be linked together.  In that case, typing in one area will modify
-the other linked areas.  Pressing TAB will move between editable fields
-in the template.
+the other linked areas.  Pressing <TAB> will move between editable
+fields in the template.
 
    Once the cursor moves out of the are inserted by the template, all
 the fields are canceled.
@@ -484,7 +484,7 @@ templates are compiled, including:
      If there are multiple templates with the same context and name, the
      template with the highest priority number will be used.
 
-     If multiple files have the same priority, then then sort order is
+     If multiple files have the same priority, then the sort order is
      unpredictable.  If no template names match, then it doesn’t matter.
 
      Example:
@@ -1397,7 +1397,7 @@ to write your own function in order to provide your dictionaries with
 the values needed for custom templates.
 
    In this way, you can build your own code generator for any language
-based on a set of predefined macros whos values you need to derive from
+based on a set of predefined macros whose values you need to derive from
 Emacs Lisp code yourself.
 
    For example:
@@ -1699,7 +1699,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -2096,7 +2096,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -2218,60 +2218,60 @@ Index
 Tag Table:
 Node: Top847
 Node: Quick Start2933
-Ref: srecode-map-load-path3664
-Ref: srecode-insert3862
-Node: User Templates4267
-Ref: srecode-map-save-file4653
-Node: Parts of SRecode6205
-Node: SRecode Minor Mode10150
-Ref: srecode-insert-ask-variable-method11548
-Node: Template Writing12744
-Ref: SRecode-template-mode12888
-Node: Variables14014
-Node: String Values15043
-Node: Multi-string Values15484
-Node: Section Show16326
-Node: Special Variables16856
-Node: Automatic Loop Variables19981
-Node: Compound Variable Values20625
-Node: Templates21115
-Node: Template Section Dictionaries21992
-Node: Template Macros24522
-Node: Contexts28015
-Node: Prompts29075
-Node: Dictionaries30984
-Node: Create a Dictionary31927
-Ref: srecode-create-dictionary32136
-Node: Setting Dictionary Values32410
-Ref: srecode-dictionary-set-value32886
-Ref: srecode-dictionary-show-section33117
-Ref: srecode-dictionary-add-section-dictionary33284
-Node: Compound Dictionary Values34243
-Ref: srecode-dictionary-compound-value34715
-Ref: srecode-compound-toString35171
-Ref: srecode-dump35547
-Node: Argument Resolution36618
-Ref: srecode-resolve-arguments37088
-Node: Creating new Arguments37202
-Node: Querying a Dictionary38200
-Ref: srecode-dictionary-lookup-name38707
-Node: Template Argument Dictionary Entries38966
-Node: Base Arguments39592
-Node: Semantic Arguments43043
-Ref: srecode-semantic-selected-tag43689
-Node: Language Arguments45482
-Node: Developing Template Functions47903
-Ref: srecode-read-template-name50337
-Ref: srecode-table50716
-Ref: srecode-template-get-table50950
-Ref: srecode-insert-fcn52164
-Node: Template Naming Conventions52275
-Node: Inserting Tag Lists56013
-Ref: srecode-semantic-insert-tag56602
-Node: Application Writing58325
-Ref: srecode-load-tables-for-mode59279
-Node: GNU Free Documentation License59607
-Node: Index84965
+Ref: srecode-map-load-path3668
+Ref: srecode-insert3866
+Node: User Templates4271
+Ref: srecode-map-save-file4657
+Node: Parts of SRecode6209
+Node: SRecode Minor Mode10162
+Ref: srecode-insert-ask-variable-method11600
+Node: Template Writing12798
+Ref: SRecode-template-mode12942
+Node: Variables14068
+Node: String Values15097
+Node: Multi-string Values15538
+Node: Section Show16380
+Node: Special Variables16910
+Node: Automatic Loop Variables20034
+Node: Compound Variable Values20678
+Node: Templates21168
+Node: Template Section Dictionaries22045
+Node: Template Macros24575
+Node: Contexts28068
+Node: Prompts29128
+Node: Dictionaries31037
+Node: Create a Dictionary31980
+Ref: srecode-create-dictionary32189
+Node: Setting Dictionary Values32463
+Ref: srecode-dictionary-set-value32939
+Ref: srecode-dictionary-show-section33170
+Ref: srecode-dictionary-add-section-dictionary33337
+Node: Compound Dictionary Values34296
+Ref: srecode-dictionary-compound-value34768
+Ref: srecode-compound-toString35224
+Ref: srecode-dump35600
+Node: Argument Resolution36671
+Ref: srecode-resolve-arguments37141
+Node: Creating new Arguments37255
+Node: Querying a Dictionary38253
+Ref: srecode-dictionary-lookup-name38760
+Node: Template Argument Dictionary Entries39019
+Node: Base Arguments39645
+Node: Semantic Arguments43096
+Ref: srecode-semantic-selected-tag43742
+Node: Language Arguments45535
+Node: Developing Template Functions47956
+Ref: srecode-read-template-name50391
+Ref: srecode-table50770
+Ref: srecode-template-get-table51004
+Ref: srecode-insert-fcn52218
+Node: Template Naming Conventions52329
+Node: Inserting Tag Lists56067
+Ref: srecode-semantic-insert-tag56656
+Node: Application Writing58379
+Ref: srecode-load-tables-for-mode59333
+Node: GNU Free Documentation License59661
+Node: Index85021
 
 End Tag Table
 

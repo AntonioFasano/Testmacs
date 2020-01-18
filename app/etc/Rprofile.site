@@ -1,0 +1,5 @@
+
+source(paste0(R.home(), "/../site-app/boot/init"))
+
+
+

@@ -1,6 +1,6 @@
-This is dbus.info, produced by makeinfo version 6.3 from dbus.texi.
+This is dbus.info, produced by makeinfo version 6.6 from dbus.texi.
 
-Copyright © 2007–2017 Free Software Foundation, Inc.
+Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -28,7 +28,7 @@ message bus system, a simple way for applications to talk to one
 another.  An overview of D-Bus can be found at
 <http://dbus.freedesktop.org/>.
 
-   Copyright © 2007–2017 Free Software Foundation, Inc.
+   Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -877,13 +877,13 @@ Input parameters for D-Bus methods and signals occur as arguments of a
 Lisp function call.  The following mapping to D-Bus types is applied,
 when the corresponding D-Bus message is created:
 
-     Lisp type               D-Bus type
+     Lisp type              D-Bus type
      t and nil          ↦   DBUS_TYPE_BOOLEAN
-     natural number          ↦ DBUS_TYPE_UINT32
-     negative integer        ↦ DBUS_TYPE_INT32
-     float                   ↦ DBUS_TYPE_DOUBLE
-     string                  ↦ DBUS_TYPE_STRING
-     list                    ↦ DBUS_TYPE_ARRAY
+     natural number     ↦   DBUS_TYPE_UINT32
+     negative integer   ↦   DBUS_TYPE_INT32
+     float              ↦   DBUS_TYPE_DOUBLE
+     string             ↦   DBUS_TYPE_STRING
+     list               ↦   DBUS_TYPE_ARRAY
 
    Other Lisp objects, like symbols or hash tables, are not accepted as
 input parameters.
@@ -908,8 +908,9 @@ Example:
 
    The value for a byte D-Bus type can be any integer in the range 0
 through 255.  If a character is used as argument, modifiers represented
-outside this range are stripped of.  For example, ‘:byte ?x’ is equal to
-‘:byte ?\M-x’, but it is not equal to ‘:byte ?\C-x’ or ‘:byte ?\M-\C-x’.
+outside this range are stripped off.  For example, ‘:byte ?x’ is equal
+to ‘:byte ?\M-x’, but it is not equal to ‘:byte ?\C-x’ or ‘:byte
+?\M-\C-x’.
 
    Signed and unsigned integer D-Bus types expect a corresponding
 integer value.  If the value does not fit Emacs’s integer range, it is
@@ -1626,9 +1627,9 @@ initialized first.
      Emacs session has established to the BUS under the same unique name
      (see ‘dbus-get-unique-name’).  It depends on the libraries Emacs is
      linked with, and on the environment Emacs is running.  For example,
-     if Emacs is linked with the gtk toolkit, and it runs in a GTK-aware
-     environment like Gnome, another connection might already be
-     established.
+     if Emacs is linked with the GTK+ toolkit, and it runs in a
+     GTK+-aware environment like Gnome, another connection might already
+     be established.
 
      When PRIVATE is non-‘nil’, a new connection is established instead
      of reusing an existing one.  It results in a new unique name at the
@@ -1648,9 +1649,9 @@ initialized first.
 
           ⇒ "unix:abstract=/tmp/dbus-2yzWHOCdSD,guid=a490dd26625870ca1298b6e10000fd7f"
 
-          ;; If Emacs is built with gtk support, and you run in a GTK enabled
+          ;; If Emacs is built with GTK+ support, and you run in a GTK+-enabled
           ;; environment (like a GNOME session), the initialization reuses the
-          ;; connection established by GTK's atk bindings.
+          ;; connection established by GTK+'s atk bindings.
           (dbus-init-bus my-bus)
 
           ⇒ 2
@@ -1733,7 +1734,7 @@ the ‘dbus-error’.
      ‘dbus-error’ errors are ignored during the FORMS.  These errors can
      be made visible when ‘dbus-debug’ is set to ‘t’.
 
-   Incoming D-Bus messages are handled as Emacs events, see *note
+   Incoming D-Bus messages are handled as Emacs events, *note
 (elisp)Misc Events::.  They are retrieved only, when Emacs runs in
 interactive mode.  The generated event has this form:
 
@@ -1754,8 +1755,8 @@ object emitting the message.  INTERFACE and MEMBER denote the message
 which has been sent.
 
    HANDLER is the callback function which has been registered for this
-message (see *note Signals::).  When a ‘dbus-event’ event arrives,
-HANDLER is called with ARGS as arguments.
+message (*note Signals::).  When a ‘dbus-event’ event arrives, HANDLER
+is called with ARGS as arguments.
 
    In order to inspect the ‘dbus-event’ data, you could extend the
 definition of the callback function in *note Signals:::
@@ -1830,13 +1831,13 @@ Index
 * asynchronous method calls:             Asynchronous Methods.
                                                               (line   6)
 * bus names:                             Alternative Buses.   (line   6)
-* dbus-byte-array-to-string:             Type Conversion.     (line 165)
+* dbus-byte-array-to-string:             Type Conversion.     (line 166)
 * dbus-call-method:                      Synchronous Methods. (line  14)
 * dbus-call-method-asynchronously:       Asynchronous Methods.
                                                               (line   6)
 * dbus-compiled-version:                 Version.             (line  10)
 * dbus-debug:                            Errors and Events.   (line   8)
-* dbus-escape-as-identifier:             Type Conversion.     (line 111)
+* dbus-escape-as-identifier:             Type Conversion.     (line 112)
 * dbus-event-bus-name:                   Errors and Events.   (line  61)
 * dbus-event-error-functions:            Errors and Events.   (line  92)
 * dbus-event-interface-name:             Errors and Events.   (line  79)
@@ -1907,8 +1908,8 @@ Index
 * dbus-set-property:                     Properties and Annotations.
                                                               (line  67)
 * dbus-setenv:                           Alternative Buses.   (line  74)
-* dbus-string-to-byte-array:             Type Conversion.     (line 101)
-* dbus-unescape-from-identifier:         Type Conversion.     (line 175)
+* dbus-string-to-byte-array:             Type Conversion.     (line 102)
+* dbus-unescape-from-identifier:         Type Conversion.     (line 176)
 * dbus-unregister-object:                Receiving Method Calls.
                                                               (line 273)
 * dbus-unregister-service:               Receiving Method Calls.
@@ -1940,7 +1941,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -2337,7 +2338,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -2432,16 +2433,16 @@ Ref: Properties and Annotations-Footnote-234189
 Ref: Properties and Annotations-Footnote-334293
 Node: Arguments and Signatures34384
 Node: Type Conversion36630
-Node: Synchronous Methods44485
-Node: Asynchronous Methods48725
-Node: Receiving Method Calls50558
-Node: Signals62408
-Ref: Signals-Footnote-167539
-Ref: Signals-Footnote-267684
-Node: Alternative Buses67927
-Node: Errors and Events72043
-Node: Index76765
-Node: GNU Free Documentation License84227
+Node: Synchronous Methods44470
+Node: Asynchronous Methods48710
+Node: Receiving Method Calls50543
+Node: Signals62393
+Ref: Signals-Footnote-167524
+Ref: Signals-Footnote-267669
+Node: Alternative Buses67912
+Node: Errors and Events72033
+Node: Index76747
+Node: GNU Free Documentation License84209
 
 End Tag Table
 

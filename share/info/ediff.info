@@ -1,9 +1,9 @@
-This is ediff.info, produced by makeinfo version 6.3 from ediff.texi.
+This is ediff.info, produced by makeinfo version 6.6 from ediff.texi.
 
 This file documents Ediff, a comprehensive visual interface to Unix diff
 and patch utilities.
 
-   Copyright © 1995–2017 Free Software Foundation, Inc.
+   Copyright © 1995–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -30,7 +30,7 @@ Ediff
 This file documents Ediff, a comprehensive visual interface to Unix diff
 and patch utilities.
 
-   Copyright © 1995–2017 Free Software Foundation, Inc.
+   Copyright © 1995–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -72,10 +72,11 @@ difference regions from one buffer to another (and recover old
 differences if you change your mind).
 
    Another powerful feature is the ability to merge a pair of files into
-a third buffer.  Merging with an ancestor file is also supported.
-Furthermore, Ediff is equipped with directory-level capabilities that
-allow the user to conveniently launch browsing or merging sessions on
-groups of files in two (or three) different directories.
+a third buffer.  Merging with an ancestor file, (a.k.a.  3way merges) is
+also supported.  Furthermore, Ediff is equipped with directory-level
+capabilities that allow the user to conveniently launch browsing or
+merging sessions on groups of files in two (or three) different
+directories.
 
    In addition, Ediff can apply a patch to a file and then let you step
 through both files, the patched and the original one, simultaneously,
@@ -168,10 +169,10 @@ Tools menu: Compare, Merge, and Apply Patch.
      control.
 
 ‘ediff-windows-wordwise’
-     Compare windows word-by-word.
+     Compare text visible in 2 windows word-by-word.
 
 ‘ediff-windows-linewise’
-     Compare windows line-by-line.
+     Compare text visible in 2 windows line-by-line.
 
 ‘ediff-regions-wordwise’
      Compare regions word-by-word.  The regions can come from the same
@@ -310,13 +311,13 @@ Regions::, for information on how to customize this.
    The commands ‘ediff-windows-wordwise’, ‘ediff-windows-linewise’,
 ‘ediff-regions-wordwise’ and ‘ediff-regions-linewise’ do comparison on
 parts of existing Emacs buffers.  The commands ‘ediff-windows-wordwise’
-and ‘ediff-regions-wordwise’ are intended for relatively small segments
-of buffers (e.g., up to 100 lines, depending on the speed of your
-machine), as they perform comparison on the basis of words rather than
-lines.  (Word-wise comparison of large chunks of text can be slow.)
+and ‘ediff-regions-wordwise’ could be slow on very large buffers, as
+they perform comparison on the basis of words rather than lines.
+(Word-wise comparison of large chunks of text is relatively expensive.)
 
-   To compare large regions, use ‘ediff-regions-linewise’.  This command
-displays differences much like ‘ediff-files’ and ‘ediff-buffers’.
+   To compare very large regions, use ‘ediff-regions-linewise’.  This
+command displays differences much like ‘ediff-files’ and
+‘ediff-buffers’.
 
    The functions ‘ediff-patch-file’ and ‘ediff-patch-buffer’ apply a
 patch to a file or a buffer and then run Ediff on the appropriate
@@ -461,10 +462,10 @@ File: ediff.info,  Node: Quick Help Commands,  Next: Other Session Commands,  Up
      command ‘rb’ undoes this.
 
 ‘p’
-‘DEL’
+‘<DEL>’
      Makes the previous difference region current.
 ‘n’
-‘SPC’
+‘<SPC>’
      Makes the next difference region current.
 
 ‘j’
@@ -724,7 +725,9 @@ File: ediff.info,  Node: Quick Help Commands,  Next: Other Session Commands,  Up
      region in buffer A, etc.
 
 ‘/’
-     Displays the ancestor file during merges.
+     Toggle to display the ancestor file in 3way merges.  You can enable
+     permanently this setting customizing the variable
+     ‘ediff-show-ancestor’.
 ‘&’
      In some situations, such as when one of the files agrees with the
      ancestor file on a difference region and the other doesn’t, Ediff
@@ -1396,7 +1399,7 @@ function to ‘ediff-load-hook’ which will do the following assignments:
    *Useful hint*: To specify a regexp that matches everything, don’t
 simply type <RET> in response to a prompt.  Typing <RET> tells Ediff to
 accept the default value, which may not be what you want.  Instead, you
-should enter something like <^> or <$>.  These match every line.
+should enter something like ‘^’ or ‘$’.  These match every line.
 
    You can use the status command, ‘i’, to find out whether selective
 browsing is currently in effect.
@@ -1721,7 +1724,7 @@ the fine difference regions):
      only permit ‘-b’, which (usually) assumes the extension ‘.orig’.
      Yet others force you to use ‘-zEXTENSION’.
 
-     Both ‘ediff-backup-extension’ and EDIFF-BACKUP-SPECS must be
+     Both ‘ediff-backup-extension’ and ‘ediff-backup-specs’ must be
      properly set.  If your patch program takes the option ‘-b’, but not
      ‘-b EXTENSION’, the variable ‘ediff-backup-extension’ must still be
      set so Ediff will know which extension to use.
@@ -2295,7 +2298,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -2692,7 +2695,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -2785,12 +2788,12 @@ Index
 * $$:                                    Quick Help Commands. (line 317)
 * $*:                                    Quick Help Commands. (line 337)
 * %:                                     Quick Help Commands. (line 307)
-* &:                                     Quick Help Commands. (line 355)
+* &:                                     Quick Help Commands. (line 357)
 * *:                                     Quick Help Commands. (line 140)
-* +:                                     Quick Help Commands. (line 395)
+* +:                                     Quick Help Commands. (line 397)
 * /:                                     Quick Help Commands. (line 353)
 * <:                                     Quick Help Commands. (line  24)
-* =:                                     Quick Help Commands. (line 400)
+* =:                                     Quick Help Commands. (line 402)
 * >:                                     Quick Help Commands. (line  26)
 * ?:                                     Quick Help Commands. (line   7)
 * @:                                     Quick Help Commands. (line 168)
@@ -2996,6 +2999,7 @@ Index
                                                               (line 102)
 * ediff-setup-windows-plain:             Window and Frame Configuration.
                                                               (line 102)
+* ediff-show-ancestor:                   Quick Help Commands. (line 353)
 * ediff-show-clashes-only:               Merging and diff3.   (line 154)
 * ediff-show-registry:                   Other Session Commands.
                                                               (line  11)
@@ -3081,7 +3085,7 @@ Index
 * rc:                                    Quick Help Commands. (line 202)
 * rcs.el:                                Support for Version Control.
                                                               (line  29)
-* s:                                     Quick Help Commands. (line 375)
+* s:                                     Quick Help Commands. (line 377)
 * SPC:                                   Quick Help Commands. (line  94)
 * uniquify.el:                           Customizing the Mode Line.
                                                               (line  17)
@@ -3100,30 +3104,30 @@ Index
 Tag Table:
 Node: Top996
 Node: Introduction2397
-Node: Major Entry Points4815
-Node: Session Commands14887
-Node: Quick Help Commands16471
-Node: Other Session Commands35500
-Node: Registry of Ediff Sessions38367
-Node: Session Groups39954
-Node: Remote and Compressed Files46328
-Node: Customization47598
-Node: Hooks49580
-Node: Quick Help Customization55153
-Node: Window and Frame Configuration56201
-Node: Selective Browsing62326
-Node: Highlighting Difference Regions67631
-Node: Narrowing72523
-Node: Refinement of Difference Regions73858
-Node: Patch and Diff Programs76858
-Node: Merging and diff381479
-Node: Support for Version Control91564
-Node: Customizing the Mode Line93228
-Node: Miscellaneous94115
-Node: Notes on Heavy-duty Customization99524
-Node: Credits102189
-Node: GNU Free Documentation License107598
-Node: Index132942
+Node: Major Entry Points4839
+Node: Session Commands14881
+Node: Quick Help Commands16465
+Node: Other Session Commands35611
+Node: Registry of Ediff Sessions38478
+Node: Session Groups40065
+Node: Remote and Compressed Files46439
+Node: Customization47709
+Node: Hooks49691
+Node: Quick Help Customization55264
+Node: Window and Frame Configuration56312
+Node: Selective Browsing62437
+Node: Highlighting Difference Regions67750
+Node: Narrowing72642
+Node: Refinement of Difference Regions73977
+Node: Patch and Diff Programs76977
+Node: Merging and diff381604
+Node: Support for Version Control91689
+Node: Customizing the Mode Line93353
+Node: Miscellaneous94240
+Node: Notes on Heavy-duty Customization99649
+Node: Credits102314
+Node: GNU Free Documentation License107723
+Node: Index133069
 
 End Tag Table
 

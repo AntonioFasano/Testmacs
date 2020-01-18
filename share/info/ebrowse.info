@@ -1,9 +1,9 @@
-This is ebrowse.info, produced by makeinfo version 6.3 from
+This is ebrowse.info, produced by makeinfo version 6.6 from
 ebrowse.texi.
 
 This file documents Ebrowse, a C++ class browser for GNU Emacs.
 
-   Copyright © 2000–2017 Free Software Foundation, Inc.
+   Copyright © 2000–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -30,7 +30,7 @@ You can browse C++ class hierarchies from within Emacs by using Ebrowse.
 
    This file documents Ebrowse, a C++ class browser for GNU Emacs.
 
-   Copyright © 2000–2017 Free Software Foundation, Inc.
+   Copyright © 2000–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -202,8 +202,8 @@ File: ebrowse.info,  Node: Input files,  Next: Output file,  Up: Generating brow
 
 ‘--search-path=PATHS’
      This option lets you specify search paths for your input files.
-     PATHS is a list of directory names, separated from each other by a
-     either a colon or a semicolon, depending on the operating system.
+     PATHS is a list of directories, separated by either a colon or a
+     semicolon, depending on the operating system.
 
    It is generally a good idea to specify input files so that header
 files are parsed before source files.  This facilitates the parser’s
@@ -381,8 +381,8 @@ name.
      location of their declarations and definitions will not be known.
 
 ‘<RET>’
-     Works like ‘SPC’, except that it finds the class declaration rather
-     than viewing it, so that it is ready for editing.
+     Works like ‘<SPC>’, except that it finds the class declaration
+     rather than viewing it, so that it is ready for editing.
 
    The same functionality is available from the menu opened with
 ‘mouse-3’ on the class name.
@@ -693,8 +693,8 @@ File: ebrowse.info,  Node: Finding/Viewing,  Next: Inherited Members,  Prev: Swi
      This command finds the declaration of the member the cursor is on.
 
 ‘<SPC>’
-     This is the same command as ‘RET’, but views the member definition
-     instead of finding the member’s source file.
+     This is the same command as ‘<RET>’, but views the member
+     definition instead of finding the member’s source file.
 
 ‘v’
      This is the same command as ‘f’, but views the member’s declaration
@@ -1041,8 +1041,8 @@ stack:
 
 ‘C-c C-m p’
      Displays an electric buffer showing all positions saved in the
-     stack.  You can select a position by pressing ‘SPC’ in a line.  You
-     can view a position with ‘v’.
+     stack.  You can select a position by pressing ‘<SPC>’ in a line.
+     You can view a position with ‘v’.
 
 
 File: ebrowse.info,  Node: Search & Replace,  Next: Members in Files,  Prev: Position Stack,  Up: Tags-like Functions
@@ -1127,7 +1127,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -1524,7 +1524,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1792,48 +1792,48 @@ Node: Top912
 Node: Overview2285
 Node: Generating browser files5944
 Node: Input files7120
-Node: Output file8389
-Node: Structs and unions9335
-Node: Matching9791
-Node: Verbosity11792
-Node: Loading a Tree12251
-Node: Tree Buffers13290
-Node: Source Display14601
-Node: Member Display15393
-Node: Go to Class17236
-Node: Quitting17982
-Node: File Name Display18193
-Node: Expanding and Collapsing19164
-Node: Tree Indentation20184
-Node: Killing Classes20581
-Node: Saving a Tree20960
-Node: Statistics21344
-Node: Marking Classes21667
-Node: Member Buffers22556
-Node: Switching Member Lists24197
-Node: Finding/Viewing25017
-Node: Inherited Members26114
-Node: Searching Members26443
-Node: Switching to Tree27375
-Node: Filters27736
-Node: Attributes28552
-Node: Long and Short Display29703
-Node: Regexp Display30676
-Node: Switching Classes31239
-Node: Killing/Burying32077
-Node: Column Width32317
-Node: Redisplay32600
-Node: Getting Help32996
-Node: Tags-like Functions33171
-Node: Finding and Viewing33977
-Node: Position Stack35556
-Node: Search & Replace36891
-Node: Members in Files38041
-Node: Apropos38323
-Node: Symbol Completion38957
-Node: Member Buffer Display39195
-Node: GNU Free Documentation License39464
-Node: Concept Index64830
+Node: Output file8367
+Node: Structs and unions9313
+Node: Matching9769
+Node: Verbosity11770
+Node: Loading a Tree12229
+Node: Tree Buffers13268
+Node: Source Display14579
+Node: Member Display15373
+Node: Go to Class17216
+Node: Quitting17962
+Node: File Name Display18173
+Node: Expanding and Collapsing19144
+Node: Tree Indentation20164
+Node: Killing Classes20561
+Node: Saving a Tree20940
+Node: Statistics21324
+Node: Marking Classes21647
+Node: Member Buffers22536
+Node: Switching Member Lists24177
+Node: Finding/Viewing24997
+Node: Inherited Members26096
+Node: Searching Members26425
+Node: Switching to Tree27357
+Node: Filters27718
+Node: Attributes28534
+Node: Long and Short Display29685
+Node: Regexp Display30658
+Node: Switching Classes31221
+Node: Killing/Burying32059
+Node: Column Width32299
+Node: Redisplay32582
+Node: Getting Help32978
+Node: Tags-like Functions33153
+Node: Finding and Viewing33959
+Node: Position Stack35538
+Node: Search & Replace36874
+Node: Members in Files38024
+Node: Apropos38306
+Node: Symbol Completion38940
+Node: Member Buffer Display39178
+Node: GNU Free Documentation License39447
+Node: Concept Index64815
 
 End Tag Table
 

@@ -1,8 +1,8 @@
-This is epa.info, produced by makeinfo version 6.3 from epa.texi.
+This is epa.info, produced by makeinfo version 6.6 from epa.texi.
 
 This file describes EasyPG Assistant 1.0.0.
 
-   Copyright © 2007–2017 Free Software Foundation, Inc.
+   Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -34,7 +34,7 @@ interface called EasyPG Library.
 
    This file describes EasyPG Assistant 1.0.0.
 
-   Copyright © 2007–2017 Free Software Foundation, Inc.
+   Copyright © 2007–2019 Free Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -321,7 +321,7 @@ inserted in the buffer rather than encrypted one.  Similarly, when you
 save the buffer to a ‘foo.gpg’ file, encrypted data is written.
 
    The file name pattern for encrypted files can be controlled by
-EPA-FILE-NAME-REGEXP.
+‘epa-file-name-regexp’.
 
  -- Variable: epa-file-name-regexp
      Regexp which matches filenames treated as encrypted.
@@ -345,7 +345,7 @@ dialog.
      public key encryption.
 
    You can also change the default behavior with the variable
-EPA-FILE-SELECT-KEYS.
+‘epa-file-select-keys’.
 
  -- Variable: epa-file-select-keys
      Control whether or not to pop up the key selection dialog.
@@ -396,7 +396,7 @@ which might be visible when used from Emacs.
      variable, which is used by GnuPG 2.0 and 1.4, is ignored.  That
      means, if your system has both GnuPG 2.1 and 1.4, the gpg command
      from GnuPG 1.4 is not able to use gpg-agent provided by 2.1 (at
-     least out of box).q
+     least out of box).
 
    • GnuPG 2.1 (2.1.5 or later) has a mechanism to direct the Pinentry
      password prompt to the Emacs minibuffer(1), which would be useful
@@ -419,10 +419,12 @@ File: epa.info,  Node: Caching Passphrases,  Next: Bug Reports,  Prev: GnuPG ver
 
 Typing passphrases is a troublesome task if you frequently open and
 close the same file.  GnuPG and EasyPG Assistant provide mechanisms to
-remember your passphrases.  However, the configuration is a bit
-confusing since it depends on your GnuPG installation*Note GnuPG version
-compatibility::, encryption method (symmetric or public key), and
-whether or not you want to use gpg-agent.  Here are some questions:
+remember your passphrases for a limited time.  Using these, you only
+need to re-enter the passphrase occasionally.  However, the
+configuration is a bit confusing since it depends on your GnuPG
+installation*Note GnuPG version compatibility::, encryption method
+(symmetric or public key), and whether or not you want to use gpg-agent.
+Here are some questions:
 
   1. Do you use GnuPG version 2.1 or 2.0 instead of GnuPG version 1.4?
   2. Do you use symmetric encryption rather than public key encryption?
@@ -478,7 +480,7 @@ Appendix A GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -875,7 +877,7 @@ Appendix A GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -1071,14 +1073,14 @@ Node: Cryptographic operations on files8321
 Node: Dired integration9052
 Node: Mail-mode integration9663
 Node: Encrypting/decrypting gpg files11297
-Node: GnuPG version compatibility13871
-Ref: GnuPG version compatibility-Footnote-115228
-Node: Caching Passphrases15407
-Node: Bug Reports16859
-Node: GNU Free Documentation License17792
-Node: Key Index43142
-Node: Function Index44681
-Node: Variable Index48120
+Node: GnuPG version compatibility13883
+Ref: GnuPG version compatibility-Footnote-115239
+Node: Caching Passphrases15418
+Node: Bug Reports16957
+Node: GNU Free Documentation License17890
+Node: Key Index43242
+Node: Function Index44781
+Node: Variable Index48220
 
 End Tag Table
 
