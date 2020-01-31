@@ -3,7 +3,7 @@
 ;; ----->  Copy this in share\emacs\site-lisp\site-start.el
 
 ;; Author: Antonio Fasano
-;; Version: 0.6
+;; Version: 0.6.1
 ;; Keywords: exam, quiz, test, forms, widget
 ;; This program requires: cl-lib subr-x seq emacs "25"
 
@@ -101,7 +101,7 @@
 ;;; === Customise Me === ;;;
 ;;; ==================== ;;;
 
-(defconst testmacs-version  "0.6"
+(defconst testmacs-version  "0.6.1"
   "Current app version.")
 
 (defconst testmacs-loc-server-ini  "~/server*.txt"
@@ -1205,7 +1205,7 @@ For debug scenarios or after raising exceptions."
   (setq inferior-R-program-name testmacs-r-executable)
   (setq ess-ask-for-ess-directory nil) ; Don't prompt for data dir
   (setq ess-use-tracebug nil) ; no debug
-  (setq ess-history-file  nil) ; no history between sessions 
+  (setq ess-history-file (concat "~/hst-" testmacs-course)) 
   (setq default-directory (expand-file-name "~"))
   (R)
   (delete-other-windows)
@@ -1214,7 +1214,7 @@ For debug scenarios or after raising exceptions."
   (cua-mode)
   (comint-clear-buffer)
 
-  (ess-eval-linewise "message(\"Run: info()\")" 'invis)
+  (ess-eval-linewise "message(\"Run the command: info()\")" 'invis)
   (message "You are ready to go!"))
 
 ;; Kill on exit R

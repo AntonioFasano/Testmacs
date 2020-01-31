@@ -4,7 +4,7 @@
 ## Everything not explicitely set in testmacs* env is disposed after sourcing
 ## Add test of local and remote write and stop with errors on fail
 
-current_course_name <- local({
+local({
 
     ## Compare values with site-start.el
     `exam-loc-server-ini`  <-     "~/server*.txt"
@@ -34,9 +34,37 @@ current_course_name <- local({
                        course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds")
     file.copy(rds.loc, rds.net)
 
-    
+    ## Load assignment
     load(course.data, envir=testmacs)
-    course.name
+
+    ## Add course name to testmacs .assignment
+    testmacs$.assignment$course.name  <-  course.name
+
+    ## Add encoded remote rds testmacs .assignment
+    testmacs$.assignment$rds.net  <-  charToRaw(rds.net)
+
+    ## Read local answer text file 
+    ansfile.loc <-  path.expand(paste0("~/", course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".txt"))
+
+    ## Get student data
+    ## Based on grade.R readAnswers, but without LaTeX sanitizing   
+    lines <- readLines(ansfile.loc, warn=FALSE, encoding="UTF-8")
+    stud <- sapply(regmatches(lines, regexec("(.+?):(.*)", lines)), function(l){
+        x <- l[3]
+        names(x) <- l[2]
+        x})
+    stud <- stud[!is.na(names(stud))] # for rate cases of fields with newlines    
+    stud <- as.data.frame(stud, stringsAsFactors=FALSE, nm="Student")
+    stud[,1] <- trimws(stud[,1])
+    ## stud[,1] <- sanitize(stud[,1]) # see readAnswers()
+    stud["ans-line",] <- gsub('"', '', stud["ans-line",]) # no quotes
+
+    ## Add student data to testmacs .assignment
+    testmacs$.assignment$student  <-  stud
+
+    hist <- paste0("~/hst-", .assignment$course.name)
+    if(file.exists(hist)) file.remove(hist) 
+    
 })
 
 send  <- function(...){
@@ -53,12 +81,29 @@ send  <- function(...){
     # Show first of which giving the problem
     if(any(x)) stop("\nThe value of ", names(list(...))[[which(x)[1] ]], " is a function not a value.")
 
-    rds <- path.expand(paste0("~/",current_course_name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
+    ## make save list
     L <- list(...)
+    L$.course.name <- .assignment$course.name 
+    L$.student <- .assignment$student
+    L$.rsavedat <-  Sys.time()
+    ##L$.cmdhst <-  readLines(paste0("~/hst-", .assignment$course.name))
+
+    ## local save
+    rds <- path.expand(paste0("~/", .assignment$course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
     if(file.exists(rds)) file.remove(rds)
     saveRDS(L, rds)
+
+    ## Remote save
+    x <- rawToChar(.assignment$rds.net)
+    if(file.exists(x)) file.remove(x)
+    saveRDS(L, x)
+    
     message("Data has been sent. Thank you.")
     readline("Hit any key to exit.")
+    quit("no")
+}
+
+giveup  <- function(...){
     quit("no")
 }
 
@@ -98,3 +143,4 @@ info.send <- function(){
     message(txt)
 
 }
+
