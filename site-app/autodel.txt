@@ -1,9 +1,9 @@
 @echo off 
 
 echo.
-echo I am going to delete c:\testmacs and myself 
+echo I am going to delete c:\testmacs, myself, and my folder
 
 TIMEOUT /T 15 /NOBREAK
 rmdir /q /s c:\testmacs
-del %0
 
+(goto) 2>nul &start cmd /c "cd .. & rmdir /q /s "%~dp0""
