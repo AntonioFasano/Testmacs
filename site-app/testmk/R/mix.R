@@ -1,12 +1,12 @@
 ## Parse on ore more exam class LaTeX templates (with multiple choices questions).
 ## Generate random PDFs with a subset of the questions and save a related solution data file.
-## Each template path is ./COURSE/COURSE.tex, where COURSE is a name found in ./TESTCOUNT.txt
+## Each template path is ./COURSE/COURSE.tex, where COURSE is a name found in ./COURSEDATA.txt
 ## Read details after the Customise block
 
 ## Customise
 TIME=25            # Max time in minutes
-NQ=15              # Questions to randomly extract from LaTeX template. Might be overridden by TESTCOUNT.txt 
-WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc. If you NQ via TESTCOUNT.txt, WDIST=c(`1`=NQ)
+NQ=15              # Questions to randomly extract from LaTeX template. Might be overridden by COURSEDATA.txt 
+WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc. If you NQ via COURSEDATA.txt, WDIST=c(`1`=NQ)
 NOTPLWEIGHT=TRUE   # In LaTeX template set any \question[n] to \question, which means 1 point  
 MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights missing, to change 1 weight-default
 OUTDIR="!tmpout"   # Output dir
@@ -16,7 +16,7 @@ PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, un
 ## - Perl for TeX latexpand
 ## - A document based on the exam LaTeX class
 ##
-## ./TESTCOUNT.txt contains the name of courses and the related number of tests and questions per test to generate
+## ./COURSEDATA.txt contains the name of courses and the related number of tests and questions per test to generate
 ## Questions per test are optional, if given they overrride the global NQ 
 ## Course names are used also to localise the related ./COURSE/COURSE.tex tempates.
 ## The format is 
@@ -48,8 +48,8 @@ PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, un
 
 
 ## Globals
-TESTCOUNT=NULL # Number of exams to generate. Found in TESTCOUNT.txt
-COURSE=NULL    # Course processed. Found in TESTCOUNT.txt 
+TESTCOUNT=NULL # Number of exams to generate. Found in COURSEDATA.txt
+COURSE=NULL    # Course processed. Found in COURSEDATA.txt 
 COURSEDIR=NULL # Course dir in OUTDIR with PDFs, sols and lisp initfile 
 
 
@@ -361,7 +361,7 @@ last4 <- function() # Last four getwd() components
 main=function(){
 
     ## Read course and n quests
-    courses <- read.table("TESTCOUNT.txt", sep="=", header=TRUE, stringsAsFactors=FALSE, strip.white=TRUE)
+    courses <- read.table("COURSEDATA.txt", sep="=", header=TRUE, stringsAsFactors=FALSE, strip.white=TRUE)
     courses <- setNames(apply(courses, 1, as.list), courses$course)
 
     ## Safe make out dir
