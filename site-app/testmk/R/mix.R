@@ -5,8 +5,8 @@
 
 ## Customise
 TIME=25            # Max time in minutes
-NQ=15              # Questions to randomly extract from LaTeX template 
-WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc.
+NQ=15              # Questions to randomly extract from LaTeX template. Might be overridden by TESTCOUNT.txt 
+WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc. If you NQ via TESTCOUNT.txt, WDIST=c(`1`=NQ)
 NOTPLWEIGHT=TRUE   # In LaTeX template set any \question[n] to \question, which means 1 point  
 MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights missing, to change 1 weight-default
 OUTDIR="!tmpout"   # Output dir
@@ -16,13 +16,15 @@ PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, un
 ## - Perl for TeX latexpand
 ## - A document based on the exam LaTeX class
 ##
-## ./TESTCOUNT.txt contains the name of the courses and the number of random questions to generate
+## ./TESTCOUNT.txt contains the name of courses and the related number of tests and questions per test to generate
+## Questions per test are optional, if given they overrride the global NQ 
 ## Course names are used also to localise the related ./COURSE/COURSE.tex tempates.
 ## The format is 
-## course  = ntest
-## mycourse =   10
-## another  =    9
+## course = nquest  = ntest 
+## mycourse = 15    =   10 
+## another = 10     =    9 
 ##
+## To use NQ global value, remove the middle column (including the '=' )
 ## LaTeX template
 ## When customising the LaTeX exam template respect the following rules
 ## Add \printanswers uncommented,
@@ -102,7 +104,7 @@ makeTemplate=function(){ # Create course dir and copy latexexapnd template
     if(!is.null(attr(ret, "status"))) stop("latexpand gave: ", paste(ret, collapse="\n"))   
 
     ## Get template tex file
-    readLines(paste0(COURSEDIR, "/", COURSE, "-expd.tex"))
+    readLines(paste0(COURSEDIR, "/", COURSE, "-expd.tex"), encoding="UTF-8")
 }
 
 getQuestions=function(# Extract from TeX template 1,3 point questions and pre-question material (header) 
@@ -370,6 +372,14 @@ main=function(){
         COURSE    <<- curr$course
         TESTCOUNT <<- curr$ntest    
         COURSEDIR <<- paste0(OUTDIR, "/", COURSE, "-quests")
+        if(!is.null(curr$nquest)) {
+            NQ <<- as.numeric(curr$nquest)
+            WDIST <<- c(`1`=NQ)
+        }
+
+        ## Check user input values are numeric 
+        stopifnot(!is.na(as.numeric(TESTCOUNT)))
+        stopifnot(!is.na(as.numeric(NQ)))
 
         ## Make template without comments in COURSEDIR, which can confuse regex
         message("Processing ", COURSE, ": ", TESTCOUNT)
@@ -399,7 +409,6 @@ main=function(){
         write.table(x, paste0(COURSEDIR, "/INITFILE-", COURSE, ".txt"), row.names=FALSE, quote=FALSE)
 
         ## Clean pdf and pdf-nosol subdir
-###browser() # browse to keep tex files       
         x <- paste0(COURSEDIR, "/", COURSE)
         unlink(Sys.glob(paste0(x, "*/*.log")))
         unlink(Sys.glob(paste0(x, "*/*.aux")))
