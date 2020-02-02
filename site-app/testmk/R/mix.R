@@ -1,26 +1,49 @@
-
-## Parse an exam class TeX document based on multiple choices.
-## Generate distinct PDFs with questions and extract related solution data file .
-##
-## Do not put non-question  material among \question commands!
-## Such as: "Beginning of Maths question", that would become part of the preceding question
-## Put \begin{document}  on a single line
+## Parse on ore more exam class LaTeX templates (with multiple choices questions).
+## Generate random PDFs with a subset of the questions and save a related solution data file.
+## Each template path is ./COURSE/COURSE.tex, where COURSE is a name found in ./TESTCOUNT.txt
+## Read details after the Customise block
 
 ## Customise
 TIME=25            # Max time in minutes
 NQ=15              # Questions to randomly extract from LaTeX template 
 WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc.
 NOTPLWEIGHT=TRUE   # In LaTeX template set any \question[n] to \question, which means 1 point  
-MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights are missing/removed
+MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights missing, to change 1 weight-default
 OUTDIR="!tmpout"   # Output dir
 PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, unless already in path
 
-
 ## Requitements:
-## - an exam TeX doc with:
-##     - solutions (\printasnwers uncommented),
-##     - equal number of answers for each question,
 ## - Perl for TeX latexpand
+## - A document based on the exam LaTeX class
+##
+## ./TESTCOUNT.txt contains the name of the courses and the number of random questions to generate
+## Course names are used also to localise the related ./COURSE/COURSE.tex tempates.
+## The format is 
+## course  = ntest
+## mycourse =   10
+## another  =    9
+##
+## LaTeX template
+## When customising the LaTeX exam template respect the following rules
+## Add \printanswers uncommented,
+## Put the following on single lines:
+## \begin{document} \question, \end{questions} \end{questions} \choice \CorrectChoice \printanswers
+## Material other than blanks can prevent the script localising them 
+## \question can be followed by question weight: \question[2]
+## Do not put non-question  material among \question commands!
+## Such as: "Beginning of Maths question", that would become part of the preceding question
+## The default for Exam class is number  for questions, letters for numbers, do not change this.
+## If you add a lib dir in the same dir where the template is, this is copied to the generated tex files dir.
+## So you can call lib files with relative paths, e.g. \input{lib/mymaths}
+##
+## Customise header variables
+## To set the number of random questions customise NQ and adjust their weights accordingly.
+## To set question weight distribution, customise
+## WDIST=c(`1`=15)    # Like c(`2`=10, `3`=7): 10 quests with weight 2 etc.
+## Weights needs to be set in LaTeX via \question[w], where w is an integer
+## \question[1] is the same as \question
+## To have weights all equal you can use \question and set MULTI to change the 1-weight default.
+
 
 ## Globals
 TESTCOUNT=NULL # Number of exams to generate. Found in TESTCOUNT.txt
@@ -131,13 +154,15 @@ getQuestions=function(# Extract from TeX template 1,3 point questions and pre-qu
     ## Find solutions
     quests.sol <- data.frame(sol=findSol(quests), weight=w, stringsAsFactors=FALSE)    
 
-    ## preamble + begin{document}
+    ## preamble and pre-question area
+    ## preamble includes begin{document} line
     x=grep("^\\s*\\\\begin\\s*\\{document\\}", hlines)
     preamble <- hlines[1:x]
-    hlines <- hlines[-(1:x)] # after begin document
+    ## pre-question area falls after begin-document and before the first \question
+    prequest <- hlines[-(1:x)] 
 
     list(preamble=preamble, 
-         hlines=hlines,
+         prequest=prequest,
          quests=quests,
          quests.sol=quests.sol)       
 }
@@ -154,14 +179,14 @@ findSol=function(# Given the question list, find and return the correct choice l
 makeRandExam=function(# Extract random questions distributed according to WDIST 
                      testid,      # Random testid
                      preamble,    #including being document
-                     hlines,      # Pre-questions header lines
+                     prequest,      # Pre-questions header lines
                      quests,      # question list
                      quests.sol   # solution's DF
                      ){
     
     ## Add Test ID after begin document
     x=sprintf("\n\n\\textbf{Test num. %d}\\medskip", testid)
-    hlines <- c(x, hlines)
+    prequest <- c(x, prequest)
     
     ## Set closing 
     foot=tex.qfoot()
@@ -192,9 +217,9 @@ makeRandExam=function(# Extract random questions distributed according to WDIST
     quests.sol$weight <- quests.sol$weight * MULTI
     
     ## Create output
-    lines=c(hlines, unlist(quests), foot)                           
+    lines=c(prequest, unlist(quests), foot)                           
     list(quests=quests, quests.sol=quests.sol,
-         preamble=preamble, hlines=hlines, flines=foot, lines=lines)    
+         preamble=preamble, prequest=prequest, flines=foot, lines=lines)    
 }
       
 
@@ -293,13 +318,13 @@ pageLength <- function(log, testid){ # Print a warning if a PDF is more than two
 makeRndPdf=function( # Make random PDF with sol                        
                      testid,     # random testid
                      preamble,   #including being document
-                     hlines,     # Pre-questions header lines
+                     prequest,     # Pre-questions header lines
                      quests,     # question list
                      quests.sol  # solution's DF
                      ){
 
     
-    rndtex=makeRandExam(testid, preamble, hlines, quests, quests.sol)
+    rndtex=makeRandExam(testid, preamble, prequest, quests, quests.sol)
     
 #    ## Build without sols => Comment \printanswers
 #    pat="^[ \t%]*\\\\printanswers"
@@ -346,7 +371,7 @@ main=function(){
         TESTCOUNT <<- curr$ntest    
         COURSEDIR <<- paste0(OUTDIR, "/", COURSE, "-quests")
 
-        ## Make template without comments in COURSEDIR
+        ## Make template without comments in COURSEDIR, which can confuse regex
         message("Processing ", COURSE, ": ", TESTCOUNT)
         tex  <- makeTemplate()
 
@@ -357,17 +382,17 @@ main=function(){
         seeds <- sample(999, TESTCOUNT)
         sols=lapply(seq_along(seeds), function(nth){   
             message(nth, " -> ",  seeds[nth])            
-            S <- makeRndPdf(seeds[nth], Q$preamble, Q$hlines, Q$quests, Q$quests.sol)})
+            S <- makeRndPdf(seeds[nth], Q$preamble, Q$prequest, Q$quests, Q$quests.sol)})
         names(sols) = seeds
 
-        #Make combos
+        ## Make combos
         buildPdf(Q$preamble, NULL, testid, nosol=TRUE, combo=TRUE)
         buildPdf(Q$preamble, NULL, testid, nosol=FALSE, combo=TRUE)
 
 
         ## Save random questions with related weights and solutions, plus header/footer lines
-        preamble <- Q$preamble; hlines <- Q$hlines; flines <- tex.qfoot()
-        save(sols, preamble, hlines, flines, file=paste0(COURSEDIR, "/", COURSE, "-sols.RData"))
+        preamble <- Q$preamble; prequest <- Q$prequest; flines <- tex.qfoot()
+        save(sols, preamble, prequest, flines, file=paste0(COURSEDIR, "/", COURSE, "-sols.RData"))
 
         ## Save init file
         x=data.frame(time=TIME, questcount=sum(WDIST), course=COURSE)

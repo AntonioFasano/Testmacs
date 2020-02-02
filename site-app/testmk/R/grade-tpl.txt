@@ -14,7 +14,7 @@
 ## 3 if you are satisfied with it, rename it "grade-tpl.txt"
 
 ## TODO
-## Produce a PDF output for student with wrong or missing exam-id, explaining the result si NA 
+## Produce a PDF output for student with wrong or missing exam-id, explaining the result is NA
 
 ## Customise
 SHOWGGRID <- FALSE  ## summary grid at PDF bottom
@@ -42,9 +42,9 @@ main <- function(){
         ## Get course names
         course <- sub("-answers$", "",  ansd)
         
-        ## Load "sols" list, "hlines", "flines" vectors
+        ## Load "sols" list, "prequest", "flines" vectors
         ##   sols: per-exam list with student quests and sol grid
-        ##   preamble, hlines, flines: LaTeX preamble/header/footer 
+        ##   preamble, prequest, flines: LaTeX preamble/pre-question area/footer 
         load(paste0(names(ansd), "/", course, "-sols.RData"))
 
         message("\nProcessing ", course, ": ", length(sols))
@@ -98,7 +98,7 @@ main <- function(){
         
         ## Fill the header with score and contact details 
         hlines.id <- lapply(examids, function(examid){
-            header.exam(hlines, contacts.str[examid], grades[[examid]] )})
+            header.exam(prequest, contacts.str[examid], grades[[examid]] )})
 
         ## Fill the footer with score grid (only for SHOWGGRID true)
         flines.id <- lapply(examids, function(examid){
@@ -418,12 +418,23 @@ grade <- function( # Grade the answer vector
     al=ans["ans-string",]
     al=strsplit(al, " ")[[1]]
 
-    ## Vector by type of answers 
-    good <- as.integer(s==al)    # 1 if good: sum(good)
-    nil <- as.integer("nil"!=al) # 0 if nil:  sum(-nil+1)
-    bad  <- as.integer(s!=al)    # 1 if non-good: nil %*% bad or sum(bad) - sum(-nil+1)
-    list(score=c(good %*% w - nil %*% bad), good=sum(good), bad=nil %*% bad,
-         grid=data.frame(ans=al, sol=s, weight=w, stringsAsFactors=FALSE))
+    ## Vector by type of answers
+
+    # was
+    #good <- as.integer(s==al)    # 1 if good: sum(good)
+    #nil <- as.integer("nil"!=al) # 0 if nil:  sum(-nil+1)
+    #bad  <- as.integer(s!=al)    # 1 if non-good: nil %*% bad or sum(bad) - sum(-nil+1)
+    #L <- list(score=c(good %*% w - nil %*% bad), good=sum(good), bad=nil %*% bad,
+    #     grid=data.frame(ans=al, sol=s, weight=w, stringsAsFactors=FALSE))
+
+    good <- as.integer(s==al)        # 1 each good, 0 else
+    nil <- as.integer("nil"==al)     # 1 each nil,  0 else
+    ## non-good and non-nil are bad
+    bad <- as.integer(!good & !nil)  # 1 each bad,  0 else
+    
+    list(score=c(good %*% w - sum(bad)), good=sum(good), bad=sum(bad), 
+            grid=data.frame(ans=al, sol=s, weight=w, stringsAsFactors=FALSE))
+
 }
 
 sanitize <-  function(s){ # LaTeX safe chars
