@@ -1205,7 +1205,10 @@ For debug scenarios or after raising exceptions."
   (setq inferior-R-program-name testmacs-r-executable)
   (setq ess-ask-for-ess-directory nil) ; Don't prompt for data dir
   (setq ess-use-tracebug nil) ; no debug
-  (setq ess-history-file (concat "~/hst-" testmacs-course)) 
+  ;; History
+  (let ((hfile (concat "~/" testmacs-course "-hst-" (downcase (getenv "COMPUTERNAME")) ".txt")))
+    (write-region "" nil hfile)
+    (setq ess-history-file hfile))
   (setq default-directory (expand-file-name "~"))
   (R)
   (delete-other-windows)
@@ -1213,7 +1216,6 @@ For debug scenarios or after raising exceptions."
   (testmacs-mode-header testmacs-max-time-r)
   (cua-mode)
   (comint-clear-buffer)
-
   (ess-eval-linewise "message(\"Run the command: info()\")" 'invis)
   (message "You are ready to go!"))
 

@@ -25,14 +25,11 @@ local({
     course.name <-  strsplit(remote.lines[2], " +")[[1]][course.pos]
     course.data <- paste0(data.dir, "rdata/", course.name, "-nosol.RData")
 
-    ## Create a local and remote dummy wait-for-send RDS
+    ## Set local and remote RDS paths
     rds.loc <- path.expand(paste0("~/", course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
-    if(file.exists(rds.loc)) file.remove(rds.loc)
-    saveRDS("wait-for-send", rds.loc)
     rds.net  <- paste0(dirname(remote.init), "/",
                        course.name, "-answers/",
                        course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds")
-    file.copy(rds.loc, rds.net)
 
     ## Load assignment
     load(course.data, envir=testmacs)
@@ -61,10 +58,19 @@ local({
 
     ## Add student data to testmacs .assignment
     testmacs$.assignment$student  <-  stud
-
-    hist <- paste0("~/hst-", .assignment$course.name)
-    if(file.exists(hist)) file.remove(hist) 
     
+    ## Make save list
+    L <- list()
+    L$values <- NULL
+    L$.course.name <- .assignment$course.name 
+    L$.student <- .assignment$student
+    L$.rsavedat <-  Sys.time()
+
+    ## Save local and remote dummy RDS
+    if(file.exists(rds.loc)) file.remove(rds.loc)
+    saveRDS(L, rds.loc)
+    file.copy(rds.loc, rds.net)
+        
 })
 
 send  <- function(...){
@@ -81,14 +87,18 @@ send  <- function(...){
     # Show first of which giving the problem
     if(any(x)) stop("\nThe value of ", names(list(...))[[which(x)[1] ]], " is a function not a value.")
 
-    ## make save list
-    L <- list(...)
+    ## Make answer list
+    A <- list(...)
+    
+    ## Make save list
+    L <- list()
+    L$values <- A
     L$.course.name <- .assignment$course.name 
     L$.student <- .assignment$student
     L$.rsavedat <-  Sys.time()
     ##L$.cmdhst <-  readLines(paste0("~/hst-", .assignment$course.name))
 
-    ## local save
+    ## Local save
     rds <- path.expand(paste0("~/", .assignment$course.name, "-ans-", tolower(Sys.getenv("COMPUTERNAME")), ".rds"))
     if(file.exists(rds)) file.remove(rds)
     saveRDS(L, rds)
