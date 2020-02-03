@@ -368,7 +368,7 @@ readAnswers <- function(af){ # Read and preformat answer files
     ## Trim spaces and sanitize
     stud[,1] <- trimws(stud[,1])
     stud[,1] <- sanitize(stud[,1])
-    stud["ans-string",] <- gsub('"', '', stud["ans-string",]) # no quotes
+    stud["ans-line",] <- gsub('"', '', stud["ans-line",]) # no quotes
     stud    
 }
 
@@ -390,7 +390,7 @@ parseAnswers.old <- function(## parse answer files as a list whose names are sea
             names(x)="Student"
             x[,1]=trimws(x[,1])
             x[,1] <- sanitize(x[,1])
-            x["ans-string",] <- gsub('"', '', x["ans-string",])
+            x["ans-line",] <- gsub('"', '', x["ans-line",])
             x})
 
     ## Add seat field to DF rows 
@@ -415,7 +415,7 @@ grade <- function( # Grade the answer vector
     w=sol$weight
 
     ## Get answer letters
-    al=ans["ans-string",]
+    al=ans["ans-line",]
     al=strsplit(al, " ")[[1]]
 
     ## Vector by type of answers

@@ -12,6 +12,9 @@ MULTI=2            # Weight factor. Useful if LaTeX "\question"-weights missing,
 OUTDIR="!tmpout"   # Output dir
 PERLBDIR="c:\\binp\\strawberry\\perl\\bin"  # For Windows only: Perl bin dir, unless already in path
 
+## Use caller output dir, if avilable
+if(exists("OUTDIR", where=1)) OUTDIR <- get("OUTDIR", pos=1)
+
 ## Requitements:
 ## - Perl for TeX latexpand
 ## - A document based on the exam LaTeX class
@@ -430,6 +433,7 @@ main=function(){
     file.copy("grade-tpl.txt", paste0(OUTDIR, "/grade.R")) -> x
     cat("Copy Emacs '*-answers' dirs here.\nRun grade.R\nLook for '*-results' dirs.",
         file=paste0(OUTDIR, "/ReadMe.txt"))
-    #message(last4())
+    ##message(last4())
+
 }
 
