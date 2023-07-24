@@ -1215,9 +1215,18 @@ For debug scenarios or after raising exceptions."
   (kill-buffer "*Test*")
   (testmacs-mode-header testmacs-max-time-r)
   (cua-mode)
-  (comint-clear-buffer)
-  (ess-eval-linewise "message(\"Run the command: info()\")" 'invis)
-  (message "You are ready to go!"))
+  
+  ;; Capture R buffer to messages and clean if last R commmand is: message("Success")
+  (let* ((rstart-buf (buffer-substring-no-properties (point-max) (point-min)))
+	 (rstart-buf-list (split-string rstart-buf "\n"))
+	  ;; R Testmacs script should end with "Success\n> setwd('path/to/testmacs/data')\n> "
+	 (succ-line (car (last rstart-buf-list 3))))
+    (message (concat "===R STARTUP===\n" rstart-buf "===end R STARTUP\n"))
+    (if (not (string-equal succ-line "Success"))
+	(message "An error occurred!")	
+      (comint-clear-buffer)
+      (ess-eval-linewise "message(\"Run the command: info() or giveup()\")" 'invis)
+      (message "You are ready to go!"))))
 
 ;; Kill on exit R
 (advice-add 'ess-process-sentinel :after #'testmacs-r-exit-function)
