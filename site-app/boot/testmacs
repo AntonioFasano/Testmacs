@@ -4,20 +4,38 @@
 ## Everything not explicitely set in testmacs* env is disposed after sourcing
 ## Add test of local and remote write and stop with errors on fail
 
+testmacs <- new.env()
+
 local({
 
     ## Compare values with site-start.el
-    `exam-loc-server-ini`  <-     "~/server*.txt"
-    `exam-net-init`        <-     "INITFILE*.txt"
+    `testmacs-loc-server-ini`  <-     "~/server*.txt"
+    `testmacs-net-init`        <-     "INITFILE*.txt"
+
+    add.sep <- function(pth) normalizePath(paste0(pth, "/"))
+    share.error <- function(initfile = FALSE){
+        paste("Network can be slow or server can be down. **Please, call the instructor!**\n\nDetails:\n",
+              "Server file:", `testmacs-loc-server-ini`, "\n",
+              "Candidate share(s) winslash:\n",  paste(candidate.shares, collapse = "\n"),
+              ifelse(initfile, paste("\n Remote init:", paste0(data.dir, "INITFILE*.txt", "\n")), "\n"),
+              "To source again:\n",
+              sprintf("source(\"%s\")", normalizePath(paste0(R.home(), "/../site-app/boot/testmacs"), winslash = "/"))
+              )
+    }
 
     ## First working local init
-    local.init <- Sys.glob(`exam-loc-server-ini`)[1]
-
-    ## Remote data dir from local file
-    data.dir <- Sys.glob(readLines (local.init)[1], dirmark=TRUE)
+    server.files <- Sys.glob(`testmacs-loc-server-ini`)
+    candidate.shares <- lapply(server.files, readLines)
+    candidate.shares <- sapply(candidate.shares, `[[`, 1) 
+    valid.shares <- sapply(candidate.shares, dir.exists)
+    if(!any(valid.shares)) stop(share.error(), call. = FALSE)
+    good.share <- which(valid.shares)[1]
+    data.dir <- candidate.shares[good.share]
+    data.dir <- add.sep(data.dir)
 
     ## First working remote init file 
     remote.init <- Sys.glob(paste0(data.dir, "INITFILE*.txt"))[1]
+    if(!file.exists(remote.init)) stop(share.error(initfile = TRUE), call. = FALSE)
 
     ## Course name and data file
     remote.lines  <-  readLines(remote.init, 2)
@@ -50,7 +68,7 @@ local({
         x <- l[3]
         names(x) <- l[2]
         x})
-    stud <- stud[!is.na(names(stud))] # for rate cases of fields with newlines    
+    stud <- stud[!is.na(names(stud))] # for rare cases of fields with newlines    
     stud <- as.data.frame(stud, stringsAsFactors=FALSE, nm="Student")
     stud[,1] <- trimws(stud[,1])
     ## stud[,1] <- sanitize(stud[,1]) # see readAnswers()
@@ -59,21 +77,23 @@ local({
     ## Add student data to testmacs .assignment
     testmacs$.assignment$student  <-  stud
     
-    ## Make save list
+    ## Make save list (prefix with 'testmacs$' as attach as not occurred yet)
     L <- list()
     L$values <- NULL
-    L$.course.name <- .assignment$course.name 
-    L$.student <- .assignment$student
+    L$.course.name <- testmacs$.assignment$course.name 
+    L$.student <- testmacs$.assignment$student
     L$.rsavedat <-  Sys.time()
 
     ## Save local and remote dummy RDS
     if(file.exists(rds.loc)) file.remove(rds.loc)
     saveRDS(L, rds.loc)
     file.copy(rds.loc, rds.net)
+
+    message("Success") # marker for comint-clear-buffer
         
 })
 
-send  <- function(...){
+testmacs$send  <- function(...){
 
     ## Single arg without name
     if(is.null(names(list(...)))) stop("Please, provide argument names.")
@@ -111,13 +131,19 @@ send  <- function(...){
     message("Data has been sent. Thank you.")
     readline("Hit any key to exit.")
     quit("no")
+    
+### You forgot to type parentheses, that is: send()
 }
 
-giveup  <- function(...){
-    quit("no")
+
+testmacs$giveup <- function(...){
+    res <- readline("To confirm enter Y, or another key to cancel. ")
+    if(toupper(res) == "Y") quit("no")
+    
+### You forgot to type parentheses, that is: giveup()
 }
 
-info <- function(){
+testmacs$info <- function(){
 
     txt <- paste0("\n", .assignment$text, "\n")
 
@@ -141,10 +167,11 @@ info <- function(){
     txt <- rbind(txt, "\nSee also info.send()", "\n")
  
     message(txt)
-    
+
+### You forgot to type parentheses, that is: info()
 }
 
-info.send <- function(){
+testmacs$info.send <- function(){
 
     txt <- "\nTo send data use: \nsend(VARIABLE=VALUE, ...)\n"
     txt <- rbind(txt, "\nFor example, to send the variables 'a' and 'b' use:\n")
@@ -152,5 +179,9 @@ info.send <- function(){
     txt <- rbind(txt, "\nDo not forget to check classes before send.\n")
     message(txt)
 
+### You forgot to type parentheses, that is: info.send()
 }
 
+
+attach(testmacs)
+rm(testmacs)
