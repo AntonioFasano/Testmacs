@@ -1,7 +1,11 @@
 
-## Get info/send funcs
-assign('testmacs',  new.env(parent=asNamespace("base")), envir=asNamespace("base"))
-source(paste0(R.home(), "/../site-app/boot/testmacs"), local=testmacs)
-attach(testmacs)
+## Get info/send funcs and assignment
+
+.First.sys.orig <- .First.sys
+
+.First.sys <- function(){
+    .First.sys.orig()
+    source(paste0(R.home(), "/../site-app/boot/testmacs"))    
+}
 
 
