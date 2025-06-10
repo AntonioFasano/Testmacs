@@ -121,6 +121,36 @@ If `new-site-start.txt` is not found or there is a copy error a non-critical err
 until the action succeeds or the command filename is removed. Read the docstring of `remote-update` function for more information. 
 
 
+## R test
+
+### Students side: submitting the R test
+
+After exiting the MCQ test, an R console shows up, also the displayed timer is reset.  
+If you don't want to continue with the R test, type `giveup()` to close Testmacs.
+
+To work out your R test, start by getting its prompt with:
+
+```r
+info()
+```
+
+Read the prompt, and in particular your test's input variables, which come preloaded in your R environment.   
+Determine what are the output variables that you should calculate and send.  
+Make your calculations in the R console and, when you are done, assuming you want to send the variables `a` and `b`, use:
+
+   send(a=a, b=b) 
+
+Make sure the sent variables match exactly the names and classes required by the prompt.
+At this point, your test solution is sent and Testmacs closes.   
+Testmacs closes anyway if the time expires.
+
+
+
+### Instructor side: creating the R test
+
+To be done
+
+
 ## Intallation notes
 
 To be done
