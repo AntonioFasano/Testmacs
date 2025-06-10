@@ -138,7 +138,9 @@ Read the prompt, and in particular your test's input variables, which come prelo
 Determine what are the output variables that you should calculate and send.  
 Make your calculations in the R console and, when you are done, assuming you want to send the variables `a` and `b`, use:
 
-   send(a=a, b=b) 
+```r
+send(a=a, b=b) 
+```
 
 Make sure the sent variables match exactly the names and classes required by the prompt.
 At this point, your test solution is sent and Testmacs closes.   
